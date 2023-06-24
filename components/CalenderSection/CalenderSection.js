@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import Image from 'next/image';
 import Link from 'next/link';
 import eImg from '../../public/images/event.jpg'
+import { Slide } from "react-awesome-reveal";
 
 var settings = {
     dots: false,
@@ -27,15 +28,17 @@ const CalenderSection = () => {
                     <div className="row">
                         <div className="col-lg-6 col-12">
                             <div className="calender-text">
-                                <div className="section-title">
-                                    <h2>CALENDAR</h2>
-                                </div>
-                                <h4>montreal's local event calendar</h4>
-                                <p>Whether tourist or bored'ist Or just a want-to-have-fun type Check out the MTLStories calendar for all upcoming gut-lifting events</p>
-                                <div className="access-btn">
-                                    <Link href="/">ACCESS OUR <br /> WEEKLY CALENDAR</Link>
-                                    <Link href="/">ACCESS OUR <br /> MONTHLTY CALENDAR</Link>
-                                </div>
+                                <Slide cascade direction='up' triggerOnce='false'>
+                                    <div className="section-title">
+                                        <h2>CALENDAR</h2>
+                                    </div>
+                                    <h4>montreal's local event calendar</h4>
+                                    <p>Whether tourist or bored'ist Or just a want-to-have-fun type Check out the MTLStories calendar for all upcoming gut-lifting events</p>
+                                    <div className="access-btn">
+                                        <Link href="/">ACCESS OUR <br /> WEEKLY CALENDAR</Link>
+                                        <Link href="/">ACCESS OUR <br /> MONTHLTY CALENDAR</Link>
+                                    </div>
+                                </Slide>
                             </div>
                         </div>
                         <div className="col-lg-6 col-12">
@@ -43,88 +46,92 @@ const CalenderSection = () => {
                                 <h2>TODAY EVENT’S</h2>
                                 <Slider {...settings}>
                                     <div className="event-wrap-inner">
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
+                                        <Slide cascade direction='up' triggerOnce='false'>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
-                                            </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
-                                            </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
-                                            </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
-                                            </div>
-                                        </div>
+                                        </Slide>
                                     </div>
                                     <div className="event-wrap-inner">
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
+                                        <Slide cascade direction='up' triggerOnce='false'>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                            <div className="event-item">
+                                                <div className="event-img">
+                                                    <Image src={eImg} alt="" />
+                                                </div>
+                                                <div className="event-text">
+                                                    <span>22/06/2023</span>
+                                                    <h4><Link href="/">Integer semper metus ultrices</Link></h4>
+                                                    <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
-                                            </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
-                                            </div>
-                                        </div>
-                                        <div className="event-item">
-                                            <div className="event-img">
-                                                <Image src={eImg} alt="" />
-                                            </div>
-                                            <div className="event-text">
-                                                <span>22/06/2023</span>
-                                                <h4><Link href="/">Integer semper metus ultrices</Link></h4>
-                                                <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
-                                            </div>
-                                        </div>
+                                        </Slide>
                                     </div>
                                 </Slider>
 

@@ -140,7 +140,7 @@ const ContactForm = () => {
                         {validator.message('message', forms.message, 'required')}
                     </div>
                 </div>
-                <div className="col-md-5 order-md-1 order-2 col-12">
+                <div className="col-lg-5 col-md-12 col-12">
                     <div className="submit-area">
                         <button type="submit" className="theme-btn">SEND</button>
                     </div>

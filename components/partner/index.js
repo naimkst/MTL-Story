@@ -31,14 +31,14 @@ const PartnerSlider = () => {
       {
         breakpoint: 991,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
           slidesToScroll: 1
         }
       },
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
           slidesToScroll: 1
         }
       },
