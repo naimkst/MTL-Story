@@ -1,0 +1,199 @@
+/*--------------------------------------------------------------
+4. footer
+--------------------------------------------------------------*/
+.site-footer {
+    position: relative;
+    font-size: 15px;
+    overflow: hidden;
+    padding: 80px 0;
+    background: #E9CBF4;
+    
+
+    @media(max-width:991px) {
+        padding: 50px 40px;
+    }
+
+    ul {
+        list-style: none;
+    }
+
+    p {
+        color: $white;
+        margin-bottom: 0;
+    }
+
+    li {
+        color: $white;
+    }
+
+    .footer-about {
+        @media(max-width:767px){
+            text-align: center;
+        }
+        ul {
+            display: flex;
+            margin-top: 30px;
+
+            @media(max-width:767px){
+                justify-content: center;
+            }
+
+            li {
+                &+li {
+                    margin-left: 15px;
+                }
+            }
+        }
+    }
+
+    .text-widget {
+        padding-right: 100px;
+        padding-left: 40px;
+
+        @media(max-width:1400px){
+            padding-right: 70px;
+            padding-left: 20px;
+        }
+        @media(max-width:1200px){
+            padding-right: 30px;
+            padding-left: 0px;
+        }
+        @media(max-width:991px){
+            padding-right: 30px;
+            padding-left: 50px;
+        }
+        @media(max-width:767px){
+            padding: 0;
+            padding-top: 30px;
+            text-align: center;
+        }
+
+        p {
+            color: #000;
+            font-size: 40.26px;
+            font-family: Bebas Neue;
+            line-height: 159.5%;
+
+            @media(max-width:1500px){
+                font-size: 35px;
+            }
+            @media(max-width:1400px){
+                font-size: 30px;
+            }
+            @media(max-width:1200px){
+                font-size: 25px;
+            }
+
+            @media(max-width:991px){
+                font-size: 30px;
+             }
+
+             @media(max-width:767px){
+                font-size: 25px;
+            }
+        }
+    }
+
+    .container {
+        position: relative;
+    }
+
+    .link-widget {
+        overflow: hidden;
+        display: flex;
+
+        @media(max-width:991px){
+           padding-top: 80px;
+        }
+
+        @media(max-width:767px){
+            justify-content: center;
+        }
+
+        @media(max-width:650px){
+           flex-wrap: wrap;
+        }
+
+        ul {
+            flex-basis: 50%;
+
+            @media(max-width:991px){
+                flex-basis: 34%;
+            }
+            @media(max-width:650px){
+                flex-basis: 100%;
+                margin-bottom: 30px;
+                justify-content: center;
+             }
+
+            li {
+                position: relative;
+
+                @media(max-width:650px){
+                    text-align: center;
+                 }
+
+                a {
+                    color: #000;
+                    font-size: 43.52px;
+                    font-family: Bebas Neue;
+                    letter-spacing: 2.829px;
+
+                    @media(max-width:1500px){
+                        font-size: 35px;
+                    }
+
+                    @media(max-width:1400px){
+                        font-size: 30px;
+                    }
+
+                    @media(max-width:1200px){
+                        font-size: 22px;
+                    }
+                }
+
+            }
+
+            &+ul {
+                position: relative;
+
+                &:before {
+                    position: absolute;
+                    left: -60px;
+                    top: 6%;
+                    width: 1px;
+                    height: 94%;
+                    content: "";
+                    background: $black;
+                    opacity: 0.3;
+                
+                }
+            }
+        }
+    }
+
+    .copyright {
+        text-align: center;
+        margin-top: 40px;
+
+        p {
+            color: #000;
+            font-size: 40.26px;
+            font-family: Bebas Neue;
+            line-height: 159.5%;
+
+            @media(max-width:1500px){
+                font-size: 35px;
+            }
+
+            @media(max-width:1400px){
+                font-size: 30px;
+            }
+
+            @media(max-width:1200px){
+                font-size: 22px;
+            }
+        }
+
+    }
+}
