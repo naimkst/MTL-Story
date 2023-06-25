@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick-theme.css";
 import pimg1 from '/public/images/partner/img-1.png'
 import pimg2 from '/public/images/partner/img-2.png'
 import Image from 'next/image';
+import { Slide } from "react-awesome-reveal";
 
 const PartnerSlider = () => {
 
@@ -53,22 +54,24 @@ const PartnerSlider = () => {
   };
   return (
     <section className="partners-section section-padding">
-      <div className="section-title">
-        <h2>Lovely Local Brands we worked with</h2>
-      </div>
-      <div className="partner-grids partners-slider">
-        <Slider {...settings}>
-          <div className="grid">
-            <Image src={pimg1} alt="" />
-          </div>
-          <div className="grid">
-            <Image src={pimg2} alt="" />
-          </div>
-          <div className="grid">
-            <Image src={pimg1} alt="" />
-          </div>
-        </Slider>
-      </div>
+      <Slide cascade direction='up' triggerOnce='false'>
+        <div className="section-title">
+          <h2>Lovely Local Brands we worked with</h2>
+        </div>
+        <div className="partner-grids partners-slider">
+          <Slider {...settings}>
+            <div className="grid">
+              <Image src={pimg1} alt="" />
+            </div>
+            <div className="grid">
+              <Image src={pimg2} alt="" />
+            </div>
+            <div className="grid">
+              <Image src={pimg1} alt="" />
+            </div>
+          </Slider>
+        </div>
+      </Slide>
     </section>
   );
 }

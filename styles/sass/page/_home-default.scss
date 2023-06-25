@@ -255,6 +255,7 @@
 
 .calender-section {
     background: $theme-primary-color-s3;
+    overflow: hidden;
 
     .calender-text {
         padding-right: 30px;
@@ -731,6 +732,7 @@
     .faq-wrap {
         border: 0;
         margin-top: 40px;
+        overflow: hidden;
 
         h4 {
             color: #000;
@@ -876,6 +878,7 @@
     background: #B9B9D5;
     text-align: center;
     padding-bottom: 60px;
+    overflow: hidden;
 
     .partner-grids {
         .grid {
@@ -899,6 +902,7 @@
             border-radius: 40px;
             background: rgba(255, 255, 255, 0.40);
             margin-bottom: 25px;
+            overflow: hidden;
 
             .merch-text {
 
