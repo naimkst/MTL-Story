@@ -1,7 +1,7 @@
 // digital-marque-sec
 
 .digital-marque-sec {
-    background: linear-gradient(90deg, #EA9A83 0%, #CDD661 20.31%, #93EC78 49.48%, #5AD6E0 71.88%, #996BFB 100%);
+    background: $black;
     padding: 15px 0;
     position: relative;
     z-index: -1;
@@ -39,7 +39,7 @@
             will-change: transform;
             animation: marquee 20s linear infinite;
             margin-bottom: 0;
-            color: $black;
+            color: $white;
             font-family: $heading-font2;
 
             @media(max-width:991px) {
@@ -121,6 +121,7 @@
             line-height: 125.537%;
             text-transform: uppercase;
             margin-bottom: 40px;
+            text-shadow: -6px -6px 0 $white, 6px -6px 0 $white, -6px 6px 0 $white, 6px 6px 0 $white;
 
             @media(max-width:1400px) {
                 font-size: 80px;
@@ -200,8 +201,10 @@
     .vision-wrap {
         padding: 78px 82px;
         border-radius: 20px;
-        border: 4px solid #000;
         margin-top: 60px;
+        border: 6px solid #FFF;
+        background: rgba(255, 255, 255, 0.40);
+        text-align: center;
 
         @media(max-width:1199px) {
             padding: 50px;
@@ -235,10 +238,8 @@
 
         ul {
             display: flex;
+            justify-content: center;
 
-            @media(max-width:991px) {
-                justify-content: center;
-            }
 
             li {
                 &+li {
@@ -308,8 +309,8 @@
             display: block;
             padding: 20px 0;
             border-radius: 20px;
-            border: 4px solid #000;
-            background: rgba(0, 240, 0, 0.00);
+            border: 6px solid #FFF;
+            background: rgba(255, 255, 255, 0.40);
             margin-bottom: 20px;
 
             @media(max-width:1400px) {
@@ -578,10 +579,12 @@
             margin-bottom: 20px;
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.40);
-            border: 0;
+            border: 6px solid transparent;
 
             &.Mui-expanded {
-                background: $dark-gray;
+                border-radius: 20px;
+                border: 6px solid #FFF;
+                background: rgba(255, 255, 255, 0.40);
             }
         }
 
@@ -590,7 +593,7 @@
             padding-top: 0;
 
             p {
-                color: #FFF;
+                color: $dark-gray;
                 font-size: 40.26px;
                 font-family: Bebas Neue;
                 line-height: 159.5%;
@@ -638,6 +641,7 @@
                 @media(max-width:991px) {
                     font-size: 30px;
                 }
+
                 @media(max-width:575px) {
                     font-size: 20px;
                 }
@@ -659,15 +663,10 @@
 
 
             &.Mui-expanded {
-                background: $dark-gray;
-
-                p {
-                    color: $white;
-                }
-
+                
                 &::after {
                     content: "\e648";
-                    color: $white;
+                    color: $dark-gray;
                 }
 
             }
@@ -697,29 +696,32 @@
 .cta-area {
     padding: 120px 0;
     text-align: center;
+    background: #B9B9D5;
 
     @media(max-width:575px) {
         padding: 70px 0;
-     }
+    }
 
     h2 {
         color: #FFF;
         text-align: center;
         font-size: 100px;
-        font-family: Futura;
-        font-weight: 900;
+        font-family: Anton;
+        font-weight: 400;
         letter-spacing: 3.5px;
         text-transform: uppercase;
         -webkit-background-clip: text;
         -webkit-text-fill-color: #fff;
         -webkit-text-stroke: 3px #000;
+        margin-bottom: 30px;
 
         @media(max-width:991px) {
             font-size: 60px;
-         }
+        }
+
         @media(max-width:575px) {
             font-size: 50px;
-         }
+        }
     }
 }
 
@@ -741,13 +743,15 @@
             font-weight: 700;
             line-height: 159.5%;
             margin-bottom: 20px;
+            text-shadow: -3px -3px 0 $white, 3px -3px 0 $white, -3px 3px 0 $white, 3px 3px 0 $white;
 
             @media(max-width:991px) {
-               text-align: center;
-               font-size: 40px;
+                text-align: center;
+                font-size: 40px;
             }
+
             @media(max-width:575px) {
-               font-size: 30px;
+                font-size: 30px;
             }
         }
 
@@ -756,12 +760,16 @@
             border-radius: 20px;
             background: rgba(255, 255, 255, 0.40);
             border: 0;
+            border: 6px solid transparent;
+            box-shadow: none;
 
             &.Mui-expanded {
-                background: $dark-gray;
+                border-radius: 20px;
+                border: 6px solid #FFF;
+                background: rgba(255, 255, 255, 0.40);
             }
 
-            &:before{
+            &:before {
                 display: none;
             }
         }
@@ -771,10 +779,11 @@
             padding-top: 0;
 
             p {
-                color: #FFF;
+                color: $dark-gray;
                 font-size: 40.26px;
                 font-family: Bebas Neue;
                 line-height: 159.5%;
+                margin-top: 20px;
 
                 @media(max-width:991px) {
                     font-size: 25px;
@@ -819,6 +828,7 @@
                 @media(max-width:991px) {
                     font-size: 30px;
                 }
+
                 @media(max-width:575px) {
                     font-size: 20px;
                 }
@@ -840,15 +850,14 @@
 
 
             &.Mui-expanded {
-                background: $dark-gray;
 
                 p {
-                    color: $white;
+                    color: $dark-gray;
                 }
 
                 &::after {
                     content: "\e648";
-                    color: $white;
+                    color: $dark-gray;
                 }
 
             }
@@ -951,6 +960,7 @@
                     flex-basis: 33.33%;
                     padding-bottom: 20px;
                 }
+
                 @media(max-width:575px) {
                     flex-basis: 50%;
                 }
@@ -1035,6 +1045,7 @@
             @media(max-width:991px) {
                 text-align: center;
             }
+
             .theme-btn {
                 width: 375px;
 

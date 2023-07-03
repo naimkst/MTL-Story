@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import { Fade, Slide } from "react-awesome-reveal";
+import { Slide } from "react-awesome-reveal";
 import Logo from '/public/images/logo.png'
 import social1 from '/public/images/icon/4.svg'
 import social2 from '/public/images/icon/5.svg'
