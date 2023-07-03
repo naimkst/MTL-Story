@@ -257,8 +257,8 @@ img {
 }
 
 .MuiDialog-paperScrollPaper {
-    max-width: 900px !important;
-    width: 900px !important;
+    max-width: 1024px !important;
+    width: 1024px !important;
     background-color: $card-bg-color !important;
 }
 
@@ -320,8 +320,8 @@ ul.smothscroll a:hover {
 }
 
 .modal-body {
-    padding: 0 15px;
-    padding-top: 50px;
+    padding: 15px;
+    padding-top: 70px;
 }
 
 .modal-close {

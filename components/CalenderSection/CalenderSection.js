@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import eImg from '../../public/images/event.jpg'
 import { Slide } from "react-awesome-reveal";
+import CalenderPopup from '../CalenderPopup'
 
 var settings = {
     dots: false,
@@ -19,6 +20,18 @@ var settings = {
 
 const CalenderSection = () => {
 
+    const [open, setOpen] = React.useState(false);
+
+    function handleClose() {
+        setOpen(false);
+    }
+
+    const [state, setState] = useState({})
+
+    const handleClickOpen = (item) => {
+        setOpen(true);
+        setState(item)
+    }
 
     return (
 
@@ -47,7 +60,7 @@ const CalenderSection = () => {
                                 <Slider {...settings}>
                                     <div className="event-wrap-inner">
                                         <Slide cascade direction='up' triggerOnce='false'>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -57,7 +70,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -67,7 +80,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -77,7 +90,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -91,7 +104,7 @@ const CalenderSection = () => {
                                     </div>
                                     <div className="event-wrap-inner">
                                         <Slide cascade direction='up' triggerOnce='false'>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -101,7 +114,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -111,7 +124,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -121,7 +134,7 @@ const CalenderSection = () => {
                                                     <p><i className="fa fa-map-marker" aria-hidden="true"></i> 86-87 Victoria Rd, Swindon</p>
                                                 </div>
                                             </div>
-                                            <div className="event-item">
+                                            <div className="event-item" onClick={() => handleClickOpen()}>
                                                 <div className="event-img">
                                                     <Image src={eImg} alt="" />
                                                 </div>
@@ -141,6 +154,7 @@ const CalenderSection = () => {
 
                 </div>
             </div>
+            <CalenderPopup open={open} onClose={handleClose}/>
         </section>
 
     );

@@ -385,6 +385,7 @@
             display: flex;
             align-items: center;
             margin-bottom: 10px;
+            cursor: pointer;
 
             @media(max-width:575px) {
                 flex-wrap: wrap;
@@ -1220,4 +1221,8 @@
         }
     }
 
+}
+
+.MuiDialog-container .react-calendar{
+    width: 100%;
 }
