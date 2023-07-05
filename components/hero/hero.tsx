@@ -8,8 +8,6 @@ import { Slide } from "react-awesome-reveal";
 const Hero = ({ data }: any) => {
   const [isOpen, setOpen] = useState(false);
 
-  console.log("hero", data);
-
   return (
     <section className="hero-section">
       <div className="container-fluid">

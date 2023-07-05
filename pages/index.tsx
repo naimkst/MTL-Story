@@ -16,19 +16,21 @@ import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
 
 const HomePage = () => {
-  const { loading, error, data } = useFetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/home-page?populate=deep`
-  );
+  const {
+    loading,
+    error,
+    data: getData,
+  } = useFetch(`${process.env.NEXT_PUBLIC_API_URL}/home-page?populate=deep`);
 
-  const { HeroSection } = data?.data?.attributes;
+  const data = getData?.data?.attributes;
 
-  console.log("=====", HeroSection);
+  console.log("=====", data);
   return (
     <Fragment>
       <Navbar />
-      <Hero data={HeroSection} />
-      <Marquee />
-      <Newslatter />
+      <Hero data={data?.HeroSection} />
+      <Marquee data={data?.TextSlider} />
+      <Newslatter data={data?.Newslatter} />
       <Vision />
       <CalenderSection />
       <ServiceSection />
