@@ -20,11 +20,13 @@ const HomePage = () => {
     `${process.env.NEXT_PUBLIC_API_URL}/home-page?populate=deep`
   );
 
-  console.log(data);
+  const { HeroSection } = data?.data?.attributes;
+
+  console.log("=====", HeroSection);
   return (
     <Fragment>
       <Navbar />
-      <Hero />
+      <Hero data={HeroSection} />
       <Marquee />
       <Newslatter />
       <Vision />
