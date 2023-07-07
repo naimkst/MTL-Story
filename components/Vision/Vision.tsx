@@ -8,7 +8,6 @@ import { Slide } from "react-awesome-reveal";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const Vision = ({ data }: any) => {
-  console.log("=====", data);
   return (
     <section className="vision-section section-padding">
       <div className="container-fluid">

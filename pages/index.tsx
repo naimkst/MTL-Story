@@ -32,7 +32,7 @@ const HomePage = () => {
       <Marquee data={data?.TextSlider} />
       <Newslatter data={data?.Newslatter} />
       <Vision data={data?.OurVision} />
-      <CalenderSection />
+      <CalenderSection data={data?.Calendar} />
       <ServiceSection />
       <CtaSection />
       <FaqSection />
