@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import aImg from "/public/images/newslatter.png";
 import { Slide } from "react-awesome-reveal";
-import { getImage } from "../../helpers/globalFunction";
+import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
 const Newslatter = ({ data }: any) => {
   const submitHandler = (e: any) => {
@@ -23,8 +23,8 @@ const Newslatter = ({ data }: any) => {
               <Slide direction="left" triggerOnce={false}>
                 <div className="newslatter-img">
                   <Image
-                    width={100}
-                    height={100}
+                    width={Number(getWidth(data?.NewsImage))}
+                    height={Number(getHeight(data?.NewsImage))}
                     src={getImage(data?.NewsImage)}
                     alt=""
                   />

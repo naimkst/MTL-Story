@@ -31,7 +31,7 @@ const HomePage = () => {
       <Hero data={data?.HeroSection} />
       <Marquee data={data?.TextSlider} />
       <Newslatter data={data?.Newslatter} />
-      <Vision />
+      <Vision data={data?.OurVision} />
       <CalenderSection />
       <ServiceSection />
       <CtaSection />
