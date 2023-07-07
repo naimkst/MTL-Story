@@ -3,8 +3,6 @@ import ContactForm from "../ContactFrom/ContactForm";
 import { Slide } from "react-awesome-reveal";
 
 const ContactArea = ({ data }: any) => {
-  console.log("Merch", data);
-
   return (
     <section className="contact-form-area section-padding" id="contact">
       <div className="container-fluid">

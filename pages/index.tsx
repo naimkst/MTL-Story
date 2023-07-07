@@ -22,12 +22,20 @@ const HomePage = () => {
     data: getData,
   } = useFetch(`${process.env.NEXT_PUBLIC_API_URL}/home-page?populate=deep`);
 
-  const data = getData?.data?.attributes;
+  const {
+    loading: globalLoading,
+    error: globalError,
+    data: globalData,
+  } = useFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global-setting?populate=deep`
+  );
 
-  console.log("######", data);
+  const data = getData?.data?.attributes;
+  const global = globalData?.data?.attributes?.Global;
+  console.log("######", global);
   return (
     <Fragment>
-      <Navbar />
+      <Navbar global={global} />
       <Hero data={data?.HeroSection} />
       <Marquee data={data?.TextSlider} />
       <Newslatter data={data?.Newslatter} />
@@ -39,8 +47,8 @@ const HomePage = () => {
       <PartnerSlider data={data?.BrandSection} />
       <Merch data={data?.MerchSection} />
       <ContactArea data={data?.ContactUs} />
-      <Marquee />
-      <Footer />
+      <Marquee data={data?.TextSlider} />
+      <Footer global={global} />
       <BackToTop />
     </Fragment>
   );
