@@ -32,8 +32,6 @@ const CalenderSection = ({ data }: any) => {
     setState(item);
   };
 
-  console.log("=====", data);
-
   return (
     <section className="calender-section section-padding" id="calender">
       <div className="container-fluid">

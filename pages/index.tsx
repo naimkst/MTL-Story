@@ -33,9 +33,9 @@ const HomePage = () => {
       <Newslatter data={data?.Newslatter} />
       <Vision data={data?.OurVision} />
       <CalenderSection data={data?.Calendar} />
-      <ServiceSection />
-      <CtaSection />
-      <FaqSection />
+      <ServiceSection data={data?.ServiceSection} />
+      <CtaSection data={data?.CTASection} />
+      <FaqSection data={data?.FAQSection} />
       <PartnerSlider />
       <Merch />
       <ContactArea />

@@ -20,7 +20,9 @@ const Vision = ({ data }: any) => {
           <Slide cascade direction="up" triggerOnce={false}>
             {data?.Description}
 
-            <ReactMarkdown>{`${data?.Description}`}</ReactMarkdown>
+            <div>
+              <ReactMarkdown>{`${data?.Description}`}</ReactMarkdown>
+            </div>
 
             <ul>
               {data?.SocialMedia?.Instagram && (
