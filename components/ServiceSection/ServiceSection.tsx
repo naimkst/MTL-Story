@@ -52,6 +52,7 @@ const ServiceSection = ({ data }: any) => {
                 <Slide cascade direction="up" triggerOnce={false}>
                   {data?.Services?.map((item: any, index: any) => (
                     <Accordion
+                      key={`service-${index}`}
                       expanded={expanded === `panel${index + 1}`}
                       onChange={handleChange(`panel${index + 1}`)}
                     >

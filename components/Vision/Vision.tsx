@@ -27,7 +27,7 @@ const Vision = ({ data }: any) => {
             <ul>
               {data?.SocialMedia?.Instagram && (
                 <li>
-                  <Link href={data?.SocialMedia?.Instagram}>
+                  <Link href={String(data?.SocialMedia?.Instagram) || "/"}>
                     <Image src={icon1} alt="" />
                   </Link>
                 </li>
@@ -35,14 +35,14 @@ const Vision = ({ data }: any) => {
 
               {data?.SocialMedia?.TikTok && (
                 <li>
-                  <Link href={data?.SocialMedia?.TikTok}>
+                  <Link href={String(data?.SocialMedia?.TikTok) || "/"}>
                     <Image src={icon2} alt="" />
                   </Link>
                 </li>
               )}
               {data?.SocialMedia?.Youtube && (
                 <li>
-                  <Link href={data?.SocialMedia?.Youtube}>
+                  <Link href={String(data?.SocialMedia?.Youtube) || "/"}>
                     <Image src={icon3} alt="" />
                   </Link>
                 </li>

@@ -24,7 +24,7 @@ const HomePage = () => {
 
   const data = getData?.data?.attributes;
 
-  console.log("=====", data);
+  console.log("######", data);
   return (
     <Fragment>
       <Navbar />
@@ -36,8 +36,8 @@ const HomePage = () => {
       <ServiceSection data={data?.ServiceSection} />
       <CtaSection data={data?.CTASection} />
       <FaqSection data={data?.FAQSection} />
-      <PartnerSlider />
-      <Merch />
+      <PartnerSlider data={data?.BrandSection} />
+      <Merch data={data?.MerchSection} />
       <ContactArea />
       <Marquee />
       <Footer />

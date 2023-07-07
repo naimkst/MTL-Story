@@ -46,10 +46,10 @@ const CalenderSection = ({ data }: any) => {
                   <h4>{data?.EventTitle}</h4>
                   <p>{data?.EventDescription}</p>
                   <div className="access-btn">
-                    <Link href={data?.WeeklyLink || "/"}>
+                    <Link href={String(data?.WeeklyLink) || "/"}>
                       {data?.WeeklyText}
                     </Link>
-                    <Link href={data?.MonthlyLink || "/"}>
+                    <Link href={String(data?.MonthlyLink) || "/"}>
                       {data?.MonthlyText}
                     </Link>
                   </div>

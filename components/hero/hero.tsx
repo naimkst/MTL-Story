@@ -19,7 +19,10 @@ const Hero = ({ data }: any) => {
                   <h2>{data?.Title}</h2>
                 </div>
                 <div className="btns">
-                  <Link href={data?.ButtonLink} className="theme-btn">
+                  <Link
+                    href={String(data?.ButtonLink) || "/"}
+                    className="theme-btn"
+                  >
                     {data?.ButtonText}
                   </Link>
                 </div>

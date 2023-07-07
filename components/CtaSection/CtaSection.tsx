@@ -7,7 +7,7 @@ const CtaSection = ({ data }: any) => {
       <div className="cta-area">
         <Slide cascade direction="up" triggerOnce={false}>
           <h2>{data?.Title}</h2>
-          <Link className="theme-btn" href={data?.ButtonLink || "/"}>
+          <Link className="theme-btn" href={String(data?.ButtonLink) || "/"}>
             {data?.ButtonText}
           </Link>
         </Slide>

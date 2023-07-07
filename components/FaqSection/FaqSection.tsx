@@ -12,8 +12,6 @@ const FaqSection = ({ data }: any) => {
     setExpanded(isExpanded ? panel : false);
   };
 
-  console.log("=====", data);
-
   return (
     <div className="faq-section section-padding">
       <div className="container-fluid">
@@ -32,6 +30,7 @@ const FaqSection = ({ data }: any) => {
                 <Slide cascade direction="up" triggerOnce={false}>
                   {data?.FAQOne?.map((item: any, index: number) => (
                     <Accordion
+                      key={`faqOne-${index}`}
                       expanded={expanded === `panel${index + 1}`}
                       onChange={handleChange(`panel${index + 1}`)}
                     >
@@ -62,6 +61,7 @@ const FaqSection = ({ data }: any) => {
                 <Slide cascade direction="up" triggerOnce={false}>
                   {data?.FAQTwo?.map((item: any, index: number) => (
                     <Accordion
+                      key={`faqTwo-${index}`}
                       expanded={expanded === `panels${index + 1}`}
                       onChange={handleChange(`panels${index + 1}`)}
                     >
@@ -92,6 +92,7 @@ const FaqSection = ({ data }: any) => {
                 <Slide cascade direction="up" triggerOnce={false}>
                   {data?.FAQThree?.map((item: any, index: number) => (
                     <Accordion
+                      key={`faqThree-${index}`}
                       expanded={expanded === `panelThree${index + 1}`}
                       onChange={handleChange(`panelThree${index + 1}`)}
                     >
