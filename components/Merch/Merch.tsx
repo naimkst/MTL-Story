@@ -4,7 +4,6 @@ import mImg from "/public/images/merch.jpg";
 import { Fade, Slide } from "react-awesome-reveal";
 
 const Merch = ({ data }: any) => {
-  console.log("Merch", data);
   return (
     <section className="merch-section section-padding" id="merch">
       <div className="container-fluid">

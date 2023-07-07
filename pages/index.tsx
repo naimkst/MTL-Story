@@ -38,7 +38,7 @@ const HomePage = () => {
       <FaqSection data={data?.FAQSection} />
       <PartnerSlider data={data?.BrandSection} />
       <Merch data={data?.MerchSection} />
-      <ContactArea />
+      <ContactArea data={data?.ContactUs} />
       <Marquee />
       <Footer />
       <BackToTop />
