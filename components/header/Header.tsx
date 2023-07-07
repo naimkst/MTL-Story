@@ -6,23 +6,34 @@ import Logo from "/public/images/logo.png";
 import NavLink from "next/link";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
-const Header = ({ topbarNone, hclass, global }: any) => {
+const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
   const ClickHandler = () => {
     window.scrollTo(10, 0);
   };
-
-  console.log("@@@@", global);
 
   return (
     <header id="header" className={topbarNone}>
       <div className="header-topbar">
         <ul>
           <li>
-            ACCESS OUR MTLSTORIES WEEKLY <a href="#">NEWSLETTER HERE!</a>
+            {global?.NoticeTitle}{" "}
+            <a href={String(global?.NoticeLink) || "/"}>
+              {global?.NoticeColorTitle}
+            </a>
           </li>
           <li>
-            <span className="active">EN</span>
-            <span>ER</span>
+            <span
+              onClick={() => setLanguage("en")}
+              className={language == "en" && "active"}
+            >
+              EN
+            </span>
+            <span
+              onClick={() => setLanguage("fr")}
+              className={language == "fr" && "active"}
+            >
+              FR
+            </span>
           </li>
         </ul>
       </div>

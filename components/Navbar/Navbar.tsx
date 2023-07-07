@@ -1,7 +1,14 @@
 import React from "react";
 import Header from "../header/Header";
 
-export default function Navbar({ hclass, Logo, topbarNone, global }: any) {
+export default function Navbar({
+  hclass,
+  Logo,
+  topbarNone,
+  global,
+  setLanguage,
+  language,
+}: any) {
   const [scroll, setScroll] = React.useState(0);
 
   const handleScroll = () => setScroll(document.documentElement.scrollTop);
@@ -17,9 +24,11 @@ export default function Navbar({ hclass, Logo, topbarNone, global }: any) {
     <div className={className}>
       <Header
         hclass={hclass}
+        setLanguage={setLanguage}
         Logo={Logo}
         topbarNone={topbarNone}
         global={global}
+        language={language}
       />
     </div>
   );
