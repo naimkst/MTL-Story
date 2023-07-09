@@ -99,9 +99,20 @@
     .newslatter-img {
         margin-left: -60px;
 
+        @media(max-width:1500px) {
+            margin-left: 0;
+        }
+
         @media(max-width:991px) {
             margin-left: 0;
             text-align: center;
+        }
+
+
+        img {
+            @media(max-width:1500px) {
+                max-width: 70%;
+            }
         }
     }
 
@@ -123,7 +134,7 @@
             margin-bottom: 40px;
             text-shadow: -6px -6px 0 $white, 6px -6px 0 $white, -6px 6px 0 $white, 6px 6px 0 $white;
 
-            @media(max-width:1400px) {
+            @media(max-width:1500px) {
                 font-size: 80px;
             }
 
@@ -274,9 +285,9 @@
             line-height: 159.5%;
             margin-bottom: 30px;
 
-            @media(max-width:1400px) {
+            @media(max-width:1500px) {
                 font-size: 40px;
-                margin-bottom: 30px;
+                margin-bottom: 20px;
             }
 
             @media(max-width:991px) {
@@ -313,7 +324,7 @@
             background: rgba(255, 255, 255, 0.40);
             margin-bottom: 20px;
 
-            @media(max-width:1400px) {
+            @media(max-width:1500px) {
                 font-size: 40px;
             }
 
@@ -341,7 +352,7 @@
             overflow-y: scroll;
             padding-right: 20px;
 
-            @media(max-width:1400px) {
+            @media(max-width:1500px) {
                 max-height: 450px;
             }
 
@@ -372,6 +383,10 @@
             text-align: center;
             margin-bottom: 30px;
 
+            @media(max-width:1500px) {
+                margin-bottom: 20px;
+            }
+
             @media(max-width:575px) {
                 font-size: 40px;
             }
@@ -393,7 +408,7 @@
 
             .event-img {
 
-                @media(max-width:1400px) {
+                @media(max-width:1500px) {
                     flex-basis: 20%;
                 }
 
@@ -664,7 +679,7 @@
 
 
             &.Mui-expanded {
-                
+
                 &::after {
                     content: "\e648";
                     color: $dark-gray;
@@ -1223,6 +1238,6 @@
 
 }
 
-.MuiDialog-container .react-calendar{
+.MuiDialog-container .react-calendar {
     width: 100%;
 }
