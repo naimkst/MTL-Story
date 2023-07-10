@@ -13,6 +13,7 @@ const ContactForm = ({ data }: any) => {
     date: "",
     message: "",
   });
+
   const [validator] = useState(
     new SimpleReactValidator({
       className: "errorMessage",
