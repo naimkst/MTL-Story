@@ -53,5 +53,4 @@ const Hero = ({ data }: any) => {
     </section>
   );
 };
-
 export default Hero;
