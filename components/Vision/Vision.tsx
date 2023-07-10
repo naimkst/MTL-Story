@@ -9,15 +9,15 @@ import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const Vision = ({ data }: any) => {
   return (
-    <section className="vision-section section-padding">
+    <section className="vision-section section-padding" id="about">
       <div className="container-fluid">
-        <Slide direction="up" triggerOnce={false}>
+        <Slide direction="up" triggerOnce="false">
           <div className="section-title">
             <h2>{data?.SectionTitle}</h2>
           </div>
         </Slide>
         <div className="vision-wrap">
-          <Slide cascade direction="up" triggerOnce={false}>
+          <Slide cascade direction="up" triggerOnce="false" duration="1000">
             {data?.Description}
 
             <div>

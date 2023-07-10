@@ -15,19 +15,19 @@ const FaqSection = ({ data }: any) => {
   return (
     <div className="faq-section section-padding">
       <div className="container-fluid">
-        <Slide direction="up" triggerOnce={false}>
+        <Slide direction="up" triggerOnce="false">
           <div className="section-title">
             <h2>{data?.SectionTitle}</h2>
           </div>
         </Slide>
         <div className="faq-wrap">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <h4>{data?.FAQTitle}</h4>
           </Slide>
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false" duration="500">
                   {data?.FAQOne?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqOne-${index}`}
@@ -52,13 +52,13 @@ const FaqSection = ({ data }: any) => {
           </div>
         </div>
         <div className="faq-wrap">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <h4>{data?.FAQTitleTwo}</h4>
           </Slide>
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false" duration="500">
                   {data?.FAQTwo?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqTwo-${index}`}
@@ -83,13 +83,13 @@ const FaqSection = ({ data }: any) => {
           </div>
         </div>
         <div className="faq-wrap">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <h4>{data?.FAQThreeTitle}</h4>
           </Slide>
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false" duration="500">
                   {data?.FAQThree?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqThree-${index}`}

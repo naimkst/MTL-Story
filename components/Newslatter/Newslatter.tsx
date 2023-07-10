@@ -10,17 +10,17 @@ const Newslatter = ({ data }: any) => {
   };
 
   return (
-    <section className="newslatter-section section-padding" id="about">
+    <section className="newslatter-section section-padding">
       <div className="container-fluid">
         <div className="newslatter-wrap">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <div className="section-title">
               <h2>{data?.SectionTitle}</h2>
             </div>
           </Slide>
           <div className="row align-items-center">
-            <div className="col-lg-6 col-md-12 col-12">
-              <Slide direction="left" triggerOnce={false}>
+            <div className="col-lg-5 col-md-12 col-12">
+              <Slide direction="left" triggerOnce="false">
                 <div className="newslatter-img">
                   <Image
                     width={Number(getWidth(data?.NewsImage))}
@@ -31,8 +31,8 @@ const Newslatter = ({ data }: any) => {
                 </div>
               </Slide>
             </div>
-            <div className="col-lg-6 col-md-12 col-12">
-              <Slide direction="right" triggerOnce={false}>
+            <div className="col-lg-7 col-md-12 col-12">
+              <Slide direction="right" triggerOnce="false">
                 <div className="newslatter-text">
                   <h2>{data?.Title}</h2>
 

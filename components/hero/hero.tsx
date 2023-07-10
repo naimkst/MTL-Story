@@ -13,7 +13,7 @@ const Hero = ({ data }: any) => {
       <div className="container-fluid">
         <div className="row align-items-center">
           <div className="col col-xs-6 col-lg-6 col-12">
-            <Slide triggerOnce={false}>
+            <Slide triggerOnce="false">
               <div className="hero-section-text">
                 <div className="hero-title">
                   <h2>{data?.Title}</h2>
@@ -30,7 +30,7 @@ const Hero = ({ data }: any) => {
             </Slide>
           </div>
           <div className="col col-xs-6 col-lg-6 col-12">
-            <Slide direction="right" triggerOnce={false}>
+            <Slide direction="right" triggerOnce="false">
               <div className="hero-section-video">
                 <div className="video-btn">
                   <button className="btn-wrap" onClick={() => setOpen(true)}>

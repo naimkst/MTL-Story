@@ -41,7 +41,7 @@ const ServiceSection = ({ data }: any) => {
     <div>
       <div className="service-area section-padding" id="service">
         <div className="container-fluid">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <div className="section-title">
               <h2>{data?.SectionTitle}</h2>
             </div>
@@ -49,7 +49,7 @@ const ServiceSection = ({ data }: any) => {
           <div className="service-wrap">
             <div className="row align-items-center">
               <div className="service-item">
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false" duration="500">
                   {data?.Services?.map((item: any, index: any) => (
                     <Accordion
                       key={`service-${index}`}

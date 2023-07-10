@@ -7,7 +7,7 @@ const Merch = ({ data }: any) => {
   return (
     <section className="merch-section section-padding" id="merch">
       <div className="container-fluid">
-        <Slide direction="up" triggerOnce={false}>
+        <Slide direction="up" triggerOnce="false">
           <div className="section-title text-center">
             <h2>{data?.SectionTitle}</h2>
           </div>
@@ -18,7 +18,7 @@ const Merch = ({ data }: any) => {
               <div className="row align-items-center">
                 <div className="col-lg-3">
                   <div className="merch-text">
-                    <Slide cascade direction="left" triggerOnce={false}>
+                    <Slide cascade direction="left" triggerOnce="false">
                       <h2>{item?.Title}</h2>
                       <p>{item?.Subtitle}</p>
                     </Slide>
@@ -26,7 +26,7 @@ const Merch = ({ data }: any) => {
                 </div>
                 <div className="col-lg-9">
                   <div className="merch-img-wrap">
-                    <Fade cascade direction="up" triggerOnce={false}>
+                    <Fade cascade direction="up" triggerOnce="false">
                       {item?.MerchImages?.data?.map(
                         (img: any, index: number) => (
                           <div

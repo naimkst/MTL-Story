@@ -39,7 +39,7 @@ const CalenderSection = ({ data }: any) => {
           <div className="row">
             <div className="col-lg-6 col-12">
               <div className="calender-text">
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false">
                   <div className="section-title">
                     <h2>{data?.SectionTitle}</h2>
                   </div>
@@ -61,7 +61,7 @@ const CalenderSection = ({ data }: any) => {
                 <h2>{data?.EventListTitle}</h2>
                 <Slider {...settings}>
                   <div className="event-wrap-inner">
-                    <Slide cascade direction="up" triggerOnce={false}>
+                    <Slide cascade direction="up" triggerOnce="false" duration="500">
                       <div
                         className="event-item"
                         onClick={() => handleClickOpen("")}
@@ -149,7 +149,7 @@ const CalenderSection = ({ data }: any) => {
                     </Slide>
                   </div>
                   <div className="event-wrap-inner">
-                    <Slide cascade direction="up" triggerOnce={false}>
+                    <Slide cascade direction="up" triggerOnce="false" duration="500">
                       <div
                         className="event-item"
                         onClick={() => handleClickOpen("")}

@@ -7,7 +7,7 @@ const ContactArea = ({ data }: any) => {
     <section className="contact-form-area section-padding" id="contact">
       <div className="container-fluid">
         <div className="contact-form-wrap">
-          <Slide direction="up" triggerOnce={false}>
+          <Slide direction="up" triggerOnce="false">
             <div className="section-title">
               <h2>{data?.SectionTitle}</h2>
             </div>

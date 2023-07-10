@@ -53,7 +53,7 @@ const PartnerSlider = ({ data }: any) => {
   };
   return (
     <section className="partners-section section-padding">
-      <Slide cascade direction="up" triggerOnce={false}>
+      <Slide cascade direction="up" triggerOnce="false">
         <div className="section-title">
           <h2>{data?.SectionTitle}</h2>
         </div>

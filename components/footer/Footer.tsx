@@ -15,7 +15,7 @@ const Footer = ({ global }: any) => {
         <div className="row ">
           <div className="col-lg-2 col-md-2">
             <div className="footer-about">
-              <Slide cascade direction="up" triggerOnce={false}>
+              <Slide cascade direction="up" triggerOnce="false">
                 <Link className="logo" href="/">
                   <Image
                     width={getWidth(global?.FooterLogo)}
@@ -54,7 +54,7 @@ const Footer = ({ global }: any) => {
             </div>
           </div>
           <div className="col-lg-5 col-md-10">
-            <Slide cascade direction="up" triggerOnce={false}>
+            <Slide cascade direction="up" triggerOnce="false">
               <div className="text-widget">
                 <p>{global?.FooterAbout}</p>
               </div>
@@ -63,7 +63,7 @@ const Footer = ({ global }: any) => {
           <div className="col-lg-5 col-md-12">
             <div className="link-widget">
               <ul>
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false">
                   {global?.FooterMenuOne?.map((item: any, index: number) => (
                     <li>
                       <Link href={String(item?.Link)}>{item?.Title}</Link>
@@ -72,7 +72,7 @@ const Footer = ({ global }: any) => {
                 </Slide>
               </ul>
               <ul>
-                <Slide cascade direction="up" triggerOnce={false}>
+                <Slide cascade direction="up" triggerOnce="false">
                   {global?.FooterMenuTwo?.map((item: any, index: number) => (
                     <li>
                       <Link href={String(item?.Link)}>{item?.Title}</Link>
@@ -84,7 +84,7 @@ const Footer = ({ global }: any) => {
           </div>
           <div className="col-12">
             <div className="copyright">
-              <Slide direction="up" triggerOnce={false}>
+              <Slide direction="up" triggerOnce="false">
                 <p>{global?.CopyRightText}</p>
               </Slide>
             </div>

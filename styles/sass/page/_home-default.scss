@@ -98,14 +98,21 @@
 
     .newslatter-img {
         margin-left: -60px;
-
+        max-width: 80%;
+        
+        @media(max-width:1800px) {
+            max-width: 65%;
+            margin-left: 0px;
+        }
         @media(max-width:1500px) {
             margin-left: 0;
+            max-width: 100%;
         }
 
         @media(max-width:991px) {
-            margin-left: 0;
+            margin: 0 auto;
             text-align: center;
+            max-width: 60%;
         }
 
 
@@ -134,8 +141,16 @@
             margin-bottom: 40px;
             text-shadow: -6px -6px 0 $white, 6px -6px 0 $white, -6px 6px 0 $white, 6px 6px 0 $white;
 
+            @media(max-width:1800px) {
+                font-size: 80px;
+            }
+
             @media(max-width:1500px) {
                 font-size: 80px;
+            }
+
+            @media(max-width:1199px) {
+                font-size: 70px;
             }
 
             @media(max-width:767px) {
@@ -210,15 +225,16 @@
     background: #E9CBF4;
 
     .vision-wrap {
-        padding: 78px 82px;
+        padding: 45px 60px;
         border-radius: 20px;
         margin-top: 60px;
         border: 6px solid #FFF;
         background: rgba(255, 255, 255, 0.40);
         text-align: center;
+        overflow: hidden;
 
         @media(max-width:1199px) {
-            padding: 50px;
+            padding: 30px;
         }
 
         @media(max-width:767px) {
@@ -227,13 +243,13 @@
 
         p {
             color: #000;
-            font-size: 40.26px;
+            font-size: 35.26px;
             font-family: Bebas Neue;
             line-height: 159.5%;
-            margin-bottom: 70px;
+            margin-bottom: 20px;
 
             @media(max-width:1199px) {
-                margin-bottom: 40px;
+                margin-bottom: 20px;
             }
 
             @media(max-width:991px) {
@@ -338,7 +354,7 @@
         border-radius: 20px;
         border: 6px solid #FFF;
         background: rgba(255, 255, 255, 0.40);
-        padding: 70px 30px;
+        padding: 50px 30px;
         padding-bottom: 115px;
 
         @media(max-width:575px) {
@@ -347,13 +363,13 @@
         }
 
         .event-wrap-inner {
-            max-height: 630px;
+            max-height: 530px;
             overflow-x: hidden;
             overflow-y: scroll;
             padding-right: 20px;
 
             @media(max-width:1500px) {
-                max-height: 450px;
+                max-height: 400px;
             }
 
             @media(max-width:575px) {
@@ -407,10 +423,7 @@
             }
 
             .event-img {
-
-                @media(max-width:1500px) {
-                    flex-basis: 20%;
-                }
+                flex-basis: 20%;
 
                 @media(max-width:575px) {
                     flex-basis: 100%;
@@ -450,7 +463,7 @@
 
                 h4 {
                     color: #000;
-                    font-size: 40.26px;
+                    font-size: 35.26px;
                     font-family: Bebas Neue;
                     font-weight: 700;
                     line-height: 159.5%;
@@ -522,6 +535,10 @@
                 @media(max-width:1400px) {
                     font-size: 30px;
                 }
+
+                @media(max-width:575px) {
+                    font-size: 20px;
+                }
             }
 
             &:after {
@@ -535,15 +552,19 @@
                 @media(max-width:1400px) {
                     font-size: 30px;
                 }
-
                 @media(max-width:575px) {
-                    display: none;
+                    font-size: 20px;
                 }
+
+
             }
         }
 
         .slick-next {
             right: 50px;
+            @media(max-width:575px) {
+                bottom: -52px;
+            }
 
             &:after {
                 content: "tomorrow";
@@ -558,7 +579,7 @@
                 }
 
                 @media(max-width:575px) {
-                    display: none;
+                    font-size: 20px;
                 }
             }
 
@@ -576,6 +597,11 @@
                 @media(max-width:1400px) {
                     font-size: 30px;
                 }
+
+                @media(max-width:575px) {
+                    font-size: 20px;
+                    right: -24px;
+                }
             }
         }
     }
@@ -589,7 +615,7 @@
 
     .service-item {
         border: 0;
-        margin-top: 40px;
+        margin-top: 10px;
 
         .MuiPaper-root {
             margin-bottom: 20px;
@@ -610,7 +636,7 @@
 
             p {
                 color: $dark-gray;
-                font-size: 40.26px;
+                font-size: 32.26px;
                 font-family: Bebas Neue;
                 line-height: 159.5%;
 
@@ -637,7 +663,7 @@
             text-align: left;
             font-family: $base-font;
             font-weight: 600;
-            padding: 40px;
+            padding: 20px 40px;
             border-radius: 20px;
             margin: 0;
             width: 100%;
@@ -649,7 +675,7 @@
 
             p {
                 color: $dark-gray;
-                font-size: 40.26px;
+                font-size: 32.26px;
                 font-family: Bebas Neue;
                 font-weight: 700;
                 line-height: 159.5%;
@@ -1017,7 +1043,7 @@
             border-radius: 300px;
             background: rgba(255, 255, 255, 0.40);
             width: 100%;
-            height: 75px;
+            height: 65px;
             box-shadow: none !important;
             padding-left: 25px;
             border: 0;
@@ -1052,7 +1078,7 @@
         }
 
         form textarea {
-            height: 265px;
+            height: 210px;
             padding-top: 15px;
             border-radius: 33px;
         }
