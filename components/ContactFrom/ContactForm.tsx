@@ -3,6 +3,9 @@ import SimpleReactValidator from "simple-react-validator";
 import { Fade } from "react-awesome-reveal";
 
 const ContactForm = ({ data }: any) => {
+  const [loading, setLoading] = React.useState(false);
+  const [submitMessage, setSubmitMessage] = React.useState(false);
+  const [submitErrMsg, setSubmitErrMsg] = React.useState(false);
   const [forms, setForms] = useState({
     cname: "",
     name: "",
@@ -19,7 +22,7 @@ const ContactForm = ({ data }: any) => {
       className: "errorMessage",
     })
   );
-  const changeHandler = (e) => {
+  const changeHandler = (e: any) => {
     setForms({ ...forms, [e.target.name]: e.target.value });
     if (validator.allValid()) {
       validator.hideMessages();
@@ -28,7 +31,7 @@ const ContactForm = ({ data }: any) => {
     }
   };
 
-  const submitHandler = (e) => {
+  const submitHandler = (e: any) => {
     e.preventDefault();
     if (validator.allValid()) {
       validator.hideMessages();
@@ -45,6 +48,26 @@ const ContactForm = ({ data }: any) => {
     } else {
       validator.showMessages();
     }
+
+    const formData = {};
+    Array.from(e.target.elements).forEach((field: any) => {
+      if (!field.name) return;
+      formData[field.name] = field.value;
+    });
+    const sendMail = fetch("/api/email", {
+      method: "POST",
+      body: JSON.stringify(formData),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setLoading(false);
+        if (data.success === true) {
+          setSubmitMessage(true);
+        } else {
+          setSubmitErrMsg(true);
+        }
+        console.log(data);
+      });
   };
 
   return (

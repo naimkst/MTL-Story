@@ -17,7 +17,7 @@ import useFetch from "../hooks/useFetch";
 import { getLocalStorageData } from "../helpers/globalFunction";
 
 const HomePage = () => {
-  const [language, setLanguage] = React.useState<any>("fr");
+  const [language, setLanguage] = React.useState<any>("en");
 
   const lngData = getLocalStorageData("lan");
 

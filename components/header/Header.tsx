@@ -75,7 +75,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-100}
                       >
-                        ABOUT US
+                        {global?.Menu?.AboutUs}
                       </Link>
                     </li>
                     <li>
@@ -87,7 +87,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-95}
                       >
-                        CALENDAR
+                        {global?.Menu?.Calendar}
                       </Link>
                     </li>
                     <li>
@@ -99,7 +99,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-95}
                       >
-                        SERVICES
+                        {global?.menu?.Services}
                       </Link>
                     </li>
                     <li>
@@ -111,7 +111,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-95}
                       >
-                        MERCH
+                        {global?.Menu?.Merch}
                       </Link>
                     </li>
                     <li>
@@ -123,7 +123,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-95}
                       >
-                        CONTACT US
+                        {global?.Menu?.ContactUs}
                       </Link>
                     </li>
                   </ul>
