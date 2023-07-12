@@ -189,12 +189,12 @@ const ContactForm = ({ data }: any) => {
             </div>
             <div>
               {submitMessage && (
-                <p className="text-center text-white">
+                <p className="">
                   Thanks for contacting us! We will get back to you soon.
                 </p>
               )}
               {submitErrMsg && (
-                <p className="text-center text-danger">
+                <p className="text-danger">
                   Thanks for contacting us! We will get back to you soon.
                 </p>
               )}
