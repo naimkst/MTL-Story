@@ -2,7 +2,6 @@ const nodemailer = require("nodemailer");
 
 export default async function handler(req, res) {
   const body = JSON.parse(req.body);
-  console.log(body);
   const message = `
   Company: ${body.cname}\r\n
   Name: ${body.name}\r\n
@@ -10,7 +9,7 @@ export default async function handler(req, res) {
   Phone: ${body.phone}\r\n
   Date: ${body.date}\r\n
   Budget: ${body.budget}\r\n
-  message: ${body.message}
+  Message: ${body.message}
   `;
   let transporter = nodemailer.createTransport({
     host: process.env.NEXT_PUBLIC_EMAIL_SERVER_HOST,
@@ -24,7 +23,7 @@ export default async function handler(req, res) {
   let info = await transporter.sendMail({
     from: process.env.NEXT_PUBLIC_EMAIL_SERVER_USER,
     to: process.env.NEXT_PUBLIC_EMAIL_SERVER_USER,
-    subject: "MTL Store - New Message",
+    subject: "MTLStories | Website | Contact Form | New Lead",
     text: message,
     html: message.replace(/\r\n/g, "<br>"),
   });
