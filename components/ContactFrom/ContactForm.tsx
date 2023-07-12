@@ -31,7 +31,7 @@ const ContactForm = ({ data }: any) => {
     }
   };
 
-  const submitHandler = (e: any) => {
+  const submitHandler = async (e: any) => {
     e.preventDefault();
     if (validator.allValid()) {
       validator.hideMessages();
@@ -54,6 +54,8 @@ const ContactForm = ({ data }: any) => {
       if (!field.name) return;
       formData[field.name] = field.value;
     });
+
+    console.log(formData);
     const sendMail = fetch("/api/email", {
       method: "POST",
       body: JSON.stringify(formData),
@@ -119,7 +121,7 @@ const ContactForm = ({ data }: any) => {
                 onBlur={(e) => changeHandler(e)}
                 onChange={(e) => changeHandler(e)}
                 className="form-control"
-                placeholder={data?.email}
+                placeholder={data?.Email}
               />
               {validator.message("email", forms.email, "required|email")}
             </div>
@@ -135,7 +137,7 @@ const ContactForm = ({ data }: any) => {
                 className="form-control"
                 placeholder={data?.Phone}
               />
-              {validator.message("PHONE NUMBER", forms.phone, "required|phone")}
+              {validator.message("PHONE NUMBER", forms.phone, "required")}
             </div>
           </div>
           <div className="col-md-6 col-md-6 col-12">
@@ -149,7 +151,7 @@ const ContactForm = ({ data }: any) => {
                 className="form-control"
                 placeholder={data?.WishDate}
               />
-              {validator.message("DATE RELEASE", forms.date, "required|date")}
+              {validator.message("DATE RELEASE", forms.date, "required")}
             </div>
           </div>
           <div className="col-md-6 col-md-6 col-12">
@@ -184,6 +186,18 @@ const ContactForm = ({ data }: any) => {
               <button type="submit" className="theme-btn">
                 {data?.ButtonText}
               </button>
+            </div>
+            <div>
+              {submitMessage && (
+                <p className="text-center text-white">
+                  Thanks for contacting us! We will get back to you soon.
+                </p>
+              )}
+              {submitErrMsg && (
+                <p className="text-center text-danger">
+                  Thanks for contacting us! We will get back to you soon.
+                </p>
+              )}
             </div>
           </div>
         </div>

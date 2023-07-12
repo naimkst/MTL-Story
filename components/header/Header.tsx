@@ -99,7 +99,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         duration={500}
                         offset={-95}
                       >
-                        {global?.menu?.Services}
+                        {global?.Menu?.Services}
                       </Link>
                     </li>
                     <li>
