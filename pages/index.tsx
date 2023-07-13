@@ -74,5 +74,4 @@ const HomePage = () => {
     </Fragment>
   );
 };
-
 export default HomePage;
