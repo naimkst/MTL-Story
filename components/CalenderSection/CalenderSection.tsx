@@ -3,7 +3,8 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
-import Link from "next/link";
+import NavLink from "next/link";
+import { Link } from "react-scroll";
 import eImg from "../../public/images/event.jpg";
 import { Slide } from "react-awesome-reveal";
 import CalenderPopup from "../CalenderPopup";
@@ -46,10 +47,20 @@ const CalenderSection = ({ data }: any) => {
                   <h4>{data?.EventTitle}</h4>
                   <p>{data?.EventDescription}</p>
                   <div className="access-btn">
-                    <Link href={String(data?.WeeklyLink) || "/"}>
+                    <Link activeClass="active"
+                      to="contact"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                      offset={-95}>
                       {data?.WeeklyText}
                     </Link>
-                    <Link href={String(data?.MonthlyLink) || "/"}>
+                    <Link activeClass="active"
+                      to="contact"
+                      spy={true}
+                      smooth={true}
+                      duration={500}
+                      offset={-95}>
                       {data?.MonthlyText}
                     </Link>
                   </div>
@@ -72,7 +83,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -93,7 +104,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -114,7 +125,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -135,7 +146,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -160,7 +171,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -181,7 +192,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -202,7 +213,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i
@@ -223,7 +234,7 @@ const CalenderSection = ({ data }: any) => {
                         <div className="event-text">
                           <span>22/06/2023</span>
                           <h4>
-                            <Link href="/">Integer semper metus ultrices</Link>
+                            <NavLink href="/">Integer semper metus ultrices</NavLink>
                           </h4>
                           <p>
                             <i

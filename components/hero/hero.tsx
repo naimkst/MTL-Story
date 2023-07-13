@@ -5,6 +5,7 @@ import { Link } from "react-scroll";
 import Image from "next/image";
 import { Slide } from "react-awesome-reveal";
 
+
 const Hero = ({ data }: any) => {
   const [isOpen, setOpen] = useState(false);
 
@@ -20,7 +21,12 @@ const Hero = ({ data }: any) => {
                 </div>
                 <div className="btns">
                   <Link
-                    href={String(data?.ButtonLink) || "/"}
+                    activeClass="active"
+                    to="contact"
+                    spy={true}
+                    smooth={true}
+                    duration={500}
+                    offset={-95}
                     className="theme-btn"
                   >
                     {data?.ButtonText}
@@ -32,6 +38,9 @@ const Hero = ({ data }: any) => {
           <div className="col col-xs-6 col-lg-6 col-12">
             <Slide direction="right" triggerOnce="false">
               <div className="hero-section-video">
+                <video autoPlay loop muted>
+                  <source src="http://techslides.com/demos/sample-videos/small.ogv" type="video/ogg" />
+                </video>
                 <div className="video-btn">
                   <button className="btn-wrap" onClick={() => setOpen(true)}>
                     {" "}
@@ -45,6 +54,7 @@ const Hero = ({ data }: any) => {
       </div>
       <ModalVideo
         channel="youtube"
+        maxwidth="1600px"
         autoplay
         isOpen={isOpen}
         videoId={data?.VideoLink}
