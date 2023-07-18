@@ -10,6 +10,7 @@ import { Slide } from "react-awesome-reveal";
 import CalenderPopup from "../CalenderPopup";
 import { EventCalendar } from "../Calendar";
 import { WeeklyCalendar } from "../Calendar/WeeklyCalendar";
+import { CalendarDetails } from "../Calendar/CalendarDetails";
 import dateFormat, { masks } from "dateformat";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
@@ -27,6 +28,7 @@ const CalenderSection = ({ data, eventData }: any) => {
   const [open, setOpen] = React.useState<any>(false);
   const [monthlyCalendar, setMonthlyCalendar] = React.useState<any>(false);
   const [weeklyCalendar, setWeeklyCalendar] = React.useState<any>(false);
+  const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
   const [events, setEvents] = React.useState<any>([]);
 
   const sliderRef = useRef(null);
@@ -159,7 +161,9 @@ const CalenderSection = ({ data, eventData }: any) => {
                               <div
                                 key={`eventList-${index}`}
                                 className="event-item"
-                                onClick={() => handleClickOpen("")}
+                                onClick={() => {
+                                  setDetailsCalendar(true);
+                                }}
                               >
                                 <div className="event-img">
                                   <Image
@@ -214,6 +218,9 @@ const CalenderSection = ({ data, eventData }: any) => {
 
         {weeklyCalendar && (
           <WeeklyCalendar setWeeklyCalendar={setWeeklyCalendar} />
+        )}
+        {calendarDetails && (
+          <CalendarDetails setDetailsCalendar={setDetailsCalendar} />
         )}
       </>
     );

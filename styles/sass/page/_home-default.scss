@@ -99,11 +99,12 @@
     .newslatter-img {
         margin-left: -60px;
         max-width: 80%;
-        
+
         @media(max-width:1800px) {
             max-width: 65%;
             margin-left: 0px;
         }
+
         @media(max-width:1500px) {
             margin-left: 0;
             max-width: 100%;
@@ -553,6 +554,7 @@
                 @media(max-width:1400px) {
                     font-size: 30px;
                 }
+
                 @media(max-width:575px) {
                     font-size: 20px;
                 }
@@ -563,6 +565,7 @@
 
         .slick-next {
             right: 50px;
+
             @media(max-width:575px) {
                 bottom: -52px;
             }
@@ -1267,4 +1270,321 @@
 
 .MuiDialog-container .react-calendar {
     width: 100%;
+}
+
+
+.calendar-box .calenderDetails {
+    padding: 30px;
+    height: auto;
+    max-height: 600px;
+
+    @media(max-width:1199px) {
+        max-width: 900px;
+    }
+
+    @media(max-width:991px) {
+        max-width: 600px;
+    }
+
+    @media(max-width:767px) {
+        max-width: 90%;
+    }
+
+    .details-img {
+        @media(max-width:991px) {
+            margin-bottom: 30px;
+        }
+
+        img {
+            border-radius: 5px;
+        }
+    }
+
+    .event-text {
+        span {
+            color: #000;
+            font-family: Bebas Neue;
+            font-size: 25px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 159.5%;
+        }
+
+        h4 {
+            color: #000;
+            font-family: Bebas Neue;
+            font-size: 40.26px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 159.5%;
+        }
+
+        b {
+            color: #000;
+            font-family: Bebas Neue;
+            font-size: 25px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 159.5%;
+            margin-bottom: 30px;
+            display: block;
+        }
+
+        p {
+            color: #000;
+            font-family: Bebas Neue;
+            font-size: 25px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 148%;
+        }
+
+        .btn-wrap {
+            display: flex;
+            margin-top: 30px;
+            flex-wrap: wrap;
+
+            a.theme-btn {
+                font-size: 25px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                letter-spacing: 0.875px;
+                padding: 20px 45px;
+
+                @media(max-width:767px) {
+                    margin-bottom: 10px;
+                }
+
+                &:last-child {
+                    margin-left: 20px;
+
+                    @media(max-width:1199px) {
+                        margin-left: 5px;
+                    }
+                }
+            }
+        }
+
+    }
+}
+
+
+.calendar-box .productDetails {
+    padding: 30px;
+    height: auto;
+    max-height: 900px;
+    width: 673px;
+
+    @media(max-width:1199px) {
+        max-width: 900px;
+    }
+
+    @media(max-width:991px) {
+        max-width: 600px;
+    }
+
+    @media(max-width:767px) {
+        max-width: 90%;
+    }
+
+    img {
+        width: 100%;
+    }
+
+    h2 {
+        color: #000;
+        font-family: Bebas Neue;
+        font-size: 40.26px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 159.5%;
+    }
+
+    .product-filter-item {
+        margin-top: 15px;
+
+        p {
+            color: #000;
+            font-family: Bebas Neue;
+            font-size: 24.882px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 159.5%;
+            margin-top: 10px;
+        }
+
+
+        &.color {
+            .color-name {}
+
+            .color-name ul li input {
+                margin-right: 0;
+                position: absolute;
+                z-index: -1;
+                opacity: 0;
+            }
+
+
+            .color-name ul {
+                display: flex;
+            }
+
+            .color-name ul li {
+                width: 55px;
+                height: 57px;
+            }
+
+            .color-name ul {
+                list-style: none;
+                margin-top: 10px;
+            }
+
+            .color-name ul li input {
+                margin-right: 0;
+            }
+
+            .color-name ul li {
+                margin-right: 15px;
+                margin-bottom: 10px;
+            }
+
+            .color-name ul li input {
+                margin-right: 0;
+                position: absolute;
+                z-index: -1;
+                font-size: 18px
+            }
+
+            .color-name ul li input:checked~label {
+                width: 55px;
+                height: 57px;
+                border: 2px solid $black;
+            }
+
+            .color-name label {
+                border: 1px solid transparent;
+                cursor: pointer;
+                padding: 0;
+                width: 55px;
+                height: 57px;
+            }
+
+            .color-name label {
+                background: $text-color;
+                border-radius: 3px;
+                transition: all .3s ease-in-out;
+            }
+
+            .color-name {
+
+                span {
+                    color: #6C6C6C;
+                    font-family: Bebas Neue;
+                    font-size: 25px;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 148%;
+                }
+
+
+                .color1 {
+                    label {
+                        background: #f9f8f8;
+                    }
+                }
+
+                .color2 {
+                    label {
+                        background: #C4B5B0;
+                    }
+                }
+
+                .color3 {
+                    label {
+                        background: #D6E1FF;
+                    }
+                }
+
+                .color4 {
+                    label {
+                        background: #F5D6FF;
+                    }
+                }
+
+                .color5 {
+                    label {
+                        background: #D4EEEB;
+                    }
+                }
+
+                .color6 {
+                    label {
+                        background: #DDD9D0;
+                    }
+                }
+
+                .color7 {
+                    label {
+                        background: #FBD6E7;
+                    }
+                }
+            }
+
+            &.filter-size {
+                margin-top: 0px;
+
+                .color-name {
+                    margin-top: 20px;
+                }
+
+                ul {
+
+                    li {
+                        border-radius: 5px;
+                        height: 57px;
+                        width: 89px;
+                        color: $text-light-color;
+                        text-align: center;
+                        margin-bottom: 2px;
+                        transition: all .3s ease-in-out;
+                        font-weight: 400;
+                        font-size: 18px;
+                        line-height: 57px;
+                        margin: 0;
+
+                        @media(max-width:450px) {
+                            width: 50px;
+                        }
+
+
+                        label {
+                            text-align: center;
+                            border: 1px solid #000;
+                            border-radius: 0px;
+                            height: 57px;
+                            width: 89px;
+                            background: transparent;
+                            transition: all .3s ease-in-out;
+
+                            @media(max-width:450px) {
+                                width: 50px;
+                            }
+                        }
+
+
+                        input:checked~label {
+                            border: 1px solid transparent;
+                            background: $black;
+                            color: $white;
+                            border-radius: 0px;
+                            height: 57px;
+                            width: 89px;
+                        }
+                    }
+                }
+            }
+
+        }
+    }
 }
