@@ -65,8 +65,6 @@ const HomePage = () => {
     }
   }, [lngData]);
 
-  console.log("envetData=======", envetData);
-
   return (
     <Fragment>
       <Navbar global={global} setLanguage={handleChange} language={language} />
