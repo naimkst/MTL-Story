@@ -1,0 +1,149 @@
+/* Import Google font - Poppins */
+
+.wrapper-calendar {
+  width: 1124px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+}
+.wrapper-calendar header {
+  display: flex;
+  align-items: center;
+  padding: 25px 30px 10px;
+  justify-content: space-between;
+}
+header .icons {
+  display: flex;
+}
+header .icons span {
+  height: 38px;
+  width: 38px;
+  margin: 0 1px;
+  cursor: pointer;
+  color: #878787;
+  text-align: center;
+  line-height: 38px;
+  font-size: 1.9rem;
+  user-select: none;
+  border-radius: 50%;
+}
+.icons span:last-child {
+  margin-right: -10px;
+}
+header .icons span:hover {
+  background: #f2f2f2;
+}
+header .current-date {
+  font-size: 55px;
+  font-weight: 500;
+  color: #000000;
+}
+.calendar {
+  padding: 20px;
+}
+.calendar ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  text-align: center;
+}
+.calendar .days {
+  margin-bottom: 20px;
+}
+.calendar li {
+  color: #333;
+  width: calc(100% / 7);
+  font-size: 33px;
+}
+.calendar .weeks li {
+  font-weight: 500;
+  cursor: default;
+}
+.calendar .days li {
+  z-index: 1;
+  cursor: pointer;
+  position: relative;
+  margin-top: 30px;
+}
+.days li.inactive {
+  color: #aaa;
+}
+.days li.active {
+  color: #fff;
+}
+.days li::before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 40px;
+  width: 40px;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+.days li.active::before {
+  background: #000000;
+}
+.days li:not(.active):hover::before {
+  background: #f2f2f2;
+}
+.eventIcons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.eventIcons p {
+  margin-bottom: 0;
+}
+.eventImg {
+  width: 123px;
+  height: 115px;
+  border-radius: 10px;
+  background: #000000;
+  object-fit: cover;
+}
+.monthlyCalendar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 786px;
+  height: auto; /* You may set a specific height or use 'auto' for variable height */
+  transform: translate(-50%, -50%);
+  z-index: 999;
+}
+.weeklyCalendar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 1124px;
+  height: 775px; /* You may set a specific height or use 'auto' for variable height */
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  overflow: scroll;
+}
+.calendar-box {
+  width: 100%;
+  position: fixed;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.45);
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+.calendarClose {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  margin: 20px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 2rem;
+  z-index: 99999;
+}
+.event-img img {
+  width: 129px;
+  height: 129px;
+  object-fit: cover;
+}

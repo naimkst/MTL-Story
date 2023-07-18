@@ -15,6 +15,9 @@ import BackToTop from "../components/backToTop/backToTop";
 import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
 import { getLocalStorageData } from "../helpers/globalFunction";
+import Calendar from "react-calendar";
+import { EventCalendar } from "../components/Calendar";
+import { WeeklyCalendar } from "../components/Calendar/WeeklyCalendar";
 
 const HomePage = () => {
   const [language, setLanguage] = React.useState<any>("en");
@@ -37,6 +40,14 @@ const HomePage = () => {
     `${process.env.NEXT_PUBLIC_API_URL}/global-setting?populate=deep&locale=${lngData}`
   );
 
+  const {
+    loading: eventLoading,
+    error: enventError,
+    data: envetData,
+  } = useFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/events?populate=deep&locale=${lngData}`
+  );
+
   const data = getData?.data?.attributes;
   const global = globalData?.data?.attributes?.Global;
 
@@ -54,6 +65,8 @@ const HomePage = () => {
     }
   }, [lngData]);
 
+  console.log("envetData=======", envetData);
+
   return (
     <Fragment>
       <Navbar global={global} setLanguage={handleChange} language={language} />
@@ -61,7 +74,7 @@ const HomePage = () => {
       <Marquee data={data?.TextSlider} />
       <Newslatter data={data?.Newslatter} />
       <Vision data={data?.OurVision} />
-      <CalenderSection data={data?.Calendar} />
+      <CalenderSection data={data?.Calendar} eventData={envetData} />
       <ServiceSection data={data?.ServiceSection} />
       <CtaSection data={data?.CTASection} />
       <FaqSection data={data?.FAQSection} />
@@ -70,6 +83,8 @@ const HomePage = () => {
       <ContactArea data={data?.ContactUs} />
       <Marquee data={data?.TextSlider} />
       <Footer global={global} />
+      {/* <EventCalendar /> */}
+      {/* <WeeklyCalendar /> */}
       <BackToTop />
     </Fragment>
   );
