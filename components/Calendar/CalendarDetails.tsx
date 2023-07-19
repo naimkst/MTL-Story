@@ -1,8 +1,35 @@
 import React, { use, useEffect } from "react";
 import eImg from "../../public/images/event-details.jpg";
 import Image from "next/image";
+import useFetch from "../../hooks/useFetch";
+import {
+  getHeight,
+  getImage,
+  getLocalStorageData,
+  getWidth,
+} from "../../helpers/globalFunction";
+import dateFormat, { masks } from "dateformat";
 
-export const CalendarDetails = ({ setDetailsCalendar }: any) => {
+export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
+  const [language, setLanguage] = React.useState<any>("en");
+
+  const lngData = getLocalStorageData("lan");
+
+  const { loading, error, data } = useFetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/events/${eventId}?populate=deep&locale=${lngData}`
+  );
+
+  useEffect(() => {
+    if (lngData) {
+      setLanguage(lngData);
+    } else {
+      localStorage.setItem("lan", JSON.stringify("en"));
+      setLanguage("en");
+    }
+  }, [lngData]);
+
+  const event: any = data?.data?.attributes;
+  console.log("eventId", event);
 
   return (
     <div className="calendar-box">
@@ -29,23 +56,30 @@ export const CalendarDetails = ({ setDetailsCalendar }: any) => {
         <div className="row">
           <div className="col-lg-5">
             <div className="details-img">
-              <Image src={eImg} alt="" />
+              <Image
+                src={getImage(event?.Thumbnail)}
+                height={getHeight(event?.Thumbnail)}
+                width={getWidth(event?.Thumbnail)}
+                alt=""
+              />
             </div>
           </div>
           <div className="col-lg-7">
             <div className="event-text">
-              <span> 22/06/2023 </span>
-              <h4>Integer semper metus ultrices</h4>
+              <span>{dateFormat(event?.StartDate, "d/mm/yyyy")} </span>
+              <h4>{event?.Title}</h4>
               <b>
-                <i
-                  className="fa fa-map-marker"
-                  aria-hidden="true"
-                ></i> 86-87 Victoria Rd, Swindon
+                <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                {event?.Location}
               </b>
-              <p>Nullam diam vitae ac volutpat aliquam nisl maecenas blandit viverra. Nam non egestas lobortis ornare adipiscing ut. Nullam ut tincidunt lectus integer tempor at felis id. Lobortis venenatis consequat morbi egestas. Orci arcu ipsum nec non convallis non scelerisque sed nulla. Sed risus blandit duis leo porttitor. Id nunc justo egestas sed pretium urna in in tristique. Scelerisque viverra ultricies.</p>
+              <p>{event?.Description}</p>
               <div className="btn-wrap">
-                <a className="theme-btn">Location on map</a>
-                <a className="theme-btn">visit event site</a>
+                <a href={event?.LocationOnMap} className="theme-btn">
+                  Location on map
+                </a>
+                <a href={event?.EventSite} className="theme-btn">
+                  visit event site
+                </a>
               </div>
             </div>
           </div>
@@ -53,4 +87,4 @@ export const CalendarDetails = ({ setDetailsCalendar }: any) => {
       </div>
     </div>
   );
-} 
+};

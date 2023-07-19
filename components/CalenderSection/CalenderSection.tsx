@@ -29,6 +29,7 @@ const CalenderSection = ({ data, eventData }: any) => {
   const [monthlyCalendar, setMonthlyCalendar] = React.useState<any>(false);
   const [weeklyCalendar, setWeeklyCalendar] = React.useState<any>(false);
   const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
+  const [eventId, setEeventId] = React.useState<any>("");
   const [events, setEvents] = React.useState<any>([]);
 
   const sliderRef = useRef(null);
@@ -89,8 +90,8 @@ const CalenderSection = ({ data, eventData }: any) => {
       console.log("false");
     }
 
-    console.log("aaaaa", dateFormat(today, "dddd, mmmm dS, yyyy"));
-    console.log("bbbb", dateFormat(eventDate, "dddd, mmmm dS, yyyy"));
+    // console.log("aaaaa", dateFormat(today, "dddd, mmmm dS, yyyy"));
+    // console.log("bbbb", dateFormat(eventDate, "dddd, mmmm dS, yyyy"));
   };
 
   if (eventsByDate) {
@@ -163,6 +164,7 @@ const CalenderSection = ({ data, eventData }: any) => {
                                 className="event-item"
                                 onClick={() => {
                                   setDetailsCalendar(true);
+                                  setEeventId(item?.id);
                                 }}
                               >
                                 <div className="event-img">
@@ -177,6 +179,7 @@ const CalenderSection = ({ data, eventData }: any) => {
                                     alt=""
                                   />
                                 </div>
+
                                 <div className="event-text">
                                   <span>
                                     {dateFormat(
@@ -186,9 +189,7 @@ const CalenderSection = ({ data, eventData }: any) => {
                                   </span>
 
                                   <h4>
-                                    <NavLink href="/">
-                                      {item?.attributes?.Title}
-                                    </NavLink>
+                                    <a>{item?.attributes?.Title}</a>
                                   </h4>
                                   <p>
                                     <i
@@ -220,12 +221,15 @@ const CalenderSection = ({ data, eventData }: any) => {
           <WeeklyCalendar setWeeklyCalendar={setWeeklyCalendar} />
         )}
         {calendarDetails && (
-          <CalendarDetails setDetailsCalendar={setDetailsCalendar} />
+          <CalendarDetails
+            setDetailsCalendar={setDetailsCalendar}
+            eventId={eventId}
+          />
         )}
       </>
     );
   } else {
-    return "Loading...";
+    return <div>"Loading..."</div>;
   }
 };
 
