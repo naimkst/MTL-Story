@@ -29,7 +29,6 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
   }, [lngData]);
 
   const event: any = data?.data?.attributes;
-  console.log("eventId", event);
 
   return (
     <div className="calendar-box">

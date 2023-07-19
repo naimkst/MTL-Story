@@ -59,8 +59,6 @@ const CalenderSection = ({ data, eventData }: any) => {
 
   // Sort the dates in ascending order
 
-  console.log("=========", events);
-
   useEffect(() => {
     if (eventsByDate) {
       const sortedDates = Object.entries(eventsByDate).sort();
@@ -68,9 +66,6 @@ const CalenderSection = ({ data, eventData }: any) => {
     } else {
       setEvents(eventsByDate);
     }
-    // if (sliderRef.current) {
-    //   sliderRef.current.slickGoTo(2);
-    // }
   }, [eventData]);
 
   const activeDate = (date: any, loopIndex: number) => {
@@ -214,7 +209,10 @@ const CalenderSection = ({ data, eventData }: any) => {
         </section>
 
         {monthlyCalendar && (
-          <EventCalendar setMonthlyCalendar={setMonthlyCalendar} />
+          <EventCalendar
+            setMonthlyCalendar={setMonthlyCalendar}
+            eventData={eventData}
+          />
         )}
 
         {weeklyCalendar && (

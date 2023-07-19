@@ -55,7 +55,6 @@ const ContactForm = ({ data }: any) => {
       formData[field.name] = field.value;
     });
 
-    console.log(formData);
     const sendMail = fetch("/api/email", {
       method: "POST",
       body: JSON.stringify(formData),

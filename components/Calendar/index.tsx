@@ -1,7 +1,37 @@
 import React, { use, useEffect } from "react";
+import dateFormat, { masks } from "dateformat";
 
-export const EventCalendar = ({ setMonthlyCalendar }: any) => {
+export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [events, setEvents] = React.useState<any>([]);
+
+  const eventCount = (
+    calendarDate: any,
+    enveDate: any,
+    month: any,
+    year: any
+  ) => {
+    console.log("month", month);
+    console.log("year", year);
+    let result: any = "";
+    const eventFind = enveDate?.find((item: any) => {
+      const eventsDate = dateFormat(item[0], "d");
+      const eventsMonth = dateFormat(item[0], "mmmm");
+      const eventsYear = dateFormat(item[0], "yyyy");
+      console.log("eventsYear", eventsYear);
+      if (
+        Number(eventsDate) === calendarDate &&
+        eventsMonth === month &&
+        Number(eventsYear) === year
+      ) {
+        console.log("item[1].length", item[1].length);
+        result = item[1].length;
+      }
+    });
+
+    return result ? `<span class="eventCount"> ${result} </span></li>` : "";
+  };
+
   useEffect(() => {
     setIsLoading(true);
 
@@ -57,7 +87,12 @@ export const EventCalendar = ({ setMonthlyCalendar }: any) => {
             currYear === new Date().getFullYear()
               ? "active"
               : "";
-          liTag += `<li class="${isToday}">${i}</li>`;
+          liTag += `<li class="${isToday}">${i} ${eventCount(
+            i,
+            events,
+            months[currMonth],
+            currYear
+          )} `;
         }
 
         // for (let i = lastDayofMonth; i < 6; i++) {
@@ -91,6 +126,29 @@ export const EventCalendar = ({ setMonthlyCalendar }: any) => {
       // }, 4000);
     }
   }, [isLoading]);
+
+  const eventsByDate = eventData?.data?.reduce((acc: any, event: any) => {
+    const eventDate = event?.attributes?.StartDate?.split("/")
+      .reverse()
+      .join("-"); // Convert date to ISO format
+
+    if (!acc[eventDate]) {
+      acc[eventDate] = [];
+    }
+    acc[eventDate].push(event);
+    return acc;
+  }, {});
+
+  useEffect(() => {
+    if (eventsByDate) {
+      const sortedDates = Object.entries(eventsByDate).sort();
+      setEvents(sortedDates);
+    } else {
+      setEvents(eventsByDate);
+    }
+  }, [eventData]);
+
+  console.log("eventData", events);
 
   if (isLoading) {
     return (

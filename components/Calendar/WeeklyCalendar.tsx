@@ -63,7 +63,6 @@ export const WeeklyCalendar = ({ setWeeklyCalendar }: any) => {
         //   liTag += `<li class="inactive">${i - lastDayofMonth + 1}</li>`;
         // }
         currentDate.innerText = `${months[currMonth]} ${currYear}`; // passing current mon and yr as currentDate text
-        console.log(months[currMonth]);
         daysTag.innerHTML = liTag;
       };
       renderCalendar();
