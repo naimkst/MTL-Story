@@ -216,7 +216,10 @@ const CalenderSection = ({ data, eventData }: any) => {
         )}
 
         {weeklyCalendar && (
-          <WeeklyCalendar setWeeklyCalendar={setWeeklyCalendar} />
+          <WeeklyCalendar
+            setWeeklyCalendar={setWeeklyCalendar}
+            eventData={eventData}
+          />
         )}
         {calendarDetails && (
           <CalendarDetails

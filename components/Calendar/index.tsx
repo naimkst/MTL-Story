@@ -148,8 +148,6 @@ export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
     }
   }, [eventData]);
 
-  console.log("eventData", events);
-
   if (isLoading) {
     return (
       <div className="calendar-box">
