@@ -3,10 +3,14 @@ import Image from "next/image";
 import mImg from "/public/images/merch.jpg";
 import { Fade, Slide } from "react-awesome-reveal";
 import { ProductDetails } from "./ProductDetails";
+import { Checkout } from "./Checkout";
+import { Unsubscribe } from "./Unsubscribe";
 
 const Merch = ({ data }: any) => {
 
   const [productDetails, setProductDetails] = React.useState<any>(false);
+  const [checkout, setCheckout] = React.useState<any>(false);
+  const [unsubscribe, setUnsubscribe] = React.useState<any>(false);
 
   return (
     <>
@@ -54,7 +58,14 @@ const Merch = ({ data }: any) => {
                           )
                         )}
                       </Fade>
+                      
                     </div>
+                    <div className="checkout theme-btn" onClick={() => {
+                                setCheckout(true);
+                              }}>checkout</div>
+                    <div className="checkout theme-btn" onClick={() => {
+                                setUnsubscribe(true);
+                              }}>Unsubscribe</div>
                   </div>
                 </div>
               </div>
@@ -64,6 +75,12 @@ const Merch = ({ data }: any) => {
       </section>
       {productDetails && (
         <ProductDetails setProductDetails={setProductDetails} />
+      )}
+      {checkout && (
+        <Checkout setCheckout={setCheckout} />
+      )}
+      {unsubscribe && (
+        <Unsubscribe setUnsubscribe={setUnsubscribe} />
       )}
     </>
   );

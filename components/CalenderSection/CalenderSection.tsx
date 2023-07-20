@@ -11,6 +11,7 @@ import CalenderPopup from "../CalenderPopup";
 import { EventCalendar } from "../Calendar";
 import { WeeklyCalendar } from "../Calendar/WeeklyCalendar";
 import { CalendarDetails } from "../Calendar/CalendarDetails";
+import { CalendarDate } from "../Calendar/CalendarDate";
 import dateFormat, { masks } from "dateformat";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
@@ -29,6 +30,7 @@ const CalenderSection = ({ data, eventData }: any) => {
   const [monthlyCalendar, setMonthlyCalendar] = React.useState<any>(false);
   const [weeklyCalendar, setWeeklyCalendar] = React.useState<any>(false);
   const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
+  const [calendarDate, setCalendarDate] = React.useState<any>(false);
   const [eventId, setEeventId] = React.useState<any>("");
   const [events, setEvents] = React.useState<any>([]);
 
@@ -131,6 +133,19 @@ const CalenderSection = ({ data, eventData }: any) => {
                         >
                           {data?.MonthlyText}
                         </Link>
+                        <Link
+                          onClick={() => {
+                            setCalendarDate(true);
+                          }}
+                          activeClass="active"
+                          // to="contact"
+                          spy={true}
+                          smooth={true}
+                          duration={500}
+                          offset={-95}
+                        >
+                          event date
+                        </Link>
                       </div>
                     </Slide>
                   </div>
@@ -224,6 +239,12 @@ const CalenderSection = ({ data, eventData }: any) => {
         {calendarDetails && (
           <CalendarDetails
             setDetailsCalendar={setDetailsCalendar}
+            eventId={eventId}
+          />
+        )}
+        {calendarDate && (
+          <CalendarDate
+            setDetailsCalendar={setCalendarDate}
             eventId={eventId}
           />
         )}

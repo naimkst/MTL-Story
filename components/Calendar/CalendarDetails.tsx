@@ -52,6 +52,7 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
         </svg>
       </div>
       <div className="wrapper-calendar weeklyCalendar calenderDetails">
+        <h4 className="tp-title"><i className="fa fa-arrow-left" aria-hidden="true"></i>Integer semper metus ultrices</h4>
         <div className="row">
           <div className="col-lg-5">
             <div className="details-img">
@@ -61,27 +62,37 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
                 width={getWidth(event?.Thumbnail)}
                 alt=""
               />
+              <ul>
+                <li><Image src={eImg} alt="" /></li>
+                <li><Image src={eImg} alt="" /></li>
+                <li><Image src={eImg} alt="" /></li>
+              </ul>
             </div>
           </div>
           <div className="col-lg-7">
             <div className="event-text">
-              <span>{dateFormat(event?.StartDate, "d/mm/yyyy")} </span>
-              <h4>{event?.Title}</h4>
-              <b>
-                <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
-                {event?.Location}
-              </b>
-              <p>{event?.Description}</p>
-              <div className="btn-wrap">
-                <a href={event?.LocationOnMap} className="theme-btn">
-                  Location on map
-                </a>
-                <a href={event?.EventSite} className="theme-btn">
-                  visit event site
-                </a>
+              <div className="event-text-top">
+                <b>
+                  <i className="fa fa-map-marker" aria-hidden="true"></i>{" "}
+                  {event?.Location}
+                </b>
+                <span>{dateFormat(event?.StartDate, "d/mm/yyyy")} </span>
               </div>
+              <p>{event?.Description}</p>
+              <p>{event?.Description}</p>
             </div>
           </div>
+        </div>
+        <div className="btn-wrap">
+          <a href={event?.EventSite} className="theme-btn">
+            book tickets
+          </a>
+          <a href={event?.LocationOnMap} className="theme-btn">
+            Location on map
+          </a>
+          <a href={event?.EventSite} className="theme-btn">
+            visit event site
+          </a>
         </div>
       </div>
     </div>
