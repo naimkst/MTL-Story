@@ -142,10 +142,25 @@ header .current-date {
   font-size: 2rem;
   z-index: 99999;
 }
+.event-img {
+  padding: 20px 10px;
+}
 .event-img img {
-  width: 129px;
-  height: 129px;
+  width: 134px;
+  height: 134px;
   object-fit: cover;
+  display: inherit;
+  border-radius: 10px;
+}
+.emptyEvent {
+  width: 134px;
+  height: 134px;
+  margin: 20px 10px;
+}
+.event-img p {
+  color: #000;
+  margin-top: 8px;
+  font-size: 16px;
 }
 .eventCount {
   position: absolute;

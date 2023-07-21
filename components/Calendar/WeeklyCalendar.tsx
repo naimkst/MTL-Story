@@ -1,5 +1,6 @@
 import React, { use, useEffect } from "react";
 import dateFormat, { masks } from "dateformat";
+import { getImage } from "../../helpers/globalFunction";
 
 export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -32,8 +33,17 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
     });
 
     return result
-      ? `<img class="eventImg" src="https://photo-cdn2.icons8.com/ROx3Ntng4Nse7Twj3FY2qq6t06Ju9ly-HskX60HOtGA/rs:fit:576:384/czM6Ly9pY29uczgu/bW9vc2UtcHJvZC5l/eHRlcm5hbC9hMmE0/Mi85OTYzMjhiZDI4/ZDc0MDFlOThkM2I3/YWQ4M2IyNzRlZC5q/cGc.webp" alt="" />`
-      : "";
+      ? `<div class="event-img">${result
+          ?.map((item: any, index: number) => {
+            const data = `<img
+        className="eventImg"
+        src="${getImage(item?.attributes?.Thumbnail)}"
+        alt=""
+      /> <p className="eventTitle">${item?.attributes?.Title}</p>`;
+            return data;
+          })
+          .join("")}</div>`
+      : `<div class="emptyEvent"></div>`;
   };
 
   useEffect(() => {
@@ -94,18 +104,16 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
             weekDays[i].getFullYear() === date.getFullYear()
               ? "active"
               : "";
-          liTag += `<li class="${isToday}"> ${day} ${eventCount(
+          liTag += `${eventCount(
             day,
             events,
             months[currMonth],
             currYear,
             weekendName
-          )} </li>`;
+          )} `;
         }
 
-        currentDate.innerText = `${
-          months[currMonth]
-        } ${currYear} - Weekly View (Week ${currWeek + 1})`; // Update the current date text for weekly view
+        currentDate.innerText = `${months[currMonth]} ${currYear} - Weekly View`; // Update the current date text for weekly view
         daysTag.innerHTML = liTag;
       };
 
