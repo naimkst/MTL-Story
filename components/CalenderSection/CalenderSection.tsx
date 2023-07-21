@@ -243,10 +243,7 @@ const CalenderSection = ({ data, eventData }: any) => {
           />
         )}
         {calendarDate && (
-          <CalendarDate
-            setDetailsCalendar={setCalendarDate}
-            eventId={eventId}
-          />
+          <CalendarDate setCalendarDate={setCalendarDate} eventId={eventId} />
         )}
       </>
     );

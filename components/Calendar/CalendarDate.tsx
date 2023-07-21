@@ -2,9 +2,10 @@ import React, { use, useEffect } from "react";
 import eImg from "../../public/images/event.jpg";
 import Image from "next/image";
 import { Slide } from "react-awesome-reveal";
+import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
+import dateFormat, { masks } from "dateformat";
 
-export const CalendarDate = ({ setCalendarDate, eventId }: any) => {
-
+export const CalendarDate = ({ setCalendarDate, eventId, eventLists }: any) => {
   return (
     <div className="calendar-box">
       <div
@@ -35,78 +36,33 @@ export const CalendarDate = ({ setCalendarDate, eventId }: any) => {
         <div className="row">
           <div className="event-wrap">
             <h2></h2>
-            <Slide
-              cascade
-              direction="up"
-              triggerOnce="false"
-              duration="500"
-            >
-              <div
-                className="event-item">
-                <div className="event-img">
-                  <Image src={eImg} alt="" />
-                </div>
+            <Slide cascade direction="up" triggerOnce="false" duration="500">
+              {eventLists?.map((item: any, index: number) => (
+                <div key={`eventGroupList${index}`} className="event-item">
+                  <div className="event-img">
+                    <Image
+                      src={getImage(item?.attributes?.Thumbnail)}
+                      height={getHeight(item?.attributes?.Thumbnail)}
+                      width={getWidth(item?.attributes?.Thumbnail)}
+                      alt=""
+                    />
+                  </div>
 
-                <div className="event-text">
-                  <span>
-                    14/09/2023
-                  </span>
+                  <div className="event-text">
+                    <span>
+                      {dateFormat(item?.attributes?.StartDate, "d/mm/yyyy")}{" "}
+                    </span>
 
-                  <h4>
-                    <a>Integer semper metus ultrices</a>
-                  </h4>
-                  <p>
-                    <i
-                      className="fa fa-map-marker"
-                      aria-hidden="true"
-                    ></i>86-87 Victoria Rd, Swindon
-                  </p>
+                    <h4>
+                      <a>{item?.attributes?.Title}</a>
+                    </h4>
+                    <p>
+                      <i className="fa fa-map-marker" aria-hidden="true"></i>
+                      {item?.attributes?.Location}
+                    </p>
+                  </div>
                 </div>
-              </div>
-              <div
-                className="event-item">
-                <div className="event-img">
-                  <Image src={eImg} alt="" />
-                </div>
-
-                <div className="event-text">
-                  <span>
-                    14/09/2023
-                  </span>
-
-                  <h4>
-                    <a>Integer semper metus ultrices</a>
-                  </h4>
-                  <p>
-                    <i
-                      className="fa fa-map-marker"
-                      aria-hidden="true"
-                    ></i>86-87 Victoria Rd, Swindon
-                  </p>
-                </div>
-              </div>
-              <div
-                className="event-item">
-                <div className="event-img">
-                  <Image src={eImg} alt="" />
-                </div>
-
-                <div className="event-text">
-                  <span>
-                    14/09/2023
-                  </span>
-
-                  <h4>
-                    <a>Integer semper metus ultrices</a>
-                  </h4>
-                  <p>
-                    <i
-                      className="fa fa-map-marker"
-                      aria-hidden="true"
-                    ></i>86-87 Victoria Rd, Swindon
-                  </p>
-                </div>
-              </div>
+              ))}
             </Slide>
           </div>
         </div>

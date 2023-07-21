@@ -52,7 +52,10 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
         </svg>
       </div>
       <div className="wrapper-calendar weeklyCalendar calenderDetails">
-        <h4 className="tp-title"><i className="fa fa-arrow-left" aria-hidden="true"></i>Integer semper metus ultrices</h4>
+        <h4 className="tp-title">
+          <i className="fa fa-arrow-left" aria-hidden="true"></i>
+          {event?.Title}
+        </h4>
         <div className="row">
           <div className="col-lg-5">
             <div className="details-img">
@@ -63,9 +66,15 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
                 alt=""
               />
               <ul>
-                <li><Image src={eImg} alt="" /></li>
-                <li><Image src={eImg} alt="" /></li>
-                <li><Image src={eImg} alt="" /></li>
+                <li>
+                  <Image src={eImg} alt="" />
+                </li>
+                <li>
+                  <Image src={eImg} alt="" />
+                </li>
+                <li>
+                  <Image src={eImg} alt="" />
+                </li>
               </ul>
             </div>
           </div>
