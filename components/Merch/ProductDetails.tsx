@@ -84,12 +84,16 @@ export const ProductDetails = ({ setProductDetails }: any) => {
               </ul>
             </div>
           </div>
-          <div className="product-filter-item color">
-            <div className="color-name">
-              <span>Description </span>
-              <p>Non nullam feugiat etiam in. Phasellus faucibus velit sem quis turpis ullamcorper feugiat ultricies.</p>
-            </div>
+        </div>
+        <div className="product-filter-item color">
+          <div className="color-name">
+            <span>Description </span>
+            <p>Non nullam feugiat etiam in. Phasellus faucibus velit sem quis turpis ullamcorper feugiat ultricies.</p>
           </div>
+        </div>
+        <div className="btn-wrap">
+          <a href="#" className="theme-btn">Buy Now</a>
+          <a href="#" className="theme-btn">Add to Cart</a>
         </div>
       </div>
     </div>
