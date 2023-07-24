@@ -133,19 +133,6 @@ const CalenderSection = ({ data, eventData }: any) => {
                         >
                           {data?.MonthlyText}
                         </Link>
-                        <Link
-                          onClick={() => {
-                            setCalendarDate(true);
-                          }}
-                          activeClass="active"
-                          // to="contact"
-                          spy={true}
-                          smooth={true}
-                          duration={500}
-                          offset={-95}
-                        >
-                          event date
-                        </Link>
                       </div>
                     </Slide>
                   </div>
@@ -179,13 +166,15 @@ const CalenderSection = ({ data, eventData }: any) => {
                               >
                                 <div className="event-img">
                                   <Image
-                                    width={getWidth(
-                                      item?.attributes?.Thumbnail
-                                    )}
-                                    height={getHeight(
-                                      item?.attributes?.Thumbnail
-                                    )}
-                                    src={getImage(item?.attributes?.Thumbnail)}
+                                    width={
+                                      item?.attributes?.Thumbnail?.data[0]
+                                        ?.attributes?.width
+                                    }
+                                    height={
+                                      item?.attributes?.Thumbnail?.data[0]
+                                        ?.attributes?.height
+                                    }
+                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${item?.attributes?.Thumbnail?.data[0]?.attributes?.url}`}
                                     alt=""
                                   />
                                 </div>

@@ -8,11 +8,6 @@ export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
   const [calendarDate, setCalendarDate] = React.useState<any>(false);
   const [eventLists, setEventLists] = React.useState<any>();
 
-  const eventListPopup = () => {
-    alert("hello");
-    return "2";
-  };
-
   const eventCount = (
     calendarDate: any,
     enveDate: any,
@@ -45,29 +40,23 @@ export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
   var userSelection = document.getElementsByClassName("eventList");
   var evnt = document.querySelector("[data-event]");
 
-  console.log("eventList", evnt);
-
   for (let i = 0; i < userSelection.length; i++) {
     userSelection[i].addEventListener("click", function () {
       var dataEvent = this.getAttribute("data-event");
       var dataToday = this.getAttribute("data-today");
       var dataMonth = this.getAttribute("data-months");
       var dataYears = this.getAttribute("data-year");
-      console.log("==========", dataEvent);
-      console.log(i + 1);
 
       let result: any = "";
       const eventFind = events?.find((item: any) => {
         const eventsDate = dateFormat(item[0], "d");
         const eventsMonth = dateFormat(item[0], "mmmm");
         const eventsYear = dateFormat(item[0], "yyyy");
-        console.log("@@@@@@@@@@", typeof dataYears);
         if (
           eventsDate === dataToday &&
           eventsMonth === dataMonth &&
           eventsYear === dataYears
         ) {
-          console.log("@@@@@@@@@@", item[1]);
           setEventLists(item[1]);
           result = item[1].length;
         }

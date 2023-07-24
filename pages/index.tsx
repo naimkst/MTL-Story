@@ -65,6 +65,8 @@ const HomePage = () => {
     }
   }, [lngData]);
 
+  console.log(envetData, "====");
+
   return (
     <Fragment>
       <Navbar global={global} setLanguage={handleChange} language={language} />
@@ -81,8 +83,6 @@ const HomePage = () => {
       <ContactArea data={data?.ContactUs} />
       <Marquee data={data?.TextSlider} />
       <Footer global={global} />
-      {/* <EventCalendar /> */}
-      {/* <WeeklyCalendar /> */}
       <BackToTop />
     </Fragment>
   );

@@ -144,6 +144,7 @@ header .current-date {
 }
 .event-img {
   padding: 20px 10px;
+  position: relative;
 }
 .event-img img {
   width: 134px;
@@ -176,4 +177,54 @@ header .current-date {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+span.categoryCal {
+  position: absolute;
+  left: 0px;
+  width: auto;
+  height: 29px;
+  color: #fff;
+  background: #996bfb;
+  border-radius: 10px 0px;
+  border: 1px solid #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  padding: 0px 10px;
+}
+.calendarData {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  text-align: center;
+  background: #996bfb;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  bottom: 25px;
+  font-size: 13px;
+}
+.multiEvent {
+  position: relative;
+}
+
+.details-img .thumbnailSmallImg {
+  display: -webkit-box !important;
+  overflow: scroll !important;
+}
+.thumbnailSmallImg li img {
+  width: 113px !important;
+  height: 113px !important;
+  border-radius: 10px;
+  object-fit: cover;
+}
+ul.thumbnailSmallImg li img.active {
+  border: 2px solid #000;
 }

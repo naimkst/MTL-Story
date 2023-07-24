@@ -12,9 +12,11 @@ import dateFormat, { masks } from "dateformat";
 
 export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
   const [language, setLanguage] = React.useState<any>("en");
+  const [thumbnail, setThumbnail] = React.useState<any>("");
 
   const lngData = getLocalStorageData("lan");
 
+  console.log(eventId, "eventId");
   const { loading, error, data } = useFetch(
     `${process.env.NEXT_PUBLIC_API_URL}/events/${eventId}?populate=deep&locale=${lngData}`
   );
@@ -29,6 +31,11 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
   }, [lngData]);
 
   const event: any = data?.data?.attributes;
+  useEffect(() => {
+    setThumbnail(event?.Thumbnail?.data[0]?.attributes);
+  }, [event]);
+
+  console.log(thumbnail, "thumbnail");
 
   return (
     <div className="calendar-box">
@@ -60,22 +67,43 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
           <div className="col-lg-5">
             <div className="details-img">
               <Image
-                src={getImage(event?.Thumbnail)}
-                height={getHeight(event?.Thumbnail)}
-                width={getWidth(event?.Thumbnail)}
+                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${
+                  thumbnail?.url ? thumbnail?.url : " "
+                }`}
+                height={thumbnail?.height ? thumbnail?.height : 0}
+                width={thumbnail?.width ? thumbnail?.width : 0}
                 alt=""
               />
-              <ul>
-                <li>
-                  <Image src={eImg} alt="" />
-                </li>
-                <li>
-                  <Image src={eImg} alt="" />
-                </li>
-                <li>
-                  <Image src={eImg} alt="" />
-                </li>
-              </ul>
+              {event?.Thumbnail?.data?.length > 1 && (
+                <ul className="thumbnailSmallImg">
+                  {event?.Thumbnail?.data?.map((item: any, index: number) => (
+                    <li
+                      onClick={() => setThumbnail(item?.attributes)}
+                      key={`{eventDetailsImg-${index}}`}
+                    >
+                      <Image
+                        className={`${
+                          thumbnail?.url === item?.attributes?.url
+                            ? "active"
+                            : ""
+                        }`}
+                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${
+                          item?.attributes?.url ? item?.attributes?.url : " "
+                        }`}
+                        height={
+                          item?.attributes?.height
+                            ? item?.attributes?.height
+                            : 0
+                        }
+                        width={
+                          item?.attributes?.width ? item?.attributes?.width : 0
+                        }
+                        alt=""
+                      />
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
           <div className="col-lg-7">
@@ -88,12 +116,11 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
                 <span>{dateFormat(event?.StartDate, "d/mm/yyyy")} </span>
               </div>
               <p>{event?.Description}</p>
-              <p>{event?.Description}</p>
             </div>
           </div>
         </div>
         <div className="btn-wrap">
-          <a href={event?.EventSite} className="theme-btn">
+          <a href={event?.BookTicket} className="theme-btn">
             book tickets
           </a>
           <a href={event?.LocationOnMap} className="theme-btn">

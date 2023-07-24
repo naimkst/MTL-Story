@@ -1,17 +1,23 @@
 import React, { use, useEffect } from "react";
 import dateFormat, { masks } from "dateformat";
 import { getImage } from "../../helpers/globalFunction";
+import { CalendarDetails } from "./CalendarDetails";
 
 export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [events, setEvents] = React.useState<any>([]);
+  const [calendarDate, setCalendarDate] = React.useState<any>(false);
+  const [eventLists, setEventLists] = React.useState<any>();
+  const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
+  const [eventIds, setEeventId] = React.useState<any>("");
 
   const eventCount = (
     calendarDate: any,
     enveDate: any,
     month: any,
     year: any,
-    weekDays: any
+    weekDays: any,
+    i: any
   ) => {
     // console.log("month", month);
     // console.log("year", year);
@@ -21,6 +27,8 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
       const eventWeekend = dateFormat(item[0], "dddd");
       const eventsMonth = dateFormat(item[0], "mmmm");
       const eventsYear = dateFormat(item[0], "yyyy");
+
+      console.log("item[1]", item[1]);
       if (
         Number(eventsDate) === calendarDate &&
         eventsMonth === month &&
@@ -33,18 +41,53 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
     });
 
     return result
-      ? `<div class="event-img">${result
+      ? `<div class="event-img eventItem" data-today="${String(
+          calendarDate
+        )}" data-event="${events}" data-months="${String(
+          month
+        )}" data-year="${String(year)}">${result
           ?.map((item: any, index: number) => {
-            const data = `<img
+            const data = `<div class="multiEvent"><span class="categoryCal">${item?.attributes?.category?.data?.attributes?.Title}</span> <span class="calendarData">${calendarDate}</span><img
         className="eventImg"
-        src="${getImage(item?.attributes?.Thumbnail)}"
+        src="${process.env.NEXT_PUBLIC_API_BASE_URL}${item?.attributes?.Thumbnail?.data[0]?.attributes?.url}"
         alt=""
-      /> <p className="eventTitle">${item?.attributes?.Title}</p>`;
+      /> <p className="eventTitle">${item?.attributes?.Title}</p></div>`;
             return data;
           })
           .join("")}</div>`
       : `<div class="emptyEvent"></div>`;
   };
+
+  var userSelection = document.getElementsByClassName("eventItem");
+  var evnt = document.querySelector("[data-event]");
+
+  for (let i = 0; i < userSelection.length; i++) {
+    userSelection[i].addEventListener("click", function () {
+      var dataEvent = this.getAttribute("data-event");
+      var dataToday = this.getAttribute("data-today");
+      var dataMonth = this.getAttribute("data-months");
+      var dataYears = this.getAttribute("data-year");
+
+      let result: any = "";
+      const eventFind = events?.find((item: any) => {
+        const eventsDate = dateFormat(item[0], "d");
+        const eventsMonth = dateFormat(item[0], "mmmm");
+        const eventsYear = dateFormat(item[0], "yyyy");
+        if (
+          eventsDate === dataToday &&
+          eventsMonth === dataMonth &&
+          eventsYear === dataYears
+        ) {
+          console.log("@@@@@@@@", item[1][0]?.id);
+          setEventLists(item[1]);
+          setDetailsCalendar(true);
+          setEeventId(item[1][0]?.id);
+          result = item[1].length;
+        }
+      });
+      setCalendarDate(true);
+    });
+  }
 
   useEffect(() => {
     setIsLoading(true);
@@ -109,7 +152,8 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
             events,
             months[currMonth],
             currYear,
-            weekendName
+            weekendName,
+            i
           )} `;
         }
 
@@ -169,81 +213,89 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
 
   if (isLoading) {
     return (
-      <div className="calendar-box">
-        <div
-          className="calendarClose"
-          onClick={() => {
-            setWeeklyCalendar(false);
-          }}
-        >
-          <svg
-            width="33"
-            height="32"
-            viewBox="0 0 33 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+      <>
+        <div className="calendar-box">
+          <div
+            className="calendarClose"
+            onClick={() => {
+              setWeeklyCalendar(false);
+            }}
           >
-            <path
-              d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
-              stroke="white"
-            />
-          </svg>
-        </div>
-        <div className="wrapper-calendar weeklyCalendar">
-          <header>
-            <div className="icons eventIcons">
-              <span id="weeklyPrev" className="material-symbols-rounded">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-chevron-left"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#000"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M15 6l-6 6l6 6"></path>
-                </svg>
-              </span>
-              <p className="current-date weekly-date"></p>
-              <span id="next" className="material-symbols-rounded">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="icon icon-tabler icon-tabler-chevron-right"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="#000"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path d="M9 6l6 6l-6 6"></path>
-                </svg>
-              </span>
-            </div>
-          </header>
+            <svg
+              width="33"
+              height="32"
+              viewBox="0 0 33 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
+                stroke="white"
+              />
+            </svg>
+          </div>
+          <div className="wrapper-calendar weeklyCalendar">
+            <header>
+              <div className="icons eventIcons">
+                <span id="weeklyPrev" className="material-symbols-rounded">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-chevron-left"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="#000"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M15 6l-6 6l6 6"></path>
+                  </svg>
+                </span>
+                <p className="current-date weekly-date"></p>
+                <span id="next" className="material-symbols-rounded">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="icon icon-tabler icon-tabler-chevron-right"
+                    width="30"
+                    height="30"
+                    viewBox="0 0 24 24"
+                    stroke-width="2"
+                    stroke="#000"
+                    fill="none"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                    <path d="M9 6l6 6l-6 6"></path>
+                  </svg>
+                </span>
+              </div>
+            </header>
 
-          <div className="calendar">
-            <ul className="weeks">
-              <li>Sun</li>
-              <li>Mon</li>
-              <li>Tue</li>
-              <li>Wed</li>
-              <li>Thu</li>
-              <li>Fri</li>
-              <li>Sat</li>
-            </ul>
-            <ul className="days weekly"></ul>
+            <div className="calendar">
+              <ul className="weeks">
+                <li>Sun</li>
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thu</li>
+                <li>Fri</li>
+                <li>Sat</li>
+              </ul>
+              <ul className="days weekly"></ul>
+            </div>
           </div>
         </div>
-      </div>
+        {calendarDetails && (
+          <CalendarDetails
+            setDetailsCalendar={setDetailsCalendar}
+            eventId={eventIds}
+          />
+        )}
+      </>
     );
   } else {
     return <div>Loading...</div>;
