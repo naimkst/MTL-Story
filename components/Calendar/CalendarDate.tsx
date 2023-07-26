@@ -42,6 +42,7 @@ export const CalendarDate = ({ setCalendarDate, eventId, eventLists }: any) => {
           <div className="row">
             <div className="event-wrap">
               <h2></h2>
+
               <Slide cascade direction="up" triggerOnce="false" duration="500">
                 {eventLists?.map((item: any, index: number) => (
                   <div
