@@ -47,9 +47,19 @@ export const WeeklyCalendar = ({ setWeeklyCalendar, eventData }: any) => {
           month
         )}" data-year="${String(year)}">${result
           ?.map((item: any, index: number) => {
-            const data = `<div class="multiEvent"><span class="categoryCal">${item?.attributes?.category?.data?.attributes?.Title}</span> <span class="calendarData">${calendarDate}</span><img
+            const data = `<div class="multiEvent"><span class="${
+              item?.attributes?.category?.data?.attributes?.Title
+                ? "categoryCal"
+                : ""
+            }">${
+              item?.attributes?.category?.data?.attributes?.Title
+                ? item?.attributes?.category?.data?.attributes?.Title
+                : ""
+            }</span> <span class="calendarData">${calendarDate}</span><img
         className="eventImg"
-        src="${process.env.NEXT_PUBLIC_API_BASE_URL}${item?.attributes?.Thumbnail?.data[0]?.attributes?.url}"
+        src="${process.env.NEXT_PUBLIC_API_BASE_URL}${
+              item?.attributes?.Thumbnail?.data[0]?.attributes?.url
+            }"
         alt=""
       /> <p className="eventTitle">${item?.attributes?.Title}</p></div>`;
             return data;
