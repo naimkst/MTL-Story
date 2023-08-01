@@ -228,3 +228,18 @@ span.categoryCal {
 ul.thumbnailSmallImg li img.active {
   border: 2px solid #000;
 }
+span.catName {
+  background: #996bfb;
+  color: #fff;
+  padding: 3px 10px;
+  border-radius: 10px 0px;
+  border: 1px solid #fff;
+  position: absolute;
+  top: 0;
+  left: 10px;
+}
+.merchImage {
+  width: 312px;
+  height: 208px;
+  object-fit: cover;
+}

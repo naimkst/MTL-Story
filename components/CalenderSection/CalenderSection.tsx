@@ -78,13 +78,12 @@ const CalenderSection = ({ data, eventData }: any) => {
       dateFormat(today, "dddd, mmmm dS, yyyy") ==
       dateFormat(eventDate, "dddd, mmmm dS, yyyy")
     ) {
-      console.log(loopIndex, date);
       if (sliderRef.current) {
         sliderRef.current.slickGoTo(loopIndex);
       }
       return "slick-active slick-current";
     } else {
-      console.log("false");
+      console.log("");
     }
 
     // console.log("aaaaa", dateFormat(today, "dddd, mmmm dS, yyyy"));

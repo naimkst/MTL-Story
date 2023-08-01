@@ -1,8 +1,66 @@
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
+import { addToCart, useApi } from "../../helpers/globalFunction";
 
-export const ProductDetails = ({ setProductDetails }: any) => {
+export const ProductDetails = ({ setProductDetails, productItem }: any) => {
+  const [verient, setVariation] = useState<any>([]);
+  const { data } = useApi(`products/${productItem?.id}/variations`);
+
+  const getVeriation = (id: any) => {
+    const { data: variations } = useApi(
+      `products/${productItem?.id}/variations/${id}`
+    );
+  };
+
+  // Function to separate attributes and their options
+  function separateAttributesWithArray(variations: any) {
+    const attributesMap = {};
+
+    variations.forEach((variation: any) => {
+      variation.attributes.forEach((attribute: any) => {
+        const { name, option } = attribute;
+        if (!attributesMap[name]) {
+          attributesMap[name] = [];
+        }
+        if (!attributesMap[name].includes(option)) {
+          attributesMap[name].push(option);
+        }
+      });
+    });
+
+    return attributesMap;
+  }
+
+  const attributeOptionsMap = separateAttributesWithArray(data);
+
+  const filterDuplicateKeys = (variationData: any) => {
+    const uniqueVariation: any = {};
+    for (const key in variationData) {
+      if (!uniqueVariation.hasOwnProperty(key)) {
+        uniqueVariation[key] = variationData[key];
+      }
+    }
+    return uniqueVariation;
+  };
+  const addVerient = (item: any) => {
+    const key = Object.keys(item)[0];
+    const existingIndex = verient.findIndex((v) => Object.keys(v)[0] === key);
+
+    if (existingIndex >= 0) {
+      // If the key already exists in the array, replace the existing data
+      setVariation((prevVariation) => [
+        ...prevVariation.slice(0, existingIndex),
+        item,
+        ...prevVariation.slice(existingIndex + 1),
+      ]);
+    } else {
+      // If the key does not exist, add the new data to the array
+      setVariation((prevVariation: any) => [...prevVariation, item]);
+    }
+  };
+
+  console.log("verient", verient);
 
   return (
     <div className="calendar-box">
@@ -26,76 +84,110 @@ export const ProductDetails = ({ setProductDetails }: any) => {
         </svg>
       </div>
       <div className="wrapper-calendar weeklyCalendar productDetails">
-        <h2>Integer semper metus ultrices</h2>
+        <h2>{productItem?.name}</h2>
         <div className="details-img">
-          <Image src={eImg} alt="" />
+          <Image
+            src={productItem?.images[0]?.src}
+            height={443}
+            alt=""
+            width={978}
+          />
         </div>
         <div className="details-wrap">
-          <div className="product-filter-item color filter-size">
-            <div className="color-name">
-              <span>Select Color:</span>
-              <ul>
-                <li className="color"><input id="sz1" type="radio" name="size" value="30" />
-                  <label htmlFor="sz1">S</label>
-                </li>
-                <li className="color"><input id="sz2" type="radio" name="size" value="30" />
-                  <label htmlFor="sz2">M</label>
-                </li>
-                <li className="color"><input id="sz3" type="radio" name="size" value="30" />
-                  <label htmlFor="sz3">L</label>
-                </li>
-                <li className="color"><input id="sz4" type="radio" name="size" value="30" />
-                  <label htmlFor="sz4">X</label>
-                </li>
-                <li className="color"><input id="sz5" type="radio" name="size" value="30" />
-                  <label htmlFor="sz5">XL</label>
-                </li>
-                <li className="color"><input id="sz5" type="radio" name="size" value="30" />
-                  <label htmlFor="sz5">XXL</label>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="product-filter-item color">
-            <div className="color-name">
-              <span>Select Size :</span>
-              <ul>
-                <li className="color1"><input id="a1" type="radio" name="color" value="30" />
-                  <label htmlFor="a1"></label>
-                </li>
-                <li className="color2"><input id="a2" type="radio" name="color" value="30" />
-                  <label htmlFor="a2"></label>
-                </li>
-                <li className="color3"><input id="a3" type="radio" name="color" value="30" />
-                  <label htmlFor="a3"></label>
-                </li>
-                <li className="color4"><input id="a4" type="radio" name="color" value="30" />
-                  <label htmlFor="a4"></label>
-                </li>
-                <li className="color5"><input id="a5" type="radio" name="color" value="30" />
-                  <label htmlFor="a5"></label>
-                </li>
-                <li className="color6"><input id="a6" type="radio" name="color" value="30" />
-                  <label htmlFor="a6"></label>
-                </li>
-                <li className="color7"><input id="a7" type="radio" name="color" value="30" />
-                  <label htmlFor="a7"></label>
-                </li>
-              </ul>
-            </div>
-          </div>
+          {Object.keys(attributeOptionsMap)?.map((item: any, index: number) => (
+            <>
+              {item == "Size" && (
+                <div className="product-filter-item color filter-size">
+                  <div className="color-name">
+                    {JSON.stringify(verient)}
+                    <span>Select {item}:</span>
+                    <ul>
+                      {attributeOptionsMap[item].map(
+                        (option: string, optionIndex: number) => (
+                          <li
+                            onClick={() => {
+                              addVerient({
+                                [item]: option,
+                              });
+                            }}
+                            className="color"
+                            key={optionIndex}
+                          >
+                            <input
+                              type="radio"
+                              name={item}
+                              value={option}
+                              id={`option-${item}-${optionIndex}`}
+                            />
+                            <label htmlFor={`option-${item}-${optionIndex}`}>
+                              {option}
+                            </label>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {item == "Color" && (
+                <div className="product-filter-item color">
+                  <div className="color-name">
+                    <span>Select {item} :</span>
+                    <ul>
+                      {attributeOptionsMap["Color"]?.map(
+                        (option: any, index: any) => (
+                          <li
+                            onClick={() => {
+                              addVerient({
+                                [item]: option,
+                              });
+                            }}
+                            className={`color${index + 1}`}
+                            key={index}
+                          >
+                            <input
+                              type="radio"
+                              name="color"
+                              value={option}
+                              id={`a${index + 1}`}
+                            />
+                            <label
+                              style={{ background: `${option}` }}
+                              htmlFor={`a${index + 1}`}
+                            ></label>
+                          </li>
+                        )
+                      )}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </>
+          ))}
         </div>
         <div className="product-filter-item color">
           <div className="color-name">
             <span>Description </span>
-            <p>Non nullam feugiat etiam in. Phasellus faucibus velit sem quis turpis ullamcorper feugiat ultricies.</p>
+            <div>
+              <div
+                dangerouslySetInnerHTML={{ __html: productItem?.description }}
+              />
+            </div>
           </div>
         </div>
         <div className="btn-wrap">
-          <a href="#" className="theme-btn">Buy Now</a>
-          <a href="#" className="theme-btn">Add to Cart</a>
+          <a href="#" className="theme-btn">
+            Buy Now
+          </a>
+          <a
+            onClick={() => addToCart(productItem?.id, verient)}
+            href="#"
+            className="theme-btn"
+          >
+            Add to Cart
+          </a>
         </div>
       </div>
     </div>
   );
-} 
+};

@@ -14,13 +14,12 @@ import Merch from "../components/Merch/Merch";
 import BackToTop from "../components/backToTop/backToTop";
 import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
-import { getLocalStorageData } from "../helpers/globalFunction";
-import Calendar from "react-calendar";
-import { EventCalendar } from "../components/Calendar";
-import { WeeklyCalendar } from "../components/Calendar/WeeklyCalendar";
+import { getLocalStorageData, useApi } from "../helpers/globalFunction";
+import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 
 const HomePage = () => {
   const [language, setLanguage] = React.useState<any>("en");
+  const [isClient, setIsClient] = React.useState(false);
 
   const lngData = getLocalStorageData("lan");
 
@@ -65,7 +64,12 @@ const HomePage = () => {
     }
   }, [lngData]);
 
-  console.log(envetData, "====");
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  const { data: products } = useApi("products");
+  const { data: categories } = useApi("products/categories");
 
   return (
     <Fragment>
@@ -79,7 +83,11 @@ const HomePage = () => {
       <CtaSection data={data?.CTASection} />
       <FaqSection data={data?.FAQSection} />
       <PartnerSlider data={data?.BrandSection} />
-      <Merch data={data?.MerchSection} />
+      <Merch
+        data={data?.MerchSection}
+        products={products}
+        categories={categories}
+      />
       <ContactArea data={data?.ContactUs} />
       <Marquee data={data?.TextSlider} />
       <Footer global={global} />
