@@ -2,6 +2,8 @@ import React, { use, useEffect, useState } from "react";
 import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
 import { addToCart, useApi } from "../../helpers/globalFunction";
+import { cartItems } from "../../hooks/cart";
+import { useStore } from "../../store/store";
 
 export const ProductDetails = ({ setProductDetails, productItem }: any) => {
   const [verient, setVariation] = useState<any>([]);
@@ -45,11 +47,13 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
   };
   const addVerient = (item: any) => {
     const key = Object.keys(item)[0];
-    const existingIndex = verient.findIndex((v) => Object.keys(v)[0] === key);
+    const existingIndex = verient.findIndex(
+      (v: any) => Object.keys(v)[0] === key
+    );
 
     if (existingIndex >= 0) {
       // If the key already exists in the array, replace the existing data
-      setVariation((prevVariation) => [
+      setVariation((prevVariation: any) => [
         ...prevVariation.slice(0, existingIndex),
         item,
         ...prevVariation.slice(existingIndex + 1),
@@ -60,7 +64,10 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
     }
   };
 
-  console.log("verient", verient);
+  const [isCart, isCartActive] = useStore((state: any) => [
+    state.isCart,
+    state.isCartActive,
+  ]);
 
   return (
     <div className="calendar-box">
@@ -179,8 +186,9 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
           <a href="#" className="theme-btn">
             Buy Now
           </a>
+
           <a
-            onClick={() => addToCart(productItem?.id, verient)}
+            onClick={() => addToCart(productItem?.id, verient, isCartActive)}
             href="#"
             className="theme-btn"
           >

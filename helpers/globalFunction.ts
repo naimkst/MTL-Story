@@ -1,5 +1,13 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { useEffect, useState } from "react";
+import CoCartAPI from "@cocart/cocart-rest-api";
+import { useStore } from "../store/store";
+
+export const CoCart = new CoCartAPI({
+  url: "https://shop.mtlstories.com",
+  consumerKey: "ck_5457646eb6e57aa22deaf48fed13c4609dbc8888",
+  consumerSecret: "cs_181455d4bdb5f8eac3e1ce8e97b0cc0c51ef896a",
+});
 
 export const getImage = (image: any) => {
   return image?.data
@@ -55,49 +63,25 @@ export const useApi = (url: any) => {
   return { loading, error, data };
 };
 
-export const addToCart = async (id: any, variation: any) => {
-  console.log("addCart", id, variation);
-  // const [data, setData] = useState<any>([]);
-  // const [error, setError] = useState<any>(null);
-  // const [loading, setLoading] = useState(true);
+export const addToCart = async (id: any, variation: any, isCartActive: any) => {
+  const transformedData = variation?.reduce((acc: any, item: any) => {
+    const key = Object.keys(item)[0];
+    const value = item[key];
+    acc[`attribute_${key.toLowerCase()}`] = value;
+    return acc;
+  }, {});
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     // setLoading(true);
-  //     const saveData = await fetch(
-  //       `https://shop.mtlstories.com/cart/add-item?consumer_key=ck_5457646eb6e57aa22deaf48fed13c4609dbc8888&consumer_secret=cs_181455d4bdb5f8eac3e1ce8e97b0cc0c51ef896a`,
-  //       {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify({
-  //           id: id,
-  //           quantity: 1,
-  //           variation: variation,
-  //         }),
-  //       }
-  //     );
-  //     console.log("addCart", saveData);
-  //   };
-  //   fetchData();
-  // }, [id]);
+  var data = {
+    id: String(id),
+    quantity: "1",
+    variation: transformedData,
+  };
 
-  // return { loading, error, data };
+  const cartAdd = CoCart.post("cart/add-item", data);
 
-  const saveData = await fetch(
-    `https://shop.mtlstories.com/cart/add-item?consumer_key=ck_5457646eb6e57aa22deaf48fed13c4609dbc8888&consumer_secret=cs_181455d4bdb5f8eac3e1ce8e97b0cc0c51ef896a`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: id,
-        quantity: 1,
-        variation: variation,
-      }),
-    }
-  );
-  console.log("addCart", await saveData);
+  const cart: any = await cartAdd;
+  if (cart?.status === 200) {
+    isCartActive(true);
+    console.log("cartAdd@@@@@@@", cart?.data);
+  }
 };

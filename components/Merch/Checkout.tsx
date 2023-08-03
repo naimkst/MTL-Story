@@ -6,6 +6,9 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { useStore } from "../../store/store";
+import { cart, cartItems } from "../../hooks/cart";
+import { CoCart } from "../../helpers/globalFunction";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -32,19 +35,56 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export const Checkout = ({ setCheckout }: any) => {
+  const [cartData, setCartData] = React.useState<any>([]);
+  // const [items, setItems] = React.useState<any>([]);
+  const [isCart, isCartActive] = useStore((state: any) => [
+    state.isCart,
+    state.isCartActive,
+  ]);
 
   const [expanded, setExpanded] = React.useState("panel1");
 
-  const handleChange = (panel) => (event, newExpanded) => {
+  const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
   };
+
+  function priceConvert(price: any) {
+    return Number(price) / 100;
+  }
+
+  useEffect(() => {
+    CoCart.get("cart")
+      .then((response) => {
+        // Successful request
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+        console.log("Response Data:", response.data);
+        setCartData(
+          Object.entries(response.data) ? Object.entries(response.data) : []
+        );
+      })
+      .catch((error) => {
+        // Invalid request, for 4xx and 5xx statuses
+        console.log("Response Status:", error.response.status);
+        console.log("Response Headers:", error.response.headers);
+        console.log("Response Data:", error.response.data);
+      })
+      .finally(() => {
+        // Always executed.
+      });
+  }, []);
+
+  const items = cartData[4];
+  const subTotal = cartData[13];
+
+  console.log("subTotal", subTotal);
 
   return (
     <div className="calendar-box">
       <div
         className="calendarClose"
         onClick={() => {
-          setCheckout(false);
+          isCartActive(false);
         }}
       >
         <svg
@@ -61,59 +101,14 @@ export const Checkout = ({ setCheckout }: any) => {
         </svg>
       </div>
       <div className="wrapper-calendar weeklyCalendar checkout">
-        <h4 className="tp-title"><i className="fa fa-arrow-left" aria-hidden="true"></i>Checkout</h4>
+        <h4 className="tp-title">
+          <i className="fa fa-arrow-left" aria-hidden="true"></i>Checkout
+        </h4>
 
-        <Accordion expanded={expanded === 'panel1'} onChange={handleChange('panel1')}>
-          <AccordionSummary
-            expandIcon={""}
-            aria-controls="panel1bh-content"
-            id="panel1bh-header"
-          >
-            <Typography>Shopping cart</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <h3>Edit Shopping Cart</h3>
-            <div className="shoping-wrap">
-              <div className="shopping-img">
-                <Image src={eImg} alt="" />
-              </div>
-              <div className="shopping-text">
-                <h4>Integer semper metus ultrices</h4>
-                <ul>
-                  <li>Color: <span className="color"></span></li>
-                  <li>Size: M</li>
-                  <li>Qty: 4</li>
-                </ul>
-                <h5>$144.00</h5>
-              </div>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
-          <AccordionSummary
-            expandIcon={""}
-            aria-controls="panel2bh-content"
-            id="panel1bh-header"
-          >
-            <Typography>ORDER SUMMARY</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <h3>Edit Shopping Cart</h3>
-            <Typography>
-              <div className="order-summary">
-                <ul>
-                  <li>SUB-TOTAL:<span>$144.00</span></li>
-                  <li>discounts:<span className="color">$-57.60</span></li>
-                  <li>SHIPPING<span>FREE</span></li>
-                  <li>TAX:<span>$12.94</span></li>
-                  <li className="btm">ORDER TOTAL:<span>$99.34 USD</span></li>
-                </ul>
-                <p>YOU SAVED: $57.60</p>
-              </div>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
           <AccordionSummary
             expandIcon={""}
             aria-controls="panel3bh-content"
@@ -131,7 +126,113 @@ export const Checkout = ({ setCheckout }: any) => {
             </Typography>
           </AccordionDetails>
         </Accordion>
+
+        <Accordion
+          expanded={expanded === "panel1"}
+          onChange={handleChange("panel1")}
+        >
+          <AccordionSummary
+            expandIcon={""}
+            aria-controls="panel1bh-content"
+            id="panel1bh-header"
+          >
+            <Typography>Shopping cart</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <h3>Edit Shopping Cart</h3>
+            {items?.[1]?.map((item: any, index: number) => (
+              <div key={`cartItem-${index}`} className="shoping-wrap">
+                <div className="shopping-img">
+                  <Image
+                    src={item?.featured_image}
+                    width={222}
+                    height={160}
+                    alt=""
+                  />
+                </div>
+                <div className="shopping-text">
+                  <h4>{item?.title}</h4>
+                  <ul>
+                    {item?.meta?.variation?.Color && (
+                      <li>
+                        Color:{" "}
+                        <span
+                          style={{
+                            background: `${item?.meta?.variation?.Color}`,
+                          }}
+                          className="color"
+                        ></span>
+                      </li>
+                    )}
+
+                    {item?.meta?.variation?.Size && (
+                      <li>Size: {item?.meta?.variation?.Size}</li>
+                    )}
+
+                    <li>Qty: {item?.quantity?.value}</li>
+                  </ul>
+                  <h5>${item?.totals?.total}</h5>
+                </div>
+              </div>
+            ))}
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion
+          expanded={expanded === "panel2"}
+          onChange={handleChange("panel2")}
+        >
+          <AccordionSummary
+            expandIcon={""}
+            aria-controls="panel2bh-content"
+            id="panel1bh-header"
+          >
+            <Typography>ORDER SUMMARY</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <h3>Edit Shopping Cart</h3>
+            <Typography>
+              <div className="order-summary">
+                <ul>
+                  <li>
+                    SUB-TOTAL:
+                    <span>${priceConvert(subTotal?.[1]?.subtotal)}</span>
+                  </li>
+                  <li>
+                    discounts:
+                    <span className="color">
+                      $-{subTotal?.[1]?.discount_total}
+                    </span>
+                  </li>
+                  <li>
+                    SHIPPING<span>{subTotal?.[1]?.shipping_total}</span>
+                  </li>
+                  <li>
+                    TAX:<span>${subTotal?.[1]?.total_tax}</span>
+                  </li>
+                  <li className="btm">
+                    ORDER TOTAL:
+                    <span>${priceConvert(subTotal?.[1]?.total)} USD</span>
+                  </li>
+                </ul>
+                <p>
+                  YOU SAVED: $
+                  {priceConvert(subTotal?.[1]?.subtotal) -
+                    priceConvert(subTotal?.[1]?.total)}
+                </p>
+              </div>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <div
+          className="checkoutBtn"
+          onClick={() => {
+            setCheckout(true);
+          }}
+        >
+          checkout
+        </div>
       </div>
     </div>
   );
-} 
+};

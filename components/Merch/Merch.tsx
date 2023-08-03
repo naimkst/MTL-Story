@@ -5,12 +5,19 @@ import { Fade, Slide } from "react-awesome-reveal";
 import { ProductDetails } from "./ProductDetails";
 import { Checkout } from "./Checkout";
 import { Unsubscribe } from "./Unsubscribe";
+import { useStore } from "../../store/store";
 
 const Merch = ({ data, products, categories }: any) => {
   const [productDetails, setProductDetails] = React.useState<any>(false);
   const [checkout, setCheckout] = React.useState<any>(false);
   const [unsubscribe, setUnsubscribe] = React.useState<any>(false);
   const [productItem, setProductItem] = React.useState<any>(null);
+
+  const [isCart, isCartActive, isCartInactive] = useStore((state: any) => [
+    state.isCart,
+    state.isCartActive,
+    state.isCartInactive,
+  ]);
 
   const findCategory = (cat: any, prdCat: any) => {
     const catName = prdCat?.categories?.find(
@@ -77,21 +84,21 @@ const Merch = ({ data, products, categories }: any) => {
                           </Fade>
                         </div>
                         {/* <div
-                      className="checkout theme-btn"
-                      onClick={() => {
-                        setCheckout(true);
-                      }}
-                    >
-                      checkout
-                    </div>
-                    <div
-                      className="checkout theme-btn"
-                      onClick={() => {
-                        setUnsubscribe(true);
-                      }}
-                    >
-                      Unsubscribe
-                    </div> */}
+                          className="checkout theme-btn"
+                          onClick={() => {
+                            setCheckout(true);
+                          }}
+                        >
+                          checkout
+                        </div> */}
+                        {/* <div
+                          className="checkout theme-btn"
+                          onClick={() => {
+                            setUnsubscribe(true);
+                          }}
+                        >
+                          Unsubscribe
+                        </div> */}
                       </div>
                     </div>
                   </div>
@@ -106,7 +113,7 @@ const Merch = ({ data, products, categories }: any) => {
           productItem={productItem}
         />
       )}
-      {checkout && <Checkout setCheckout={setCheckout} />}
+      {isCart && <Checkout setCheckout={setCheckout} />}
       {unsubscribe && <Unsubscribe setUnsubscribe={setUnsubscribe} />}
     </>
   );
