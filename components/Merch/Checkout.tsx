@@ -1,5 +1,4 @@
 import React, { use, useEffect } from "react";
-import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import MuiAccordion from "@mui/material/Accordion";
@@ -7,7 +6,6 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
-import { cart, cartItems } from "../../hooks/cart";
 import { CoCart } from "../../helpers/globalFunction";
 
 const Accordion: any = styled((props) => (
@@ -36,7 +34,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 export const Checkout = ({ setCheckout }: any) => {
   const [cartData, setCartData] = React.useState<any>([]);
-  // const [items, setItems] = React.useState<any>([]);
+  const [coupon, setCoupon] = React.useState<any>("");
+  const [updateCupon, setUpdateCupon] = React.useState<any>(false);
   const [isCart, isCartActive] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -55,10 +54,6 @@ export const Checkout = ({ setCheckout }: any) => {
   useEffect(() => {
     CoCart.get("cart")
       .then((response) => {
-        // Successful request
-        console.log("Response Status:", response.status);
-        console.log("Response Headers:", response.headers);
-        console.log("Response Data:", response.data);
         setCartData(
           Object.entries(response.data) ? Object.entries(response.data) : []
         );
@@ -72,12 +67,31 @@ export const Checkout = ({ setCheckout }: any) => {
       .finally(() => {
         // Always executed.
       });
-  }, []);
+  }, [updateCupon]);
 
   const items = cartData[4];
   const subTotal = cartData[13];
 
-  console.log("subTotal", subTotal);
+  const couponApply = async () => {
+    try {
+      const couponGet = await fetch(
+        `${process.env.NEXT_PUBLIC_STORE_URL}/cart/?wt_coupon=${coupon}`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          return null;
+        });
+      setUpdateCupon(true);
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <div className="calendar-box">
@@ -120,8 +134,14 @@ export const Checkout = ({ setCheckout }: any) => {
             <h3>Limit one per order</h3>
             <Typography>
               <div className="coupon">
-                <input type="text" placeholder="Coupon Code" />
-                <button type="button">Apply</button>
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Coupon Code"
+                />
+                <button onClick={couponApply} type="button">
+                  Apply
+                </button>
               </div>
             </Typography>
           </AccordionDetails>
@@ -201,11 +221,11 @@ export const Checkout = ({ setCheckout }: any) => {
                   <li>
                     discounts:
                     <span className="color">
-                      $-{subTotal?.[1]?.discount_total}
+                      -${priceConvert(subTotal?.[1]?.discount_total)}
                     </span>
                   </li>
                   <li>
-                    SHIPPING<span>{subTotal?.[1]?.shipping_total}</span>
+                    SHIPPING<span>${subTotal?.[1]?.shipping_total}</span>
                   </li>
                   <li>
                     TAX:<span>${subTotal?.[1]?.total_tax}</span>

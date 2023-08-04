@@ -5,10 +5,6 @@ export const cartItems = () => {
   const [data, setData] = React.useState<any>(null);
   CoCart.get("cart/items")
     .then((response) => {
-      // Successful request
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
-      console.log("Response Data:", response.data);
       setData(Object.entries(response.data));
     })
     .catch((error) => {
@@ -28,10 +24,6 @@ export const cart = () => {
   const [data, setData] = React.useState<any>(null);
   CoCart.get("cart")
     .then((response) => {
-      // Successful request
-      console.log("Response Status:", response.status);
-      console.log("Response Headers:", response.headers);
-      console.log("Response Data:", response.data);
       setData(Object.entries(response.data));
     })
     .catch((error) => {
