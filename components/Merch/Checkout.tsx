@@ -6,7 +6,8 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
-import { CoCart } from "../../helpers/globalFunction";
+import { CoCart, countryList, shopAPi } from "../../helpers/globalFunction";
+import Stripe from "stripe";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -36,12 +37,17 @@ export const Checkout = ({ setCheckout }: any) => {
   const [cartData, setCartData] = React.useState<any>([]);
   const [coupon, setCoupon] = React.useState<any>("");
   const [updateCupon, setUpdateCupon] = React.useState<any>(false);
+  const [differentAddress, setDifferentAddress] = React.useState<any>(false);
   const [isCart, isCartActive] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
   ]);
 
   const [expanded, setExpanded] = React.useState("panel1");
+
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
+    apiVersion: "2022-11-15",
+  });
 
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
@@ -71,6 +77,7 @@ export const Checkout = ({ setCheckout }: any) => {
 
   const items = cartData[4];
   const subTotal = cartData[13];
+  const getCoupon = cartData[7];
 
   const couponApply = async () => {
     try {
@@ -91,6 +98,98 @@ export const Checkout = ({ setCheckout }: any) => {
     } catch (error) {
       console.log("error", error);
     }
+  };
+
+  console.log("cartData", getCoupon);
+
+  const paymentIntent = async () => {
+    // Create a new customer and then create an invoice item then invoice it:
+    stripe.customers
+      .create({
+        email: "test@example.com",
+      })
+      .then((customer: any) => {
+        // have access to the customer object
+        return (
+          stripe.paymentIntents
+            .create({
+              customer: customer.id, // set the customer id
+              amount: 1200, // 12
+              currency: "usd",
+              description: "One-time setup fee",
+            })
+            // .then((invoiceItem) => {
+            //   return stripe.invoices.create({
+            //     collection_method: "send_invoice",
+            //     customer: invoiceItem.customer,
+            //   });
+            // })
+            .then((invoice) => {
+              // New invoice created on a new customer
+              console.log("invoice", invoice);
+            })
+            .catch((err) => {
+              // Deal with an error
+              console.log("err", err);
+            })
+        );
+      });
+  };
+  const placeOrder = () => {
+    const data = {
+      payment_method: "bacs",
+      payment_method_title: "Direct Bank Transfer",
+      set_paid: true,
+      billing: {
+        first_name: "Test",
+        last_name: "test",
+        address_1: "969 Market",
+        address_2: "",
+        city: "San Francisco",
+        state: "CA",
+        postcode: "94103",
+        country: "US",
+        email: "test@email.com",
+        phone: "(555) 555-5555",
+      },
+      shipping: {
+        first_name: "Test",
+        last_name: "Test",
+        address_1: "969 Market",
+        address_2: "",
+        city: "San Francisco",
+        state: "CA",
+        postcode: "94103",
+        country: "US",
+      },
+      line_items: [
+        {
+          product_id: 124,
+          quantity: 1,
+        },
+      ],
+      shipping_lines: [
+        {
+          method_id: "flat_rate",
+          method_title: "Flat Rate",
+          total: "10.00",
+        },
+      ],
+      coupon_lines: [
+        {
+          code: "free",
+        },
+      ],
+    };
+
+    shopAPi
+      .post("orders", data)
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   return (
@@ -131,7 +230,7 @@ export const Checkout = ({ setCheckout }: any) => {
             <Typography>COUPON CODE</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <h3>Limit one per order</h3>
+            {/* <h3>Limit one per order</h3> */}
             <Typography>
               <div className="coupon">
                 <input
@@ -159,7 +258,7 @@ export const Checkout = ({ setCheckout }: any) => {
             <Typography>Shopping cart</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <h3>Edit Shopping Cart</h3>
+            <h3>Shopping Cart</h3>
             {items?.[1]?.map((item: any, index: number) => (
               <div key={`cartItem-${index}`} className="shoping-wrap">
                 <div className="shopping-img">
@@ -210,7 +309,7 @@ export const Checkout = ({ setCheckout }: any) => {
             <Typography>ORDER SUMMARY</Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <h3>Edit Shopping Cart</h3>
+            {/* <h3>Edit Shopping Cart</h3> */}
             <Typography>
               <div className="order-summary">
                 <ul>
@@ -244,10 +343,227 @@ export const Checkout = ({ setCheckout }: any) => {
             </Typography>
           </AccordionDetails>
         </Accordion>
+        <Accordion
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary
+            expandIcon={""}
+            aria-controls="panel2bh-content"
+            id="panel1bh-header"
+          >
+            <Typography>Billing details</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <h3>Edit Shopping Cart</h3> */}
+            <Typography>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="First name"
+                />
+
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Last name"
+                />
+              </div>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Company name (optional)"
+                />
+
+                <select name="" id="">
+                  <option value="">Country / Region</option>
+                  {countryList?.map((item: any, index: number) => (
+                    <option value={item?.code}>{item?.name}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Street address"
+                />
+
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Town / City"
+                />
+              </div>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="District"
+                />
+
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Postcode / ZIP"
+                />
+              </div>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Phone"
+                />
+
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Email"
+                />
+              </div>
+
+              {/* ship to a different address? */}
+              <div className="coupon">
+                <div className="different_address">
+                  <input
+                    onClick={() => setDifferentAddress(!differentAddress)}
+                    type="checkbox"
+                    value={differentAddress}
+                  />
+
+                  <label htmlFor="">Ship to a different address?</label>
+                </div>
+              </div>
+
+              {differentAddress && (
+                <>
+                  <div className="coupon">
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="First name"
+                    />
+
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Last name"
+                    />
+                  </div>
+                  <div className="coupon">
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Company name (optional)"
+                    />
+
+                    <select name="" id="">
+                      <option value="">Country / Region</option>
+                      {countryList?.map((item: any, index: number) => (
+                        <option value={item?.code}>{item?.name}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="coupon">
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Street address"
+                    />
+
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Town / City"
+                    />
+                  </div>
+                  <div className="coupon">
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="District"
+                    />
+
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Postcode / ZIP"
+                    />
+                  </div>
+                  <div className="coupon">
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Phone"
+                    />
+
+                    <input
+                      onChange={(e) => setCoupon(e.target.value)}
+                      type="text"
+                      placeholder="Email"
+                    />
+                  </div>
+                </>
+              )}
+
+              {/* Order notes */}
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Order notes"
+                />
+              </div>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+
+        <Accordion
+          expanded={expanded === "payment"}
+          onChange={handleChange("payment")}
+        >
+          <AccordionSummary
+            expandIcon={""}
+            aria-controls="panel2bh-content"
+            id="panel1bh-header"
+          >
+            <Typography>Payment</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <h3>Edit Shopping Cart</h3> */}
+            <Typography>
+              <div className="order-summary"></div>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Card Number"
+                />
+              </div>
+
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Expiry Date"
+                />
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="CVV"
+                />
+              </div>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+
         <div
           className="checkoutBtn"
           onClick={() => {
             setCheckout(true);
+            paymentIntent();
           }}
         >
           checkout

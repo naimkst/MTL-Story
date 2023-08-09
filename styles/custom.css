@@ -255,3 +255,14 @@ span.catName {
   color: #fff;
   border-radius: 50px;
 }
+.different_address {
+  display: flex;
+  width: 100%;
+  justify-content: start;
+  align-items: center;
+}
+.different_address input {
+  display: inline-block;
+  width: 20px !important;
+  height: 20px;
+}
