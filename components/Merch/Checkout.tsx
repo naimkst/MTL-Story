@@ -43,6 +43,31 @@ export const Checkout = ({ setCheckout }: any) => {
     state.isCartActive,
   ]);
 
+  const [billing, setBilling] = React.useState<any>({
+    first_name: "",
+    last_name: "",
+    company: "",
+    address_1: "",
+    address_2: "",
+    city: "",
+    state: "",
+    postcode: "",
+    country: "",
+    email: "",
+    phone: "",
+  });
+
+  const [shipping, setShipping] = React.useState<any>({
+    first_name: "",
+    last_name: "",
+    address_1: "",
+    address_2: "",
+    city: "",
+    state: "",
+    postcode: "",
+    country: "",
+  });
+
   const [expanded, setExpanded] = React.useState("panel1");
 
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
@@ -100,39 +125,32 @@ export const Checkout = ({ setCheckout }: any) => {
     }
   };
 
-  console.log("cartData", getCoupon);
+  console.log("======", shipping);
 
   const paymentIntent = async () => {
     // Create a new customer and then create an invoice item then invoice it:
     stripe.customers
       .create({
-        email: "test@example.com",
+        email: billing?.email,
       })
       .then((customer: any) => {
         // have access to the customer object
-        return (
-          stripe.paymentIntents
-            .create({
-              customer: customer.id, // set the customer id
-              amount: 1200, // 12
-              currency: "usd",
-              description: "One-time setup fee",
-            })
-            // .then((invoiceItem) => {
-            //   return stripe.invoices.create({
-            //     collection_method: "send_invoice",
-            //     customer: invoiceItem.customer,
-            //   });
-            // })
-            .then((invoice) => {
-              // New invoice created on a new customer
-              console.log("invoice", invoice);
-            })
-            .catch((err) => {
-              // Deal with an error
-              console.log("err", err);
-            })
-        );
+        return stripe.paymentIntents
+          .create({
+            customer: customer.id, // set the customer id
+            amount: 1200, // 12
+            currency: "usd",
+            description: "One-time setup fee",
+          })
+
+          .then((invoice) => {
+            // New invoice created on a new customer
+            console.log("invoice", invoice);
+          })
+          .catch((err) => {
+            // Deal with an error
+            console.log("err", err);
+          });
       });
   };
   const placeOrder = () => {
@@ -141,26 +159,29 @@ export const Checkout = ({ setCheckout }: any) => {
       payment_method_title: "Direct Bank Transfer",
       set_paid: true,
       billing: {
-        first_name: "Test",
-        last_name: "test",
-        address_1: "969 Market",
-        address_2: "",
-        city: "San Francisco",
-        state: "CA",
-        postcode: "94103",
-        country: "US",
-        email: "test@email.com",
-        phone: "(555) 555-5555",
+        first_name: billing?.first_name,
+        last_name: billing?.last_name,
+        company: billing?.company,
+        address_1: billing?.address_1,
+        address_2: billing?.address_2,
+        city: billing?.city,
+        state: billing?.state,
+        postcode: billing?.postcode,
+        country: billing?.country,
+        email: billing?.email,
+        phone: billing?.phone,
       },
       shipping: {
-        first_name: "Test",
-        last_name: "Test",
-        address_1: "969 Market",
-        address_2: "",
-        city: "San Francisco",
-        state: "CA",
-        postcode: "94103",
-        country: "US",
+        first_name: differentAddress
+          ? shipping?.first_name
+          : billing?.first_name,
+        last_name: differentAddress ? shipping?.last_name : billing?.last_name,
+        address_1: differentAddress ? shipping?.address_1 : billing?.address_1,
+        address_2: differentAddress ? shipping?.address_2 : billing?.address_2,
+        city: differentAddress ? shipping?.city : billing?.city,
+        state: differentAddress ? shipping?.state : billing?.state,
+        postcode: differentAddress ? shipping?.postcode : billing?.postcode,
+        country: differentAddress ? shipping?.country : billing?.country,
       },
       line_items: [
         {
@@ -170,14 +191,14 @@ export const Checkout = ({ setCheckout }: any) => {
       ],
       shipping_lines: [
         {
-          method_id: "flat_rate",
-          method_title: "Flat Rate",
-          total: "10.00",
+          method_id: "",
+          method_title: "",
+          total: "",
         },
       ],
       coupon_lines: [
         {
-          code: "free",
+          code: getCoupon ? getCoupon[1]?.[0]?.coupon : "",
         },
       ],
     };
@@ -359,25 +380,52 @@ export const Checkout = ({ setCheckout }: any) => {
             <Typography>
               <div className="coupon">
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      first_name: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="First name"
+                  value={billing?.first_name}
                 />
 
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
                   type="text"
                   placeholder="Last name"
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      last_name: e.target.value,
+                    }))
+                  }
+                  value={billing?.last_name}
                 />
               </div>
               <div className="coupon">
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      compnay: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Company name (optional)"
+                  value={billing?.compnay}
                 />
 
-                <select name="" id="">
+                <select
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      country: e.target.value,
+                    }))
+                  }
+                  name=""
+                  id=""
+                >
                   <option value="">Country / Region</option>
                   {countryList?.map((item: any, index: number) => (
                     <option value={item?.code}>{item?.name}</option>
@@ -386,41 +434,77 @@ export const Checkout = ({ setCheckout }: any) => {
               </div>
               <div className="coupon">
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      address_1: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Street address"
+                  value={billing?.address_1}
                 />
 
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      city: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Town / City"
+                  value={billing?.city}
                 />
               </div>
               <div className="coupon">
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      state: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="District"
+                  value={billing?.state}
                 />
 
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      postcode: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Postcode / ZIP"
+                  value={billing?.postcode}
                 />
               </div>
               <div className="coupon">
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      phone: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Phone"
+                  value={billing?.phone}
                 />
 
                 <input
-                  onChange={(e) => setCoupon(e.target.value)}
+                  onChange={(e) =>
+                    setBilling((prev: any) => ({
+                      ...prev,
+                      email: e.target.value,
+                    }))
+                  }
                   type="text"
                   placeholder="Email"
+                  value={billing?.email}
                 />
               </div>
 
@@ -441,25 +525,52 @@ export const Checkout = ({ setCheckout }: any) => {
                 <>
                   <div className="coupon">
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          first_name: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="First name"
+                      value={shipping?.first_name}
                     />
 
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
                       type="text"
                       placeholder="Last name"
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          last_name: e.target.value,
+                        }))
+                      }
+                      value={shipping?.last_name}
                     />
                   </div>
                   <div className="coupon">
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          compnay: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="Company name (optional)"
+                      value={shipping?.compnay}
                     />
 
-                    <select name="" id="">
+                    <select
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          country: e.target.value,
+                        }))
+                      }
+                      name=""
+                      id=""
+                    >
                       <option value="">Country / Region</option>
                       {countryList?.map((item: any, index: number) => (
                         <option value={item?.code}>{item?.name}</option>
@@ -468,54 +579,65 @@ export const Checkout = ({ setCheckout }: any) => {
                   </div>
                   <div className="coupon">
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          address_1: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="Street address"
+                      value={shipping?.address_1}
                     />
 
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          city: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="Town / City"
+                      value={shipping?.city}
                     />
                   </div>
                   <div className="coupon">
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          state: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="District"
+                      value={shipping?.state}
                     />
 
                     <input
-                      onChange={(e) => setCoupon(e.target.value)}
+                      onChange={(e) =>
+                        setShipping((prev: any) => ({
+                          ...prev,
+                          postcode: e.target.value,
+                        }))
+                      }
                       type="text"
                       placeholder="Postcode / ZIP"
-                    />
-                  </div>
-                  <div className="coupon">
-                    <input
-                      onChange={(e) => setCoupon(e.target.value)}
-                      type="text"
-                      placeholder="Phone"
-                    />
-
-                    <input
-                      onChange={(e) => setCoupon(e.target.value)}
-                      type="text"
-                      placeholder="Email"
+                      value={shipping?.postcode}
                     />
                   </div>
                 </>
               )}
 
               {/* Order notes */}
-              <div className="coupon">
+              {/* <div className="coupon">
                 <input
                   onChange={(e) => setCoupon(e.target.value)}
                   type="text"
                   placeholder="Order notes"
                 />
-              </div>
+              </div> */}
             </Typography>
           </AccordionDetails>
         </Accordion>
