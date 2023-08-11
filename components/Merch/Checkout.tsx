@@ -155,8 +155,8 @@ export const Checkout = ({ setCheckout }: any) => {
   };
   const placeOrder = () => {
     const data = {
-      payment_method: "bacs",
-      payment_method_title: "Direct Bank Transfer",
+      payment_method: "card",
+      payment_method_title: "Stripe Transfer",
       set_paid: true,
       billing: {
         first_name: billing?.first_name,
