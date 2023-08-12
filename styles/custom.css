@@ -254,6 +254,7 @@ span.catName {
   font-size: 25px;
   color: #fff;
   border-radius: 50px;
+  cursor: pointer;
 }
 .different_address {
   display: flex;
@@ -265,4 +266,25 @@ span.catName {
   display: inline-block;
   width: 20px !important;
   height: 20px;
+}
+.btnDisable {
+  background: #ddd;
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+  width: 30%;
+  padding: 10px 20px;
+  justify-content: center;
+  font-size: 25px;
+  color: #fff;
+  border-radius: 50px;
+  cursor: not-allowed;
+}
+.billingDetails {
+  text-align: center;
+  color: red;
+}
+div#payment-message {
+  text-align: center;
+  color: red;
 }

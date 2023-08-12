@@ -16,10 +16,26 @@ import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
 import { getLocalStorageData, useApi } from "../helpers/globalFunction";
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
+import { useRouter } from "next/router";
+import Stripe from "stripe";
+import { useStore } from "../store/store";
 
 const HomePage = () => {
+  const router = useRouter();
   const [language, setLanguage] = React.useState<any>("en");
   const [isClient, setIsClient] = React.useState(false);
+  const [isCart, isCartActive, isPaymnet, isPaymnetSuccess] = useStore(
+    (state: any) => [
+      state.isCart,
+      state.isCartActive,
+      state.isPaymnet,
+      state.isPaymnetSuccess,
+    ]
+  );
+
+  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
+    apiVersion: "2022-11-15",
+  });
 
   const lngData = getLocalStorageData("lan");
 
@@ -70,6 +86,32 @@ const HomePage = () => {
 
   const { data: products } = useApi("products");
   const { data: categories } = useApi("products/categories");
+
+  //Add to cart
+  useEffect(() => {
+    const isSession = router?.query?.session_id;
+    (async () => {
+      if (isSession) {
+        console.log("======", isSession);
+        try {
+          const retrievedSession = await stripe.checkout.sessions.retrieve(
+            String(router?.query?.session_id)
+          );
+
+          if (retrievedSession?.payment_intent) {
+            isCartActive(true);
+            isPaymnetSuccess(retrievedSession);
+            console.log("Retrieved Session:", retrievedSession);
+            // isCartActive(false);
+          }
+        } catch (error) {
+          console.error("Error retrieving session:", error);
+        }
+      } else {
+        console.log("====else===", isSession);
+      }
+    })();
+  }, [router?.query?.session_id]);
 
   return (
     <Fragment>

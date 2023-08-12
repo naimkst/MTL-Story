@@ -8,6 +8,13 @@ import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
 import { CoCart, countryList, shopAPi } from "../../helpers/globalFunction";
 import Stripe from "stripe";
+import axios from "axios";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import { PaymentElement } from "@stripe/react-stripe-js";
+import { useStripe, useElements } from "@stripe/react-stripe-js";
+import CheckoutForm from "./CheckoutForm";
+import Payment from "./Payment";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -38,17 +45,22 @@ export const Checkout = ({ setCheckout }: any) => {
   const [coupon, setCoupon] = React.useState<any>("");
   const [updateCupon, setUpdateCupon] = React.useState<any>(false);
   const [differentAddress, setDifferentAddress] = React.useState<any>(false);
-  const [isCart, isCartActive] = useStore((state: any) => [
-    state.isCart,
-    state.isCartActive,
-  ]);
+
+  const [isCart, isCartActive, isPaymnet, setIsShipping] = useStore(
+    (state: any) => [
+      state.isCart,
+      state.isCartActive,
+      state.isPaymnet,
+      state.setIsShipping,
+    ]
+  );
 
   const [billing, setBilling] = React.useState<any>({
     first_name: "",
     last_name: "",
-    company: "",
+    compnay: "",
     address_1: "",
-    address_2: "",
+    // address_2: "",
     city: "",
     state: "",
     postcode: "",
@@ -68,11 +80,31 @@ export const Checkout = ({ setCheckout }: any) => {
     country: "",
   });
 
+  function checkIfAllNotNull(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key) && (obj[key] === null || obj[key] === "")) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const isAllNotNull = checkIfAllNotNull(billing);
+
+  useEffect(() => {
+    if (isAllNotNull) {
+      setIsShipping(isAllNotNull);
+    } else {
+      setIsShipping(isAllNotNull);
+    }
+  }, [isAllNotNull]);
   const [expanded, setExpanded] = React.useState("panel1");
 
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
     apiVersion: "2022-11-15",
   });
+
+  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
@@ -124,8 +156,6 @@ export const Checkout = ({ setCheckout }: any) => {
       console.log("error", error);
     }
   };
-
-  console.log("======", shipping);
 
   const paymentIntent = async () => {
     // Create a new customer and then create an invoice item then invoice it:
@@ -212,6 +242,69 @@ export const Checkout = ({ setCheckout }: any) => {
         console.log(error.response.data);
       });
   };
+
+  if (isPaymnet?.payment_intent) {
+    console.log("innnnn--------------=====", isPaymnet);
+    placeOrder();
+  }
+  const handleCheckout = () => {
+    axios
+      .post(`/api/stripe`, {
+        cartItems: items?.[1],
+        userId: "ttest@gmail.com",
+      })
+      .then((response) => {
+        console.log("@@@@@@@@", response.data);
+        if (response.data.url) {
+          window.location.href = response.data.url;
+        }
+      })
+      .catch((err) => console.log(err.message));
+  };
+
+  // Validate the card number
+  // const creatPayment = async () => {
+  //   const paymentMethod = await stripe.paymentMethods.create({
+  //     type: "card",
+  //     card: {
+  //       number: "4242424242424242",
+  //       exp_month: 2,
+  //       exp_year: 2024,
+  //       cvc: "314",
+  //     },
+  //   });
+
+  //   console.log("paymentMethod", paymentMethod);
+  // };
+
+  // const options = {
+  //   mode: "payment",
+  //   amount: 1099,
+  //   currency: "usd",
+  //   automatic_payment_methods: {
+  //     enabal: true,
+  //   },
+  // };
+
+  // const paymentSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log("paymentSubmit");
+
+  //   if (!strip || !element) {
+  //     return;
+  //   }
+
+  //   const { error } = await strip.confirmPayment({
+  //     element,
+  //     confirmParams: {
+  //       return_url: `${window.location.origin}/success`,
+  //     },
+  //   });
+
+  //   if (error) {
+  //     console.log("error", error);
+  //   }
+  // };
 
   return (
     <div className="calendar-box">
@@ -378,138 +471,216 @@ export const Checkout = ({ setCheckout }: any) => {
           <AccordionDetails>
             {/* <h3>Edit Shopping Cart</h3> */}
             <Typography>
-              <div className="coupon">
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      first_name: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="First name"
-                  value={billing?.first_name}
-                />
+              <div className="inputField">
+                <div className="">
+                  <h3>First Name</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        first_name: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="First name"
+                    value={billing?.first_name}
+                  />
+                  {billing?.first_name === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
 
-                <input
-                  type="text"
-                  placeholder="Last name"
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      last_name: e.target.value,
-                    }))
-                  }
-                  value={billing?.last_name}
-                />
+                <div className="">
+                  <h3>Last name</h3>
+                  <input
+                    type="text"
+                    placeholder="Last name"
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        last_name: e.target.value,
+                      }))
+                    }
+                    value={billing?.last_name}
+                  />
+                  {billing?.last_name === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="coupon">
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      compnay: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Company name (optional)"
-                  value={billing?.compnay}
-                />
+              <div className="inputField">
+                <div>
+                  <h3>Company name (optional)</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        compnay: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Company name (optional)"
+                    value={billing?.compnay}
+                  />
+                  {billing?.compnay === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
 
-                <select
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      country: e.target.value,
-                    }))
-                  }
-                  name=""
-                  id=""
-                >
-                  <option value="">Country / Region</option>
-                  {countryList?.map((item: any, index: number) => (
-                    <option value={item?.code}>{item?.name}</option>
-                  ))}
-                </select>
+                <div>
+                  <h3>Country / Region</h3>
+                  <select
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        country: e.target.value,
+                      }))
+                    }
+                    name=""
+                    id=""
+                  >
+                    <option value="">Country / Region</option>
+                    {countryList?.map((item: any, index: number) => (
+                      <option value={item?.code}>{item?.name}</option>
+                    ))}
+                  </select>
+                  {billing?.country === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="coupon">
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      address_1: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Street address"
-                  value={billing?.address_1}
-                />
-
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      city: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Town / City"
-                  value={billing?.city}
-                />
+              <div className="inputField">
+                <div>
+                  <h3>Street address</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        address_1: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Street address"
+                    value={billing?.address_1}
+                  />
+                  {billing?.address_1 === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <h3>Town / City</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        city: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Town / City"
+                    value={billing?.city}
+                  />
+                  {billing?.city === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="coupon">
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      state: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="District"
-                  value={billing?.state}
-                />
+              <div className="inputField">
+                <div>
+                  <h3>District</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        state: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="District"
+                    value={billing?.state}
+                  />
+                  {billing?.state === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
 
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      postcode: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Postcode / ZIP"
-                  value={billing?.postcode}
-                />
+                <div>
+                  <h3>Postcode / ZIP</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        postcode: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Postcode / ZIP"
+                    value={billing?.postcode}
+                  />
+                  {billing?.postcode === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
               </div>
-              <div className="coupon">
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      phone: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Phone"
-                  value={billing?.phone}
-                />
-
-                <input
-                  onChange={(e) =>
-                    setBilling((prev: any) => ({
-                      ...prev,
-                      email: e.target.value,
-                    }))
-                  }
-                  type="text"
-                  placeholder="Email"
-                  value={billing?.email}
-                />
+              <div className="inputField">
+                <div>
+                  <h3>Phone</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Phone"
+                    value={billing?.phone}
+                  />
+                  {billing?.phone === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
+                <div>
+                  <h3>Email</h3>
+                  <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Email"
+                    value={billing?.email}
+                  />
+                  {billing?.email === "" && (
+                    <span className="requiredFiled">
+                      This filed is required
+                    </span>
+                  )}
+                </div>
               </div>
 
               {/* ship to a different address? */}
-              <div className="coupon">
+              <div className="inputField">
                 <div className="different_address">
                   <input
                     onClick={() => setDifferentAddress(!differentAddress)}
@@ -523,7 +694,7 @@ export const Checkout = ({ setCheckout }: any) => {
 
               {differentAddress && (
                 <>
-                  <div className="coupon">
+                  <div className="inputField">
                     <input
                       onChange={(e) =>
                         setShipping((prev: any) => ({
@@ -548,7 +719,7 @@ export const Checkout = ({ setCheckout }: any) => {
                       value={shipping?.last_name}
                     />
                   </div>
-                  <div className="coupon">
+                  <div className="inputField">
                     <input
                       onChange={(e) =>
                         setShipping((prev: any) => ({
@@ -577,7 +748,7 @@ export const Checkout = ({ setCheckout }: any) => {
                       ))}
                     </select>
                   </div>
-                  <div className="coupon">
+                  <div className="inputField">
                     <input
                       onChange={(e) =>
                         setShipping((prev: any) => ({
@@ -602,7 +773,7 @@ export const Checkout = ({ setCheckout }: any) => {
                       value={shipping?.city}
                     />
                   </div>
-                  <div className="coupon">
+                  <div className="inputField">
                     <input
                       onChange={(e) =>
                         setShipping((prev: any) => ({
@@ -656,40 +827,43 @@ export const Checkout = ({ setCheckout }: any) => {
           <AccordionDetails>
             {/* <h3>Edit Shopping Cart</h3> */}
             <Typography>
-              <div className="order-summary"></div>
-              <div className="coupon">
-                <input
-                  onChange={(e) => setCoupon(e.target.value)}
-                  type="text"
-                  placeholder="Card Number"
-                />
-              </div>
+              {/* <form onSubmit={paymentSubmit}>
+                <Elements options={options} stripe={stripePromise}>
+                  <PaymentElement />
+                </Elements>
+                <button
+                  className="checkoutBtn mt-3"
+                  type="submit"
+                  disabled={!stripe}
+                >
+                  Pay
+                </button>
+              </form> */}
 
-              <div className="coupon">
-                <input
-                  onChange={(e) => setCoupon(e.target.value)}
-                  type="text"
-                  placeholder="Expiry Date"
-                />
-                <input
-                  onChange={(e) => setCoupon(e.target.value)}
-                  type="text"
-                  placeholder="CVV"
-                />
-              </div>
+              <Payment />
             </Typography>
           </AccordionDetails>
         </Accordion>
-
-        <div
-          className="checkoutBtn"
-          onClick={() => {
-            setCheckout(true);
-            paymentIntent();
-          }}
-        >
-          checkout
-        </div>
+        {/* {isAllNotNull ? (
+          <div
+            className="checkoutBtn"
+            onClick={() => {
+              setCheckout(true);
+              handleCheckout();
+            }}
+          >
+            Checkout
+          </div>
+        ) : (
+          <>
+            <div className="text-center mb-3">
+              <span className="billingDetails">
+                Billing details are required!
+              </span>
+            </div>
+            <div className="btnDisable">checkout</div>
+          </>
+        )} */}
       </div>
     </div>
   );
