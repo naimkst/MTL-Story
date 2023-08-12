@@ -7,13 +7,6 @@ import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
 import { CoCart, countryList, shopAPi } from "../../helpers/globalFunction";
-import Stripe from "stripe";
-import axios from "axios";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import { PaymentElement } from "@stripe/react-stripe-js";
-import { useStripe, useElements } from "@stripe/react-stripe-js";
-import CheckoutForm from "./CheckoutForm";
 import Payment from "./Payment";
 
 const Accordion: any = styled((props) => (
@@ -45,15 +38,22 @@ export const Checkout = ({ setCheckout }: any) => {
   const [coupon, setCoupon] = React.useState<any>("");
   const [updateCupon, setUpdateCupon] = React.useState<any>(false);
   const [differentAddress, setDifferentAddress] = React.useState<any>(false);
-
-  const [isCart, isCartActive, isPaymnet, setIsShipping] = useStore(
-    (state: any) => [
-      state.isCart,
-      state.isCartActive,
-      state.isPaymnet,
-      state.setIsShipping,
-    ]
-  );
+  const [itemsResult, setItemsResult] = React.useState<any>();
+  const [
+    isCart,
+    isCartActive,
+    isPaymnet,
+    setIsShipping,
+    setSubTotal,
+    subTotals,
+  ] = useStore((state: any) => [
+    state.isCart,
+    state.isCartActive,
+    state.isPaymnet,
+    state.setIsShipping,
+    state.setSubTotal,
+    state.subTotals,
+  ]);
 
   const [billing, setBilling] = React.useState<any>({
     first_name: "",
@@ -88,8 +88,10 @@ export const Checkout = ({ setCheckout }: any) => {
     }
     return true;
   }
-
   const isAllNotNull = checkIfAllNotNull(billing);
+  const items = cartData[4];
+  const subTotal = cartData[13];
+  const getCoupon = cartData[7];
 
   useEffect(() => {
     if (isAllNotNull) {
@@ -98,13 +100,8 @@ export const Checkout = ({ setCheckout }: any) => {
       setIsShipping(isAllNotNull);
     }
   }, [isAllNotNull]);
+
   const [expanded, setExpanded] = React.useState("panel1");
-
-  const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
-    apiVersion: "2022-11-15",
-  });
-
-  const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
 
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
@@ -115,26 +112,49 @@ export const Checkout = ({ setCheckout }: any) => {
   }
 
   useEffect(() => {
-    CoCart.get("cart")
-      .then((response) => {
-        setCartData(
-          Object.entries(response.data) ? Object.entries(response.data) : []
-        );
-      })
-      .catch((error) => {
-        // Invalid request, for 4xx and 5xx statuses
-        console.log("Response Status:", error.response.status);
-        console.log("Response Headers:", error.response.headers);
-        console.log("Response Data:", error.response.data);
-      })
-      .finally(() => {
-        // Always executed.
-      });
+    try {
+      CoCart.get("cart")
+        .then((response) => {
+          setCartData(
+            Object.entries(response.data) ? Object.entries(response.data) : []
+          );
+        })
+        .catch((error) => {
+          // Invalid request, for 4xx and 5xx statuses
+          console.log("Response Status:", error.response.status);
+          console.log("Response Headers:", error.response.headers);
+          console.log("Response Data:", error.response.data);
+        })
+        .finally(() => {
+          // Always executed.
+        });
+    } catch (error) {
+      console.log("error", error);
+    }
   }, [updateCupon]);
 
-  const items = cartData[4];
-  const subTotal = cartData[13];
-  const getCoupon = cartData[7];
+  const clearCartData = () => {
+    try {
+      CoCart.post("cart/clear", {}, {})
+        .then((response) => {
+          // Successful request
+          console.log("Response Status:", response.status);
+          console.log("Response Headers:", response.headers);
+          console.log("Response Data:", response.data);
+        })
+        .catch((error) => {
+          // Invalid request, for 4xx and 5xx statuses
+          console.log("Response Status:", error.response.status);
+          console.log("Response Headers:", error.response.headers);
+          console.log("Response Data:", error.response.data);
+        })
+        .finally(() => {
+          // Always executed.
+        });
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   const couponApply = async () => {
     try {
@@ -157,154 +177,192 @@ export const Checkout = ({ setCheckout }: any) => {
     }
   };
 
-  const paymentIntent = async () => {
-    // Create a new customer and then create an invoice item then invoice it:
-    stripe.customers
-      .create({
-        email: billing?.email,
-      })
-      .then((customer: any) => {
-        // have access to the customer object
-        return stripe.paymentIntents
-          .create({
-            customer: customer.id, // set the customer id
-            amount: 1200, // 12
-            currency: "usd",
-            description: "One-time setup fee",
-          })
+  useEffect(() => {
+    try {
+      const lineItems = items?.[1]?.map((item: any) => ({
+        product_id: item.id,
+        quantity: item.quantity.value,
+      }));
 
-          .then((invoice) => {
-            // New invoice created on a new customer
-            console.log("invoice", invoice);
+      setItemsResult(lineItems);
+    } catch (error) {
+      console.log("error", error);
+    }
+
+    setSubTotal(subTotal?.[1]);
+  }, [items?.[1]]);
+
+  const placeOrder = async () => {
+    if (getCoupon?.[1]?.length !== 0 && itemsResult) {
+      try {
+        const data = {
+          payment_method: "card",
+          payment_method_title: "Stripe Transfer",
+          set_paid: true,
+          billing: {
+            first_name: billing?.first_name,
+            last_name: billing?.last_name,
+            company: billing?.company,
+            address_1: billing?.address_1,
+            address_2: billing?.address_2,
+            city: billing?.city,
+            state: billing?.state,
+            postcode: billing?.postcode,
+            country: billing?.country,
+            email: billing?.email,
+            phone: billing?.phone,
+          },
+          shipping: {
+            first_name: differentAddress
+              ? shipping?.first_name
+              : billing?.first_name,
+            last_name: differentAddress
+              ? shipping?.last_name
+              : billing?.last_name,
+            address_1: differentAddress
+              ? shipping?.address_1
+              : billing?.address_1,
+            address_2: differentAddress
+              ? shipping?.address_2
+              : billing?.address_2,
+            city: differentAddress ? shipping?.city : billing?.city,
+            state: differentAddress ? shipping?.state : billing?.state,
+            postcode: differentAddress ? shipping?.postcode : billing?.postcode,
+            country: differentAddress ? shipping?.country : billing?.country,
+          },
+          line_items: itemsResult,
+          // shipping_lines: [
+          //   {
+          //     method_id: "flat_rate",
+          //     method_title: "",
+          //     total: "",
+          //   },
+          // ],
+          coupon_lines: [
+            {
+              code: getCoupon[1].length !== 0 ? getCoupon[1]?.[0]?.coupon : "",
+            },
+          ],
+        };
+        const orderPlace = shopAPi
+          .post("orders", data)
+          .then((response) => {
+            console.log(response.data);
+            clearCartData();
+            setBilling({
+              first_name: "",
+              last_name: "",
+              company: "",
+              address_1: "",
+              city: "",
+              state: "",
+              postcode: "",
+              country: "",
+              email: "",
+              phone: "",
+            });
+            setShipping({
+              first_name: "",
+              last_name: "",
+              address_1: "",
+              address_2: "",
+              city: "",
+              state: "",
+              postcode: "",
+              country: "",
+            });
           })
-          .catch((err) => {
-            // Deal with an error
-            console.log("err", err);
+          .catch((error) => {
+            console.log(error.response.data);
           });
-      });
+
+        console.log("orderPlace", await orderPlace);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
+    if (itemsResult) {
+      try {
+        const data = {
+          payment_method: "card",
+          payment_method_title: "Stripe Transfer",
+          set_paid: true,
+          billing: {
+            first_name: billing?.first_name,
+            last_name: billing?.last_name,
+            company: billing?.company,
+            address_1: billing?.address_1,
+            address_2: billing?.address_2,
+            city: billing?.city,
+            state: billing?.state,
+            postcode: billing?.postcode,
+            country: billing?.country,
+            email: billing?.email,
+            phone: billing?.phone,
+          },
+          shipping: {
+            first_name: differentAddress
+              ? shipping?.first_name
+              : billing?.first_name,
+            last_name: differentAddress
+              ? shipping?.last_name
+              : billing?.last_name,
+            address_1: differentAddress
+              ? shipping?.address_1
+              : billing?.address_1,
+            address_2: differentAddress
+              ? shipping?.address_2
+              : billing?.address_2,
+            city: differentAddress ? shipping?.city : billing?.city,
+            state: differentAddress ? shipping?.state : billing?.state,
+            postcode: differentAddress ? shipping?.postcode : billing?.postcode,
+            country: differentAddress ? shipping?.country : billing?.country,
+          },
+          line_items: itemsResult,
+        };
+        const orderPlace = shopAPi
+          .post("orders", data)
+          .then((response) => {
+            console.log(response.data);
+            clearCartData();
+            setBilling({
+              first_name: "",
+              last_name: "",
+              company: "",
+              address_1: "",
+              city: "",
+              state: "",
+              postcode: "",
+              country: "",
+              email: "",
+              phone: "",
+            });
+            setShipping({
+              first_name: "",
+              last_name: "",
+              address_1: "",
+              address_2: "",
+              city: "",
+              state: "",
+              postcode: "",
+              country: "",
+            });
+          })
+          .catch((error) => {
+            console.log(error.response.data);
+          });
+        console.log("orderPlace", await orderPlace);
+      } catch (error) {
+        console.log("error", error);
+      }
+    }
   };
-  const placeOrder = () => {
-    const data = {
-      payment_method: "card",
-      payment_method_title: "Stripe Transfer",
-      set_paid: true,
-      billing: {
-        first_name: billing?.first_name,
-        last_name: billing?.last_name,
-        company: billing?.company,
-        address_1: billing?.address_1,
-        address_2: billing?.address_2,
-        city: billing?.city,
-        state: billing?.state,
-        postcode: billing?.postcode,
-        country: billing?.country,
-        email: billing?.email,
-        phone: billing?.phone,
-      },
-      shipping: {
-        first_name: differentAddress
-          ? shipping?.first_name
-          : billing?.first_name,
-        last_name: differentAddress ? shipping?.last_name : billing?.last_name,
-        address_1: differentAddress ? shipping?.address_1 : billing?.address_1,
-        address_2: differentAddress ? shipping?.address_2 : billing?.address_2,
-        city: differentAddress ? shipping?.city : billing?.city,
-        state: differentAddress ? shipping?.state : billing?.state,
-        postcode: differentAddress ? shipping?.postcode : billing?.postcode,
-        country: differentAddress ? shipping?.country : billing?.country,
-      },
-      line_items: [
-        {
-          product_id: 124,
-          quantity: 1,
-        },
-      ],
-      shipping_lines: [
-        {
-          method_id: "",
-          method_title: "",
-          total: "",
-        },
-      ],
-      coupon_lines: [
-        {
-          code: getCoupon ? getCoupon[1]?.[0]?.coupon : "",
-        },
-      ],
-    };
 
-    shopAPi
-      .post("orders", data)
-      .then((response) => {
-        console.log(response.data);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-      });
-  };
-
-  if (isPaymnet?.payment_intent) {
-    console.log("innnnn--------------=====", isPaymnet);
-    placeOrder();
-  }
-  const handleCheckout = () => {
-    axios
-      .post(`/api/stripe`, {
-        cartItems: items?.[1],
-        userId: "ttest@gmail.com",
-      })
-      .then((response) => {
-        console.log("@@@@@@@@", response.data);
-        if (response.data.url) {
-          window.location.href = response.data.url;
-        }
-      })
-      .catch((err) => console.log(err.message));
-  };
-
-  // Validate the card number
-  // const creatPayment = async () => {
-  //   const paymentMethod = await stripe.paymentMethods.create({
-  //     type: "card",
-  //     card: {
-  //       number: "4242424242424242",
-  //       exp_month: 2,
-  //       exp_year: 2024,
-  //       cvc: "314",
-  //     },
-  //   });
-
-  //   console.log("paymentMethod", paymentMethod);
-  // };
-
-  // const options = {
-  //   mode: "payment",
-  //   amount: 1099,
-  //   currency: "usd",
-  //   automatic_payment_methods: {
-  //     enabal: true,
-  //   },
-  // };
-
-  // const paymentSubmit = async (e) => {
-  //   e.preventDefault();
-  //   console.log("paymentSubmit");
-
-  //   if (!strip || !element) {
-  //     return;
-  //   }
-
-  //   const { error } = await strip.confirmPayment({
-  //     element,
-  //     confirmParams: {
-  //       return_url: `${window.location.origin}/success`,
-  //     },
-  //   });
-
-  //   if (error) {
-  //     console.log("error", error);
-  //   }
-  // };
+  useEffect(() => {
+    if (isPaymnet?.status === "succeeded") {
+      placeOrder();
+    }
+  }, [isPaymnet]);
 
   return (
     <div className="calendar-box">
@@ -373,6 +431,7 @@ export const Checkout = ({ setCheckout }: any) => {
           </AccordionSummary>
           <AccordionDetails>
             <h3>Shopping Cart</h3>
+            {items?.[1].length === 0 && <h2>No cart item found!</h2>}
             {items?.[1]?.map((item: any, index: number) => (
               <div key={`cartItem-${index}`} className="shoping-wrap">
                 <div className="shopping-img">
@@ -813,37 +872,28 @@ export const Checkout = ({ setCheckout }: any) => {
           </AccordionDetails>
         </Accordion>
 
-        <Accordion
-          expanded={expanded === "payment"}
-          onChange={handleChange("payment")}
-        >
-          <AccordionSummary
-            expandIcon={""}
-            aria-controls="panel2bh-content"
-            id="panel1bh-header"
-          >
-            <Typography>Payment</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {/* <h3>Edit Shopping Cart</h3> */}
-            <Typography>
-              {/* <form onSubmit={paymentSubmit}>
-                <Elements options={options} stripe={stripePromise}>
-                  <PaymentElement />
-                </Elements>
-                <button
-                  className="checkoutBtn mt-3"
-                  type="submit"
-                  disabled={!stripe}
-                >
-                  Pay
-                </button>
-              </form> */}
+        {JSON.stringify(subTotal?.total)}
 
-              <Payment />
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+        {subTotals?.total !== "0" && (
+          <Accordion
+            expanded={expanded === "payment"}
+            onChange={handleChange("payment")}
+          >
+            <AccordionSummary
+              expandIcon={""}
+              aria-controls="panel2bh-content"
+              id="panel1bh-header"
+            >
+              <Typography>Payment</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                <Payment />
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        )}
+
         {/* {isAllNotNull ? (
           <div
             className="checkoutBtn"

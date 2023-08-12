@@ -13,11 +13,7 @@ const Merch = ({ data, products, categories }: any) => {
   const [unsubscribe, setUnsubscribe] = React.useState<any>(false);
   const [productItem, setProductItem] = React.useState<any>(null);
 
-  const [isCart, isCartActive, isCartInactive] = useStore((state: any) => [
-    state.isCart,
-    state.isCartActive,
-    state.isCartInactive,
-  ]);
+  const [isCart] = useStore((state: any) => [state.isCart]);
 
   const findCategory = (cat: any, prdCat: any) => {
     const catName = prdCat?.categories?.find(

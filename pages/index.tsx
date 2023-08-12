@@ -92,7 +92,6 @@ const HomePage = () => {
     const isSession = router?.query?.session_id;
     (async () => {
       if (isSession) {
-        console.log("======", isSession);
         try {
           const retrievedSession = await stripe.checkout.sessions.retrieve(
             String(router?.query?.session_id)
@@ -108,7 +107,7 @@ const HomePage = () => {
           console.error("Error retrieving session:", error);
         }
       } else {
-        console.log("====else===", isSession);
+        console.log(isSession);
       }
     })();
   }, [router?.query?.session_id]);

@@ -10,18 +10,18 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [isCart, isCartActive, isPaymnet, isShipping] = useStore(
-    (state: any) => [
+  const [isCart, isCartActive, isPaymnet, isShipping, isPaymnetSuccess] =
+    useStore((state: any) => [
       state.isCart,
       state.isCartActive,
       state.isPaymnet,
       state.isShipping,
-    ]
-  );
+      state.isPaymnetSuccess,
+    ]);
 
   console.log("isShipping", isShipping);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!stripe || !elements) {
       // Stripe.js has not yet loaded.
@@ -39,7 +39,7 @@ export default function CheckoutForm() {
     });
 
     if (paymentIntent) {
-      console.log("Payment completed ====================", paymentIntent);
+      isPaymnetSuccess(paymentIntent);
     }
 
     if (error) {

@@ -5,10 +5,12 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
 });
 
 export default async function handler(req, res) {
+  const { amount } = req.body;
+
   try {
     const paymentIntent = await stripe.paymentIntents.create({
-      currency: "EUR",
-      amount: 1999,
+      currency: "USD",
+      amount: amount ? amount : 1000,
       automatic_payment_methods: { enabled: true },
     });
 
