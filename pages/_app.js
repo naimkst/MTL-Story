@@ -8,15 +8,32 @@ import "slick-carousel/slick/slick-theme.css";
 import "../styles/custom.css";
 import Head from "next/head";
 import "../node_modules/react-modal-video/scss/modal-video.scss";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
 
 function MyApp({ Component, pageProps }) {
   return (
-    <div>
-      <Head>
-        <title>MTL-Story</title>
-      </Head>
-      <Component {...pageProps} />
-    </div>
+    <>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      <div>
+        <Head>
+          <title>MTL-Story</title>
+        </Head>
+        <Component {...pageProps} />
+      </div>
+      <ToastContainer />
+    </>
   );
 }
 

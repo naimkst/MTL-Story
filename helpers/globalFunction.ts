@@ -71,25 +71,29 @@ export const useApi = (url: any) => {
 };
 
 export const addToCart = async (id: any, variation: any, isCartActive: any) => {
-  const transformedData = variation?.reduce((acc: any, item: any) => {
-    const key = Object.keys(item)[0];
-    const value = item[key];
-    acc[`attribute_${key.toLowerCase()}`] = value;
-    return acc;
-  }, {});
+  try {
+    const transformedData = variation?.reduce((acc: any, item: any) => {
+      const key = Object.keys(item)[0];
+      const value = item[key];
+      acc[`attribute_${key.toLowerCase()}`] = value;
+      return acc;
+    }, {});
 
-  var data = {
-    id: String(id),
-    quantity: "1",
-    variation: transformedData,
-  };
+    var data = {
+      id: String(id),
+      quantity: "1",
+      variation: transformedData,
+    };
 
-  const cartAdd = CoCart.post("cart/add-item", data);
+    const cartAdd = CoCart.post("cart/add-item", data);
 
-  const cart: any = await cartAdd;
-  if (cart?.status === 200) {
-    isCartActive(true);
-    console.log("cartAdd@@@@@@@", cart?.data);
+    const cart: any = await cartAdd;
+    if (cart?.status === 200) {
+      isCartActive(true);
+      console.log("cartAdd@@@@@@@", cart?.data);
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 export const countryList = [

@@ -15,10 +15,10 @@ import BackToTop from "../components/backToTop/backToTop";
 import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
 import { getLocalStorageData, useApi } from "../helpers/globalFunction";
-import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { useRouter } from "next/router";
 import Stripe from "stripe";
 import { useStore } from "../store/store";
+import { toast } from "react-toastify";
 
 const HomePage = () => {
   const router = useRouter();
@@ -111,6 +111,8 @@ const HomePage = () => {
       }
     })();
   }, [router?.query?.session_id]);
+
+  // toast.success("Wow so easy!");
 
   return (
     <Fragment>

@@ -106,7 +106,6 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
               {item == "Size" && (
                 <div className="product-filter-item color filter-size">
                   <div className="color-name">
-                    {JSON.stringify(verient)}
                     <span>Select {item}:</span>
                     <ul>
                       {attributeOptionsMap[item].map(
