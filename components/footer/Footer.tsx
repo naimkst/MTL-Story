@@ -8,7 +8,9 @@ import social3 from "/public/images/icon/6.svg";
 import Image from "next/image";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
+
 const Footer = ({ global }: any) => {
+
   return (
     <div className="site-footer">
       <div className="container-fluid">

@@ -64,9 +64,10 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
     }
   };
 
-  const [isCart, isCartActive] = useStore((state: any) => [
+  const [isCart, isCartActive, setIsUpdate] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
+    state.setIsUpdate,
   ]);
 
   return (
@@ -187,8 +188,9 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
           </a>
 
           <a
-            onClick={() => addToCart(productItem?.id, verient, isCartActive)}
-            href="#"
+            onClick={() =>
+              addToCart(productItem?.id, verient, isCartActive, setIsUpdate)
+            }
             className="theme-btn"
           >
             Add to Cart

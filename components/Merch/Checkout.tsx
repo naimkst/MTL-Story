@@ -6,8 +6,15 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
-import { CoCart, countryList, shopAPi } from "../../helpers/globalFunction";
+import {
+  CoCart,
+  checkIfAllNotNull,
+  countryList,
+  priceConvert,
+  shopAPi,
+} from "../../helpers/globalFunction";
 import Payment from "./Payment";
+import { toast } from "react-toastify";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -33,12 +40,18 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
 }));
 
-export const Checkout = ({ setCheckout }: any) => {
+export const Checkout = ({
+  setCheckout,
+  setCoupon,
+  couponApply,
+  setCartItemRemove,
+}: any) => {
   const [cartData, setCartData] = React.useState<any>([]);
-  const [coupon, setCoupon] = React.useState<any>("");
   const [updateCupon, setUpdateCupon] = React.useState<any>(false);
   const [differentAddress, setDifferentAddress] = React.useState<any>(false);
   const [itemsResult, setItemsResult] = React.useState<any>();
+  const [expanded, setExpanded] = React.useState("panel1");
+
   const [
     isCart,
     isCartActive,
@@ -46,6 +59,7 @@ export const Checkout = ({ setCheckout }: any) => {
     setIsShipping,
     setSubTotal,
     subTotals,
+    cartItems,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -53,6 +67,7 @@ export const Checkout = ({ setCheckout }: any) => {
     state.setIsShipping,
     state.setSubTotal,
     state.subTotals,
+    state.cartItems,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -80,18 +95,10 @@ export const Checkout = ({ setCheckout }: any) => {
     country: "",
   });
 
-  function checkIfAllNotNull(obj) {
-    for (const key in obj) {
-      if (obj.hasOwnProperty(key) && (obj[key] === null || obj[key] === "")) {
-        return false;
-      }
-    }
-    return true;
-  }
   const isAllNotNull = checkIfAllNotNull(billing);
-  const items = cartData[4];
-  const subTotal = cartData[13];
-  const getCoupon = cartData[7];
+  const items = cartItems?.[4];
+  const subTotal = cartItems?.[13];
+  const getCoupon = cartItems?.[7];
 
   useEffect(() => {
     if (isAllNotNull) {
@@ -101,37 +108,9 @@ export const Checkout = ({ setCheckout }: any) => {
     }
   }, [isAllNotNull]);
 
-  const [expanded, setExpanded] = React.useState("panel1");
-
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
   };
-
-  function priceConvert(price: any) {
-    return Number(price) / 100;
-  }
-
-  useEffect(() => {
-    try {
-      CoCart.get("cart")
-        .then((response) => {
-          setCartData(
-            Object.entries(response.data) ? Object.entries(response.data) : []
-          );
-        })
-        .catch((error) => {
-          // Invalid request, for 4xx and 5xx statuses
-          console.log("Response Status:", error.response.status);
-          console.log("Response Headers:", error.response.headers);
-          console.log("Response Data:", error.response.data);
-        })
-        .finally(() => {
-          // Always executed.
-        });
-    } catch (error) {
-      console.log("error", error);
-    }
-  }, [updateCupon]);
 
   const clearCartData = () => {
     try {
@@ -156,39 +135,16 @@ export const Checkout = ({ setCheckout }: any) => {
     }
   };
 
-  const couponApply = async () => {
-    try {
-      const couponGet = await fetch(
-        `${process.env.NEXT_PUBLIC_STORE_URL}/cart/?wt_coupon=${coupon}`
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .catch((error) => {
-          console.error("Error fetching data:", error);
-          return null;
-        });
-      setUpdateCupon(true);
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
   useEffect(() => {
     try {
       const lineItems = items?.[1]?.map((item: any) => ({
         product_id: item.id,
         quantity: item.quantity.value,
       }));
-
       setItemsResult(lineItems);
     } catch (error) {
       console.log("error", error);
     }
-
     setSubTotal(subTotal?.[1]);
   }, [items?.[1]]);
 
@@ -364,6 +320,30 @@ export const Checkout = ({ setCheckout }: any) => {
     }
   }, [isPaymnet]);
 
+  const removeCartItem = (id: any) => {
+    CoCart.delete(`cart/item/${id}`)
+      .then((response) => {
+        // Successful request
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+        console.log("Response Data:", response.data);
+        if (response.status === 200) {
+          setCartItemRemove(id);
+          toast.success("Remove successfully!");
+        }
+      })
+      .catch((error) => {
+        // Invalid request, for 4xx and 5xx statuses
+        console.log("Response Status:", error.response.status);
+        console.log("Response Headers:", error.response.headers);
+        console.log("Response Data:", error.response.data);
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        // Always executed.
+      });
+  };
+
   return (
     <div className="calendar-box">
       <div
@@ -434,6 +414,25 @@ export const Checkout = ({ setCheckout }: any) => {
             {items?.[1].length === 0 && <h2>No cart item found!</h2>}
             {items?.[1]?.map((item: any, index: number) => (
               <div key={`cartItem-${index}`} className="shoping-wrap">
+                <span
+                  onClick={() => removeCartItem(item?.item_key)}
+                  className="cartRemove"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-3 h-3"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                    />
+                  </svg>
+                </span>
                 <div className="shopping-img">
                   <Image
                     src={item?.featured_image}

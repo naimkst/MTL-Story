@@ -7,7 +7,14 @@ import { Checkout } from "./Checkout";
 import { Unsubscribe } from "./Unsubscribe";
 import { useStore } from "../../store/store";
 
-const Merch = ({ data, products, categories }: any) => {
+const Merch = ({
+  data,
+  products,
+  categories,
+  setCoupon,
+  couponApply,
+  setCartItemRemove,
+}: any) => {
   const [productDetails, setProductDetails] = React.useState<any>(false);
   const [checkout, setCheckout] = React.useState<any>(false);
   const [unsubscribe, setUnsubscribe] = React.useState<any>(false);
@@ -109,7 +116,14 @@ const Merch = ({ data, products, categories }: any) => {
           productItem={productItem}
         />
       )}
-      {isCart && <Checkout setCheckout={setCheckout} />}
+      {isCart && (
+        <Checkout
+          setCheckout={setCheckout}
+          setCoupon={setCoupon}
+          couponApply={couponApply}
+          setCartItemRemove={setCartItemRemove}
+        />
+      )}
       {unsubscribe && <Unsubscribe setUnsubscribe={setUnsubscribe} />}
     </>
   );

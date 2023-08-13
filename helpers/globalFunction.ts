@@ -1,6 +1,7 @@
 import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 import { useEffect, useState } from "react";
 import CoCartAPI from "@cocart/cocart-rest-api";
+import { toast } from "react-toastify";
 import { useStore } from "../store/store";
 
 export const CoCart = new CoCartAPI({
@@ -70,7 +71,12 @@ export const useApi = (url: any) => {
   return { loading, error, data };
 };
 
-export const addToCart = async (id: any, variation: any, isCartActive: any) => {
+export const addToCart = async (
+  id: any,
+  variation: any,
+  isCartActive: any,
+  setIsUpdate: any
+) => {
   try {
     const transformedData = variation?.reduce((acc: any, item: any) => {
       const key = Object.keys(item)[0];
@@ -84,17 +90,31 @@ export const addToCart = async (id: any, variation: any, isCartActive: any) => {
       quantity: "1",
       variation: transformedData,
     };
-
     const cartAdd = CoCart.post("cart/add-item", data);
-
     const cart: any = await cartAdd;
     if (cart?.status === 200) {
       isCartActive(true);
+      toast.success("Item added to cart");
       console.log("cartAdd@@@@@@@", cart?.data);
+      setIsUpdate(Math.random());
     }
   } catch (error) {
     console.log(error);
+    toast.error("Something went wrong");
   }
+};
+
+export const priceConvert = (price: any) => {
+  return Number(price) / 100;
+};
+
+export const checkIfAllNotNull = (obj: any) => {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key) && (obj[key] === null || obj[key] === "")) {
+      return false;
+    }
+  }
+  return true;
 };
 export const countryList = [
   { name: "Afghanistan", code: "AF" },

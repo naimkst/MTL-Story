@@ -15,8 +15,6 @@ function Payment() {
   const [clientSecret, setClientSecret] = useState("");
   const [subTotals] = useStore((state: any) => [state.subTotals]);
 
-  console.log("subTotal=======", subTotals);
-
   useEffect(() => {
     fetch("/api//config").then(async (r) => {
       const { publishableKey } = await r.json();
@@ -37,15 +35,6 @@ function Payment() {
     }
   };
   useEffect(() => {
-    // fetch("/api/payment", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     amount: subTotal?.total,
-    //   }),
-    // }).then(async (result) => {
-    //   var { clientSecret } = await result.json();
-    //   setClientSecret(clientSecret);
-    // });
     paymentLoad();
   }, [subTotals]);
 
