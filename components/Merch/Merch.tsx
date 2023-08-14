@@ -6,6 +6,7 @@ import { ProductDetails } from "./ProductDetails";
 import { Checkout } from "./Checkout";
 import { Unsubscribe } from "./Unsubscribe";
 import { useStore } from "../../store/store";
+import { OrderSuccess } from "./OrderSuccess";
 
 const Merch = ({
   data,
@@ -20,7 +21,14 @@ const Merch = ({
   const [unsubscribe, setUnsubscribe] = React.useState<any>(false);
   const [productItem, setProductItem] = React.useState<any>(null);
 
-  const [isCart] = useStore((state: any) => [state.isCart]);
+  const [isCart, orderSuccess, singleProduct, setSingleProduct] = useStore(
+    (state: any) => [
+      state.isCart,
+      state.orderSuccess,
+      state.singleProduct,
+      state.setSingleProduct,
+    ]
+  );
 
   const findCategory = (cat: any, prdCat: any) => {
     const catName = prdCat?.categories?.find(
@@ -65,7 +73,7 @@ const Merch = ({
                                     key={`imgMerch-${index}`}
                                     className="merch-img-item"
                                     onClick={() => {
-                                      setProductDetails(true);
+                                      setSingleProduct(true);
                                       setProductItem(img);
                                     }}
                                   >
@@ -110,7 +118,7 @@ const Merch = ({
           </div>
         </div>
       </section>
-      {productDetails && (
+      {singleProduct && (
         <ProductDetails
           setProductDetails={setProductDetails}
           productItem={productItem}
@@ -125,6 +133,7 @@ const Merch = ({
         />
       )}
       {unsubscribe && <Unsubscribe setUnsubscribe={setUnsubscribe} />}
+      {orderSuccess && <OrderSuccess setUnsubscribe={setUnsubscribe} />}
     </>
   );
 };

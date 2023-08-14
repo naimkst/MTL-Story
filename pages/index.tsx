@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, use, useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import ContactArea from "../components/ContactArea";
 import Hero from "../components/hero/hero";
@@ -35,6 +35,10 @@ const HomePage = () => {
     isPaymnetSuccess,
     setCartItems,
     isUpdate,
+    orderCreate,
+    orderSuccess,
+    singleProduct,
+    setSingleProduct,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -42,6 +46,10 @@ const HomePage = () => {
     state.isPaymnetSuccess,
     state.setCartItems,
     state.isUpdate,
+    state.orderCreate,
+    state.orderSuccess,
+    state.singleProduct,
+    state.setSingleProduct,
   ]);
 
   const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
@@ -162,7 +170,12 @@ const HomePage = () => {
     } catch (error) {
       console.log("error", error);
     }
-  }, [updateCupon, cartItemRemove, isUpdate]);
+  }, [updateCupon, cartItemRemove, isUpdate, orderCreate]);
+
+  useEffect(() => {
+    isCartActive(false);
+    setSingleProduct(false);
+  }, [orderSuccess]);
 
   if (loading || data === undefined || globalLoading) {
     return <Loader />;

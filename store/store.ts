@@ -6,6 +6,8 @@ export const useStore = create(
     (set, get) => ({
       isCart: false,
       isCartActive: (data: any) => set({ isCart: data }),
+      singleProduct: false,
+      setSingleProduct: (data: any) => set({ singleProduct: data }),
       cartItems: [],
       setCartItems: (data: any) => set({ cartItems: data }),
       isPaymnet: [],
@@ -18,6 +20,8 @@ export const useStore = create(
       setIsUpdate: (data: any) => set({ isUpdate: data }),
       orderCreate: {},
       setOrderCreate: (data: any) => set({ orderCreate: data }),
+      orderSuccess: false,
+      setOrderSuccess: (data: any) => set({ orderSuccess: data }),
     }),
     {
       name: "mtlStorage", // name of the item in the storage (must be unique)

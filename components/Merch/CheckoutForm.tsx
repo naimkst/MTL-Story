@@ -48,7 +48,6 @@ export default function CheckoutForm() {
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage("Payment successful!");
       toast.success("Payment successful!");
-      isCartActive(false);
       console.log("Payment successful");
     } else {
       setMessage("An unexpected error occured.");

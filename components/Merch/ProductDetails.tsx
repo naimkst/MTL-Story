@@ -8,6 +8,14 @@ import { useStore } from "../../store/store";
 export const ProductDetails = ({ setProductDetails, productItem }: any) => {
   const [verient, setVariation] = useState<any>([]);
   const { data } = useApi(`products/${productItem?.id}/variations`);
+  const [isCart, isCartActive, setIsUpdate, setSingleProduct] = useStore(
+    (state: any) => [
+      state.isCart,
+      state.isCartActive,
+      state.setIsUpdate,
+      state.setSingleProduct,
+    ]
+  );
 
   const getVeriation = (id: any) => {
     const { data: variations } = useApi(
@@ -64,18 +72,12 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
     }
   };
 
-  const [isCart, isCartActive, setIsUpdate] = useStore((state: any) => [
-    state.isCart,
-    state.isCartActive,
-    state.setIsUpdate,
-  ]);
-
   return (
     <div className="calendar-box">
       <div
         className="calendarClose"
         onClick={() => {
-          setProductDetails(false);
+          setSingleProduct(false);
         }}
       >
         <svg

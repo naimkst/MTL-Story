@@ -63,6 +63,9 @@ export const Checkout = ({
     cartItems,
     setOrderCreate,
     orderCreate,
+    orderSuccess,
+    setOrderSuccess,
+    isPaymnetSuccess,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -73,6 +76,9 @@ export const Checkout = ({
     state.cartItems,
     state.setOrderCreate,
     state.orderCreate,
+    state.orderSuccess,
+    state.setOrderSuccess,
+    state.isPaymnetSuccess,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -135,6 +141,8 @@ export const Checkout = ({
           console.log("Response Status:", response.status);
           console.log("Response Headers:", response.headers);
           console.log("Response Data:", response.data);
+          isPaymnetSuccess([]);
+          setOrderSuccess(true);
         })
         .catch((error) => {
           // Invalid request, for 4xx and 5xx statuses
@@ -163,7 +171,7 @@ export const Checkout = ({
     setSubTotal(subTotal?.[1]);
   }, [items?.[1]]);
 
-  console.log("isPaymnet", typeof isEmail);
+  console.log("isPaymnet", orderSuccess);
 
   const placeOrder = async () => {
     if (getCoupon?.[1]?.length !== 0 && itemsResult) {
@@ -224,7 +232,6 @@ export const Checkout = ({
             console.log(response.data);
             console.log(response.data?.id);
             setOrderCreate(response.data);
-            clearCartData();
             setBilling({
               first_name: "",
               last_name: "",
@@ -247,14 +254,18 @@ export const Checkout = ({
               postcode: "",
               country: "",
             });
+            clearCartData();
+            toast.success("Order placed successfully!");
           })
           .catch((error) => {
             console.log(error.response.data);
+            toast.error("Something went wrong!");
           });
 
         console.log("orderPlace", await orderPlace);
       } catch (error) {
         console.log("error", error);
+        toast.error("Something went wrong!");
       }
     }
     if (itemsResult) {
@@ -302,7 +313,6 @@ export const Checkout = ({
           .then((response) => {
             console.log(response.data);
             setOrderCreate(response.data);
-            clearCartData();
             setBilling({
               first_name: "",
               last_name: "",
@@ -325,19 +335,24 @@ export const Checkout = ({
               postcode: "",
               country: "",
             });
+            toast.success("Order placed successfully!");
+            clearCartData();
           })
           .catch((error) => {
             console.log(error.response.data);
+            toast.error("Something went wrong!");
           });
         console.log("orderPlace", await orderPlace);
       } catch (error) {
         console.log("error", error);
+        toast.error("Something went wrong!");
       }
     }
   };
 
   useEffect(() => {
     if (isPaymnet?.status === "succeeded") {
+      console.log("create wordress order ======");
       placeOrder();
     }
   }, [isPaymnet]);
@@ -367,6 +382,8 @@ export const Checkout = ({
   };
 
   console.log("orderCreate", orderCreate);
+  console.log("orderSuccess", orderSuccess);
+  console.log("isPaymnet", isPaymnet);
 
   return (
     <div className="calendar-box">
