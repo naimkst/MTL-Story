@@ -185,13 +185,18 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
           </div>
         </div>
         <div className="btn-wrap">
-          <a href="#" className="theme-btn">
+          <a
+            onClick={() =>
+              addToCart(productItem?.id, verient, isCartActive, setIsUpdate, "buy")
+            }
+            className="theme-btn"
+          >
             Buy Now
           </a>
 
           <a
             onClick={() =>
-              addToCart(productItem?.id, verient, isCartActive, setIsUpdate)
+              addToCart(productItem?.id, verient, isCartActive, setIsUpdate, "cart")
             }
             className="theme-btn"
           >

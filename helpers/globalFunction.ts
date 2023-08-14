@@ -75,7 +75,8 @@ export const addToCart = async (
   id: any,
   variation: any,
   isCartActive: any,
-  setIsUpdate: any
+  setIsUpdate: any,
+  type: any
 ) => {
   try {
     const transformedData = variation?.reduce((acc: any, item: any) => {
@@ -93,7 +94,9 @@ export const addToCart = async (
     const cartAdd = CoCart.post("cart/add-item", data);
     const cart: any = await cartAdd;
     if (cart?.status === 200) {
+      if (type === "buy") {
       isCartActive(true);
+      }
       toast.success("Item added to cart");
       console.log("cartAdd@@@@@@@", cart?.data);
       setIsUpdate(Math.random());
