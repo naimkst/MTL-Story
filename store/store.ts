@@ -16,6 +16,8 @@ export const useStore = create(
       setSubTotal: (data: any) => set({ subTotals: data }),
       isUpdate: "",
       setIsUpdate: (data: any) => set({ isUpdate: data }),
+      orderCreate: {},
+      setOrderCreate: (data: any) => set({ orderCreate: data }),
     }),
     {
       name: "mtlStorage", // name of the item in the storage (must be unique)

@@ -116,6 +116,11 @@ export const checkIfAllNotNull = (obj: any) => {
   }
   return true;
 };
+
+export const isValidEmail = (email: any) => {
+  const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+  return emailRegex.test(email);
+};
 export const countryList = [
   { name: "Afghanistan", code: "AF" },
   { name: "Åland Islands", code: "AX" },

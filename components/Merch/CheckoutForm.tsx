@@ -2,6 +2,7 @@ import { PaymentElement } from "@stripe/react-stripe-js";
 import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useStore } from "../../store/store";
+import { toast } from "react-toastify";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -46,9 +47,12 @@ export default function CheckoutForm() {
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage("Payment successful!");
+      toast.success("Payment successful!");
+      isCartActive(false);
       console.log("Payment successful");
     } else {
       setMessage("An unexpected error occured.");
+      toast.error("An unexpected error occured.");
       console.log("Payment failed");
     }
     setIsProcessing(false);

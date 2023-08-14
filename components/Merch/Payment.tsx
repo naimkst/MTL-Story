@@ -13,10 +13,13 @@ const stripe = new Stripe(process.env.NEXT_PUBLIC_STRIPE_SECRET, {
 function Payment() {
   const [stripePromise, setStripePromise] = useState(null);
   const [clientSecret, setClientSecret] = useState("");
-  const [subTotals] = useStore((state: any) => [state.subTotals]);
+  const [subTotals, orderCreate] = useStore((state: any) => [
+    state.subTotals,
+    state.orderCreate,
+  ]);
 
   useEffect(() => {
-    fetch("/api//config").then(async (r) => {
+    fetch("/api/config").then(async (r) => {
       const { publishableKey } = await r.json();
       setStripePromise(loadStripe(publishableKey));
     });

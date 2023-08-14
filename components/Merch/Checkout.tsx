@@ -10,6 +10,7 @@ import {
   CoCart,
   checkIfAllNotNull,
   countryList,
+  isValidEmail,
   priceConvert,
   shopAPi,
 } from "../../helpers/globalFunction";
@@ -60,6 +61,8 @@ export const Checkout = ({
     setSubTotal,
     subTotals,
     cartItems,
+    setOrderCreate,
+    orderCreate,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -68,6 +71,8 @@ export const Checkout = ({
     state.setSubTotal,
     state.subTotals,
     state.cartItems,
+    state.setOrderCreate,
+    state.orderCreate,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -95,6 +100,8 @@ export const Checkout = ({
     country: "",
   });
 
+  const isEmail = isValidEmail(billing?.email);
+
   const isAllNotNull = checkIfAllNotNull(billing);
   const items = cartItems?.[4];
   const subTotal = cartItems?.[13];
@@ -102,11 +109,19 @@ export const Checkout = ({
 
   useEffect(() => {
     if (isAllNotNull) {
-      setIsShipping(isAllNotNull);
+      if (isEmail === false) {
+        setIsShipping(false);
+      } else {
+        setIsShipping(isAllNotNull);
+      }
     } else {
-      setIsShipping(isAllNotNull);
+      if (isEmail === false) {
+        setIsShipping(false);
+      } else {
+        setIsShipping(isAllNotNull);
+      }
     }
-  }, [isAllNotNull]);
+  }, [isAllNotNull, isEmail]);
 
   const handleChange = (panel: any) => (event: any, newExpanded: any) => {
     setExpanded(newExpanded ? panel : false);
@@ -148,13 +163,16 @@ export const Checkout = ({
     setSubTotal(subTotal?.[1]);
   }, [items?.[1]]);
 
+  console.log("isPaymnet", typeof isEmail);
+
   const placeOrder = async () => {
     if (getCoupon?.[1]?.length !== 0 && itemsResult) {
       try {
         const data = {
           payment_method: "card",
           payment_method_title: "Stripe Transfer",
-          set_paid: true,
+          set_paid: isPaymnet?.id ? true : false,
+          transaction_id: isPaymnet?.id,
           billing: {
             first_name: billing?.first_name,
             last_name: billing?.last_name,
@@ -204,6 +222,8 @@ export const Checkout = ({
           .post("orders", data)
           .then((response) => {
             console.log(response.data);
+            console.log(response.data?.id);
+            setOrderCreate(response.data);
             clearCartData();
             setBilling({
               first_name: "",
@@ -242,7 +262,8 @@ export const Checkout = ({
         const data = {
           payment_method: "card",
           payment_method_title: "Stripe Transfer",
-          set_paid: true,
+          set_paid: isPaymnet?.id ? true : false,
+          transaction_id: isPaymnet?.id,
           billing: {
             first_name: billing?.first_name,
             last_name: billing?.last_name,
@@ -280,6 +301,7 @@ export const Checkout = ({
           .post("orders", data)
           .then((response) => {
             console.log(response.data);
+            setOrderCreate(response.data);
             clearCartData();
             setBilling({
               first_name: "",
@@ -343,6 +365,8 @@ export const Checkout = ({
         // Always executed.
       });
   };
+
+  console.log("orderCreate", orderCreate);
 
   return (
     <div className="calendar-box">
@@ -729,6 +753,9 @@ export const Checkout = ({
                     placeholder="Email"
                     value={billing?.email}
                   />
+                  {isEmail === false && (
+                    <span className="requiredFiled">Email is not valid! </span>
+                  )}
                   {billing?.email === "" && (
                     <span className="requiredFiled">
                       This filed is required
