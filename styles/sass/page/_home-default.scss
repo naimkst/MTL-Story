@@ -1803,8 +1803,9 @@
       ul {
         display: flex;
         justify-content: space-between;
-        margin-bottom: 20px;
+        margin-bottom: 5px;
         align-items: center;
+        flex-wrap: wrap;
 
         li {
           color: #000;

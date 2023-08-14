@@ -382,3 +382,13 @@ span.cartRemove svg {
 a {
   cursor: pointer !important;
 }
+ul.singlePrdQty svg {
+  width: 20px;
+}
+ul.singlePrdQty li {
+  display: flex;
+  gap: 8px;
+}
+.qtyButton {
+  cursor: pointer;
+}

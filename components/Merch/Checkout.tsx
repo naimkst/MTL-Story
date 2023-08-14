@@ -66,6 +66,7 @@ export const Checkout = ({
     orderSuccess,
     setOrderSuccess,
     isPaymnetSuccess,
+    setIsUpdate,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -79,6 +80,7 @@ export const Checkout = ({
     state.orderSuccess,
     state.setOrderSuccess,
     state.isPaymnetSuccess,
+    state.setIsUpdate,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -109,6 +111,7 @@ export const Checkout = ({
   const isEmail = isValidEmail(billing?.email);
 
   const isAllNotNull = checkIfAllNotNull(billing);
+
   const items = cartItems?.[4];
   const subTotal = cartItems?.[13];
   const getCoupon = cartItems?.[7];
@@ -385,6 +388,34 @@ export const Checkout = ({
   console.log("orderSuccess", orderSuccess);
   console.log("isPaymnet", isPaymnet);
 
+  const qtyUpdate = (item_key: any, qty: any) => {
+    console.log("qty", qty);
+    var data = {
+      quantity: qty == 0 ? 1 : qty,
+    };
+    CoCart.post(`cart/item/${item_key}`, data)
+      .then((response) => {
+        // Successful request
+        console.log("Response Status:", response.status);
+        console.log("Response Headers:", response.headers);
+        console.log("Response Data:", response.data);
+        if (response.status === 200) {
+          setCartItemRemove(qty);
+          toast.success("Successfully updated!");
+        }
+      })
+      .catch((error) => {
+        // Invalid request, for 4xx and 5xx statuses
+        console.log("Response Status:", error.response.status);
+        console.log("Response Headers:", error.response.headers);
+        console.log("Response Data:", error.response.data);
+        toast.error("Something went wrong!");
+      })
+      .finally(() => {
+        // Always executed.
+      });
+  };
+
   return (
     <div className="calendar-box">
       <div
@@ -410,34 +441,6 @@ export const Checkout = ({
         <h4 className="tp-title">
           <i className="fa fa-arrow-left" aria-hidden="true"></i>Checkout
         </h4>
-
-        <Accordion
-          expanded={expanded === "panel3"}
-          onChange={handleChange("panel3")}
-        >
-          <AccordionSummary
-            expandIcon={""}
-            aria-controls="panel3bh-content"
-            id="panel1bh-header"
-          >
-            <Typography>COUPON CODE</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            {/* <h3>Limit one per order</h3> */}
-            <Typography>
-              <div className="coupon">
-                <input
-                  onChange={(e) => setCoupon(e.target.value)}
-                  type="text"
-                  placeholder="Coupon Code"
-                />
-                <button onClick={couponApply} type="button">
-                  Apply
-                </button>
-              </div>
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
 
         <Accordion
           expanded={expanded === "panel1"}
@@ -500,8 +503,60 @@ export const Checkout = ({
                     {item?.meta?.variation?.Size && (
                       <li>Size: {item?.meta?.variation?.Size}</li>
                     )}
-
-                    <li>Qty: {item?.quantity?.value}</li>
+                  </ul>
+                  <ul className="singlePrdQty">
+                    <li className="">
+                      Qty:
+                      <div
+                        onClick={() =>
+                          qtyUpdate(
+                            item?.item_key,
+                            Number(item?.quantity?.value) - 1
+                          )
+                        }
+                        className="qtyButton"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-2 h-2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <div>{item?.quantity?.value}</div>
+                      <div
+                        onClick={() =>
+                          qtyUpdate(
+                            item?.item_key,
+                            Number(item?.quantity?.value) + 1
+                          )
+                        }
+                        className="qtyButton"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-2 h-2"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                    </li>
                   </ul>
                   <h5>${item?.totals?.total}</h5>
                 </div>
@@ -511,8 +566,35 @@ export const Checkout = ({
         </Accordion>
 
         <Accordion
-          expanded={expanded === "panel2"}
-          onChange={handleChange("panel2")}
+          expanded={expanded === "panel3"}
+          onChange={handleChange("panel3")}
+        >
+          <AccordionSummary
+            expandIcon={""}
+            aria-controls="panel3bh-content"
+            id="panel1bh-header"
+          >
+            <Typography>COUPON CODE</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            {/* <h3>Limit one per order</h3> */}
+            <Typography>
+              <div className="coupon">
+                <input
+                  onChange={(e) => setCoupon(e.target.value)}
+                  type="text"
+                  placeholder="Coupon Code"
+                />
+                <button onClick={couponApply} type="button">
+                  Apply
+                </button>
+              </div>
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
+        <Accordion
+          expanded={expanded === "orderSummery"}
+          onChange={handleChange("orderSummery")}
         >
           <AccordionSummary
             expandIcon={""}
@@ -586,7 +668,7 @@ export const Checkout = ({
                   />
                   {billing?.first_name === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -606,7 +688,7 @@ export const Checkout = ({
                   />
                   {billing?.last_name === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -627,7 +709,7 @@ export const Checkout = ({
                   />
                   {billing?.compnay === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -651,7 +733,7 @@ export const Checkout = ({
                   </select>
                   {billing?.country === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -672,7 +754,7 @@ export const Checkout = ({
                   />
                   {billing?.address_1 === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -691,7 +773,7 @@ export const Checkout = ({
                   />
                   {billing?.city === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -712,7 +794,7 @@ export const Checkout = ({
                   />
                   {billing?.state === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -732,7 +814,7 @@ export const Checkout = ({
                   />
                   {billing?.postcode === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -753,7 +835,7 @@ export const Checkout = ({
                   />
                   {billing?.phone === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
@@ -775,7 +857,7 @@ export const Checkout = ({
                   )}
                   {billing?.email === "" && (
                     <span className="requiredFiled">
-                      This filed is required
+                      This field is required
                     </span>
                   )}
                 </div>
