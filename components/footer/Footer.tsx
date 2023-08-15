@@ -8,9 +8,7 @@ import social3 from "/public/images/icon/6.svg";
 import Image from "next/image";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
-
 const Footer = ({ global }: any) => {
-
   return (
     <div className="site-footer">
       <div className="container-fluid">
@@ -67,7 +65,7 @@ const Footer = ({ global }: any) => {
               <ul>
                 <Slide cascade direction="up" triggerOnce="false">
                   {global?.FooterMenuOne?.map((item: any, index: number) => (
-                    <li>
+                    <li key={`footerOne-${index}`}>
                       <Link href={String(item?.Link)}>{item?.Title}</Link>
                     </li>
                   ))}
@@ -76,7 +74,7 @@ const Footer = ({ global }: any) => {
               <ul>
                 <Slide cascade direction="up" triggerOnce="false">
                   {global?.FooterMenuTwo?.map((item: any, index: number) => (
-                    <li>
+                    <li key={`footerTwo-${index}`}>
                       <Link href={String(item?.Link)}>{item?.Title}</Link>
                     </li>
                   ))}

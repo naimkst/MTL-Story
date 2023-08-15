@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { Fragment, use, useEffect, useState } from "react";
 import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
 import { addToCart, useApi } from "../../helpers/globalFunction";
@@ -105,7 +105,7 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
         </div>
         <div className="details-wrap">
           {Object.keys(attributeOptionsMap)?.map((item: any, index: number) => (
-            <>
+            <Fragment key={`prdItem-${index}`}>
               {item == "Size" && (
                 <div className="product-filter-item color filter-size">
                   <div className="color-name">
@@ -171,7 +171,7 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
                   </div>
                 </div>
               )}
-            </>
+            </Fragment>
           ))}
         </div>
         <div className="product-filter-item color">
@@ -187,7 +187,13 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
         <div className="btn-wrap">
           <a
             onClick={() =>
-              addToCart(productItem?.id, verient, isCartActive, setIsUpdate, "buy")
+              addToCart(
+                productItem?.id,
+                verient,
+                isCartActive,
+                setIsUpdate,
+                "buy"
+              )
             }
             className="theme-btn"
           >
@@ -196,7 +202,13 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
 
           <a
             onClick={() =>
-              addToCart(productItem?.id, verient, isCartActive, setIsUpdate, "cart")
+              addToCart(
+                productItem?.id,
+                verient,
+                isCartActive,
+                setIsUpdate,
+                "cart"
+              )
             }
             className="theme-btn"
           >

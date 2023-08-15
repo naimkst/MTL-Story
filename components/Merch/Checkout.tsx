@@ -728,7 +728,9 @@ export const Checkout = ({
                   >
                     <option value="">Country / Region</option>
                     {countryList?.map((item: any, index: number) => (
-                      <option value={item?.code}>{item?.name}</option>
+                      <option key={`country-${index}`} value={item?.code}>
+                        {item?.name}
+                      </option>
                     ))}
                   </select>
                   {billing?.country === "" && (
@@ -928,7 +930,9 @@ export const Checkout = ({
                     >
                       <option value="">Country / Region</option>
                       {countryList?.map((item: any, index: number) => (
-                        <option value={item?.code}>{item?.name}</option>
+                        <option key={`countryTwo-${index}`} value={item?.code}>
+                          {item?.name}
+                        </option>
                       ))}
                     </select>
                   </div>
