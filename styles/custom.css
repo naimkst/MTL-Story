@@ -259,7 +259,7 @@ span.catName {
 .different_address {
   display: flex;
   width: 100%;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 .different_address input {

@@ -80,7 +80,7 @@ const Merch = ({
                                     <Image
                                       width={312}
                                       height={208}
-                                      objectFit="cover"
+                                      style={{ objectFit: "cover" }}
                                       src={img?.images[0]?.src}
                                       className="merchImage"
                                       alt=""
