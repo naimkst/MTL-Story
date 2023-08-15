@@ -11,7 +11,9 @@ export default function Navbar({
 }: any) {
   const [scroll, setScroll] = React.useState(0);
 
-  const handleScroll = () => setScroll(document.documentElement.scrollTop);
+  if (typeof window !== "undefined") {
+    var handleScroll = () => setScroll(document.documentElement.scrollTop);
+  }
 
   React.useEffect(() => {
     window.addEventListener("scroll", handleScroll);

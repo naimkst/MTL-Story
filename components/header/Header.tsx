@@ -12,13 +12,16 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
   };
 
   return (
-    <header id="header" className={topbarNone}>
+    <header
+      id="header"
+      className={String(topbarNone) ? String(topbarNone) : ""}
+    >
       <div className="header-topbar">
         <ul>
           <li>
             {global?.NoticeTitle}{" "}
             <a href={String(global?.NoticeLink) || "/"}>
-              {global?.NoticeColorTitle}
+              {global?.NoticeColorTitle ? global?.NoticeColorTitle : ""}
             </a>
           </li>
           <li>

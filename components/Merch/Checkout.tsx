@@ -67,6 +67,8 @@ export const Checkout = ({
     setOrderSuccess,
     isPaymnetSuccess,
     setIsUpdate,
+    userItem,
+    setUserItem,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -81,6 +83,8 @@ export const Checkout = ({
     state.setOrderSuccess,
     state.isPaymnetSuccess,
     state.setIsUpdate,
+    state.userItem,
+    state.setUserItem,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -177,180 +181,450 @@ export const Checkout = ({
   console.log("isPaymnet", orderSuccess);
 
   const placeOrder = async () => {
-    if (getCoupon?.[1]?.length !== 0 && itemsResult) {
-      try {
-        const data = {
-          payment_method: "card",
-          payment_method_title: "Stripe Transfer",
-          set_paid: isPaymnet?.id ? true : false,
-          transaction_id: isPaymnet?.id,
-          billing: {
-            first_name: billing?.first_name,
-            last_name: billing?.last_name,
-            company: billing?.company,
-            address_1: billing?.address_1,
-            address_2: billing?.address_2,
-            city: billing?.city,
-            state: billing?.state,
-            postcode: billing?.postcode,
-            country: billing?.country,
-            email: billing?.email,
-            phone: billing?.phone,
-          },
-          shipping: {
-            first_name: differentAddress
-              ? shipping?.first_name
-              : billing?.first_name,
-            last_name: differentAddress
-              ? shipping?.last_name
-              : billing?.last_name,
-            address_1: differentAddress
-              ? shipping?.address_1
-              : billing?.address_1,
-            address_2: differentAddress
-              ? shipping?.address_2
-              : billing?.address_2,
-            city: differentAddress ? shipping?.city : billing?.city,
-            state: differentAddress ? shipping?.state : billing?.state,
-            postcode: differentAddress ? shipping?.postcode : billing?.postcode,
-            country: differentAddress ? shipping?.country : billing?.country,
-          },
-          line_items: itemsResult,
-          // shipping_lines: [
-          //   {
-          //     method_id: "flat_rate",
-          //     method_title: "",
-          //     total: "",
-          //   },
-          // ],
-          coupon_lines: [
-            {
-              code: getCoupon[1].length !== 0 ? getCoupon[1]?.[0]?.coupon : "",
-            },
-          ],
-        };
-        const orderPlace = shopAPi
-          .post("orders", data)
-          .then((response) => {
-            console.log(response.data);
-            console.log(response.data?.id);
-            setOrderCreate(response.data);
-            setBilling({
-              first_name: "",
-              last_name: "",
-              company: "",
-              address_1: "",
-              city: "",
-              state: "",
-              postcode: "",
-              country: "",
-              email: "",
-              phone: "",
-            });
-            setShipping({
-              first_name: "",
-              last_name: "",
-              address_1: "",
-              address_2: "",
-              city: "",
-              state: "",
-              postcode: "",
-              country: "",
-            });
-            clearCartData();
-            toast.success("Order placed successfully!");
-          })
-          .catch((error) => {
-            console.log(error.response.data);
-            toast.error("Something went wrong!");
-          });
+    shopAPi
+      .get("customers")
+      .then((response) => {
+        const user = response?.data?.filter(
+          (item: any) => item?.email === billing?.email
+        );
+        setUserItem(user[0]);
+        if (user[0]) {
+          console.log("user", user[0]?.id);
+          if (getCoupon?.[1]?.length !== 0 && itemsResult) {
+            try {
+              const data = {
+                payment_method: "card",
+                payment_method_title: "Stripe Transfer",
+                set_paid: isPaymnet?.id ? true : false,
+                transaction_id: isPaymnet?.id,
+                customer_id: user[0]?.id,
+                billing: {
+                  first_name: billing?.first_name,
+                  last_name: billing?.last_name,
+                  company: billing?.company,
+                  address_1: billing?.address_1,
+                  address_2: billing?.address_2,
+                  city: billing?.city,
+                  state: billing?.state,
+                  postcode: billing?.postcode,
+                  country: billing?.country,
+                  email: billing?.email,
+                  phone: billing?.phone,
+                },
+                shipping: {
+                  first_name: differentAddress
+                    ? shipping?.first_name
+                    : billing?.first_name,
+                  last_name: differentAddress
+                    ? shipping?.last_name
+                    : billing?.last_name,
+                  address_1: differentAddress
+                    ? shipping?.address_1
+                    : billing?.address_1,
+                  address_2: differentAddress
+                    ? shipping?.address_2
+                    : billing?.address_2,
+                  city: differentAddress ? shipping?.city : billing?.city,
+                  state: differentAddress ? shipping?.state : billing?.state,
+                  postcode: differentAddress
+                    ? shipping?.postcode
+                    : billing?.postcode,
+                  country: differentAddress
+                    ? shipping?.country
+                    : billing?.country,
+                },
+                line_items: itemsResult,
+                // shipping_lines: [
+                //   {
+                //     method_id: "flat_rate",
+                //     method_title: "",
+                //     total: "",
+                //   },
+                // ],
+                coupon_lines: [
+                  {
+                    code:
+                      getCoupon[1].length !== 0
+                        ? getCoupon[1]?.[0]?.coupon
+                        : "",
+                  },
+                ],
+              };
+              const orderPlace = shopAPi
+                .post("orders", data)
+                .then((response) => {
+                  console.log(response.data);
+                  console.log(response.data?.id);
+                  setOrderCreate(response.data);
+                  setBilling({
+                    first_name: "",
+                    last_name: "",
+                    company: "",
+                    address_1: "",
+                    city: "",
+                    state: "",
+                    postcode: "",
+                    country: "",
+                    email: "",
+                    phone: "",
+                  });
+                  setShipping({
+                    first_name: "",
+                    last_name: "",
+                    address_1: "",
+                    address_2: "",
+                    city: "",
+                    state: "",
+                    postcode: "",
+                    country: "",
+                  });
+                  clearCartData();
+                  toast.success("Order placed successfully!");
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                  toast.error("Something went wrong!");
+                });
 
-        console.log("orderPlace", await orderPlace);
-      } catch (error) {
-        console.log("error", error);
-        toast.error("Something went wrong!");
-      }
-    }
-    if (itemsResult) {
-      try {
-        const data = {
-          payment_method: "card",
-          payment_method_title: "Stripe Transfer",
-          set_paid: isPaymnet?.id ? true : false,
-          transaction_id: isPaymnet?.id,
-          billing: {
+              console.log("orderPlace", orderPlace);
+            } catch (error) {
+              console.log("error", error);
+              toast.error("Something went wrong!");
+            }
+          }
+          if (itemsResult) {
+            try {
+              const data = {
+                payment_method: "card",
+                payment_method_title: "Stripe Transfer",
+                set_paid: isPaymnet?.id ? true : false,
+                transaction_id: isPaymnet?.id,
+                customer_id: user[0]?.id,
+                billing: {
+                  first_name: billing?.first_name,
+                  last_name: billing?.last_name,
+                  company: billing?.company,
+                  address_1: billing?.address_1,
+                  address_2: billing?.address_2,
+                  city: billing?.city,
+                  state: billing?.state,
+                  postcode: billing?.postcode,
+                  country: billing?.country,
+                  email: billing?.email,
+                  phone: billing?.phone,
+                },
+                shipping: {
+                  first_name: differentAddress
+                    ? shipping?.first_name
+                    : billing?.first_name,
+                  last_name: differentAddress
+                    ? shipping?.last_name
+                    : billing?.last_name,
+                  address_1: differentAddress
+                    ? shipping?.address_1
+                    : billing?.address_1,
+                  address_2: differentAddress
+                    ? shipping?.address_2
+                    : billing?.address_2,
+                  city: differentAddress ? shipping?.city : billing?.city,
+                  state: differentAddress ? shipping?.state : billing?.state,
+                  postcode: differentAddress
+                    ? shipping?.postcode
+                    : billing?.postcode,
+                  country: differentAddress
+                    ? shipping?.country
+                    : billing?.country,
+                },
+                line_items: itemsResult,
+              };
+              const orderPlace = shopAPi
+                .post("orders", data)
+                .then((response) => {
+                  console.log(response.data);
+                  setOrderCreate(response.data);
+                  setBilling({
+                    first_name: "",
+                    last_name: "",
+                    company: "",
+                    address_1: "",
+                    city: "",
+                    state: "",
+                    postcode: "",
+                    country: "",
+                    email: "",
+                    phone: "",
+                  });
+                  setShipping({
+                    first_name: "",
+                    last_name: "",
+                    address_1: "",
+                    address_2: "",
+                    city: "",
+                    state: "",
+                    postcode: "",
+                    country: "",
+                  });
+                  clearCartData();
+                  toast.success("Order placed successfully!");
+                })
+                .catch((error) => {
+                  console.log(error.response.data);
+                  toast.error("Something went wrong!");
+                });
+              console.log("orderPlace", orderPlace);
+            } catch (error) {
+              console.log("error", error);
+              toast.error("Something went wrong!");
+            }
+          }
+        } else {
+          const data = {
+            email: billing?.email,
             first_name: billing?.first_name,
             last_name: billing?.last_name,
-            company: billing?.company,
-            address_1: billing?.address_1,
-            address_2: billing?.address_2,
-            city: billing?.city,
-            state: billing?.state,
-            postcode: billing?.postcode,
-            country: billing?.country,
-            email: billing?.email,
-            phone: billing?.phone,
-          },
-          shipping: {
-            first_name: differentAddress
-              ? shipping?.first_name
-              : billing?.first_name,
-            last_name: differentAddress
-              ? shipping?.last_name
-              : billing?.last_name,
-            address_1: differentAddress
-              ? shipping?.address_1
-              : billing?.address_1,
-            address_2: differentAddress
-              ? shipping?.address_2
-              : billing?.address_2,
-            city: differentAddress ? shipping?.city : billing?.city,
-            state: differentAddress ? shipping?.state : billing?.state,
-            postcode: differentAddress ? shipping?.postcode : billing?.postcode,
-            country: differentAddress ? shipping?.country : billing?.country,
-          },
-          line_items: itemsResult,
-        };
-        const orderPlace = shopAPi
-          .post("orders", data)
-          .then((response) => {
-            console.log(response.data);
-            setOrderCreate(response.data);
-            setBilling({
-              first_name: "",
-              last_name: "",
-              company: "",
-              address_1: "",
-              city: "",
-              state: "",
-              postcode: "",
-              country: "",
-              email: "",
-              phone: "",
+            username: billing?.email,
+            billing: {
+              first_name: billing?.first_name,
+              last_name: billing?.last_name,
+              company: billing?.company,
+              address_1: billing?.address_1,
+              address_2: billing?.address_2,
+              city: billing?.city,
+              state: billing?.state,
+              postcode: billing?.postcode,
+              country: billing?.country,
+              email: billing?.email,
+              phone: billing?.phone,
+            },
+            shipping: {
+              first_name: differentAddress
+                ? shipping?.first_name
+                : billing?.first_name,
+              company: differentAddress ? billing?.company : "",
+              last_name: differentAddress
+                ? shipping?.last_name
+                : billing?.last_name,
+              address_1: differentAddress
+                ? shipping?.address_1
+                : billing?.address_1,
+              address_2: differentAddress
+                ? shipping?.address_2
+                : billing?.address_2,
+              city: differentAddress ? shipping?.city : billing?.city,
+              state: differentAddress ? shipping?.state : billing?.state,
+              postcode: differentAddress
+                ? shipping?.postcode
+                : billing?.postcode,
+              country: differentAddress ? shipping?.country : billing?.country,
+            },
+          };
+          shopAPi
+            .post("customers", data)
+            .then((response) => {
+              console.log(response.data);
+              console.log(response.data.id);
+              setUserItem(response.data);
+              console.log("user", user[0]?.id);
+              if (getCoupon?.[1]?.length !== 0 && itemsResult) {
+                try {
+                  const data = {
+                    payment_method: "card",
+                    payment_method_title: "Stripe Transfer",
+                    set_paid: isPaymnet?.id ? true : false,
+                    transaction_id: isPaymnet?.id,
+                    customer_id: response.data.id,
+                    billing: {
+                      first_name: billing?.first_name,
+                      last_name: billing?.last_name,
+                      company: billing?.company,
+                      address_1: billing?.address_1,
+                      address_2: billing?.address_2,
+                      city: billing?.city,
+                      state: billing?.state,
+                      postcode: billing?.postcode,
+                      country: billing?.country,
+                      email: billing?.email,
+                      phone: billing?.phone,
+                    },
+                    shipping: {
+                      first_name: differentAddress
+                        ? shipping?.first_name
+                        : billing?.first_name,
+                      last_name: differentAddress
+                        ? shipping?.last_name
+                        : billing?.last_name,
+                      address_1: differentAddress
+                        ? shipping?.address_1
+                        : billing?.address_1,
+                      address_2: differentAddress
+                        ? shipping?.address_2
+                        : billing?.address_2,
+                      city: differentAddress ? shipping?.city : billing?.city,
+                      state: differentAddress
+                        ? shipping?.state
+                        : billing?.state,
+                      postcode: differentAddress
+                        ? shipping?.postcode
+                        : billing?.postcode,
+                      country: differentAddress
+                        ? shipping?.country
+                        : billing?.country,
+                    },
+                    line_items: itemsResult,
+                    // shipping_lines: [
+                    //   {
+                    //     method_id: "flat_rate",
+                    //     method_title: "",
+                    //     total: "",
+                    //   },
+                    // ],
+                    coupon_lines: [
+                      {
+                        code:
+                          getCoupon[1].length !== 0
+                            ? getCoupon[1]?.[0]?.coupon
+                            : "",
+                      },
+                    ],
+                  };
+                  const orderPlace = shopAPi
+                    .post("orders", data)
+                    .then((response) => {
+                      console.log(response.data);
+                      console.log(response.data?.id);
+                      setOrderCreate(response.data);
+                      setBilling({
+                        first_name: "",
+                        last_name: "",
+                        company: "",
+                        address_1: "",
+                        city: "",
+                        state: "",
+                        postcode: "",
+                        country: "",
+                        email: "",
+                        phone: "",
+                      });
+                      setShipping({
+                        first_name: "",
+                        last_name: "",
+                        address_1: "",
+                        address_2: "",
+                        city: "",
+                        state: "",
+                        postcode: "",
+                        country: "",
+                      });
+                      clearCartData();
+                      toast.success("Order placed successfully!");
+                    })
+                    .catch((error) => {
+                      console.log(error.response.data);
+                      toast.error("Something went wrong!");
+                    });
+
+                  console.log("orderPlace", orderPlace);
+                } catch (error) {
+                  console.log("error", error);
+                  toast.error("Something went wrong!");
+                }
+              }
+              if (itemsResult) {
+                try {
+                  const data = {
+                    payment_method: "card",
+                    payment_method_title: "Stripe Transfer",
+                    set_paid: isPaymnet?.id ? true : false,
+                    transaction_id: isPaymnet?.id,
+                    customer_id: response.data.id,
+                    billing: {
+                      first_name: billing?.first_name,
+                      last_name: billing?.last_name,
+                      company: billing?.company,
+                      address_1: billing?.address_1,
+                      address_2: billing?.address_2,
+                      city: billing?.city,
+                      state: billing?.state,
+                      postcode: billing?.postcode,
+                      country: billing?.country,
+                      email: billing?.email,
+                      phone: billing?.phone,
+                    },
+                    shipping: {
+                      first_name: differentAddress
+                        ? shipping?.first_name
+                        : billing?.first_name,
+                      last_name: differentAddress
+                        ? shipping?.last_name
+                        : billing?.last_name,
+                      address_1: differentAddress
+                        ? shipping?.address_1
+                        : billing?.address_1,
+                      address_2: differentAddress
+                        ? shipping?.address_2
+                        : billing?.address_2,
+                      city: differentAddress ? shipping?.city : billing?.city,
+                      state: differentAddress
+                        ? shipping?.state
+                        : billing?.state,
+                      postcode: differentAddress
+                        ? shipping?.postcode
+                        : billing?.postcode,
+                      country: differentAddress
+                        ? shipping?.country
+                        : billing?.country,
+                    },
+                    line_items: itemsResult,
+                  };
+                  const orderPlace = shopAPi
+                    .post("orders", data)
+                    .then((response) => {
+                      console.log(response.data);
+                      setOrderCreate(response.data);
+                      setBilling({
+                        first_name: "",
+                        last_name: "",
+                        company: "",
+                        address_1: "",
+                        city: "",
+                        state: "",
+                        postcode: "",
+                        country: "",
+                        email: "",
+                        phone: "",
+                      });
+                      setShipping({
+                        first_name: "",
+                        last_name: "",
+                        address_1: "",
+                        address_2: "",
+                        city: "",
+                        state: "",
+                        postcode: "",
+                        country: "",
+                      });
+                      toast.success("Order placed successfully!");
+                      clearCartData();
+                    })
+                    .catch((error) => {
+                      console.log(error.response.data);
+                      toast.error("Something went wrong!");
+                    });
+                  console.log("orderPlace", orderPlace);
+                } catch (error) {
+                  console.log("error", error);
+                  toast.error("Something went wrong!");
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error.response.data);
             });
-            setShipping({
-              first_name: "",
-              last_name: "",
-              address_1: "",
-              address_2: "",
-              city: "",
-              state: "",
-              postcode: "",
-              country: "",
-            });
-            toast.success("Order placed successfully!");
-            clearCartData();
-          })
-          .catch((error) => {
-            console.log(error.response.data);
-            toast.error("Something went wrong!");
-          });
-        console.log("orderPlace", await orderPlace);
-      } catch (error) {
-        console.log("error", error);
-        toast.error("Something went wrong!");
-      }
-    }
+        }
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+      });
   };
 
   useEffect(() => {
@@ -383,10 +657,6 @@ export const Checkout = ({
         // Always executed.
       });
   };
-
-  console.log("orderCreate", orderCreate);
-  console.log("orderSuccess", orderSuccess);
-  console.log("isPaymnet", isPaymnet);
 
   const qtyUpdate = (item_key: any, qty: any) => {
     console.log("qty", qty);
