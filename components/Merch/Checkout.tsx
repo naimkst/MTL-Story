@@ -889,10 +889,11 @@ export const Checkout = ({
                     </span>
                   </li>
                   <li>
-                    SHIPPING<span>${subTotal?.[1]?.shipping_total}</span>
+                    SHIPPING
+                    <span>${priceConvert(subTotal?.[1]?.shipping_total)}</span>
                   </li>
                   <li>
-                    TAX:<span>${subTotal?.[1]?.total_tax}</span>
+                    TAX:<span>${priceConvert(subTotal?.[1]?.total_tax)}</span>
                   </li>
                   <li className="btm">
                     ORDER TOTAL:
