@@ -37,6 +37,15 @@ export const OrderSuccess = ({ setUnsubscribe }: any) => {
           </p>
         </div>
 
+        <div className="subccessSubscription">
+          <input id="subscription" type="checkbox" />
+          <label htmlFor="subscription">
+            {" "}
+            Stay in the loop! Subscribe to receive our latest news, offers, and
+            product updates directly to your inbox.
+          </label>
+        </div>
+
         <div className="btn-wrap">
           <a
             onClick={() => {

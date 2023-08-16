@@ -24,6 +24,15 @@ const BackToTop = () => {
               ></i>
             </a>
           </li>
+
+          <li className="mb-2">
+            <a href={`${process.env.NEXT_PUBLIC_STORE_URL}/my-account`}>
+              <i
+                style={{ color: "#fff", cursor: "pointer" }}
+                className="ti-user"
+              ></i>
+            </a>
+          </li>
           <li>
             <AnchorLink href="#__next">
               <i className="ti-arrow-up"></i>
