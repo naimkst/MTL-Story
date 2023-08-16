@@ -40,6 +40,8 @@ const Merch = ({
       return false;
     }
   };
+
+  console.log("products", products);
   return (
     <>
       <section className="merch-section section-padding" id="merch">
@@ -86,7 +88,7 @@ const Merch = ({
                                       alt=""
                                     />
                                     <span className="catName">
-                                      {img?.categories[0]?.name}
+                                      {img?.tags[0]?.name}
                                     </span>
                                   </div>
                                 )}
