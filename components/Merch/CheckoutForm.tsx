@@ -55,11 +55,11 @@ export default function CheckoutForm() {
     if (error) {
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
-      setMessage("Payment successful!");
+      // setMessage("Payment successful!");
       // toast.success("Payment successful!");
       console.log("Payment successful");
     } else {
-      setMessage("An unexpected error occured.");
+      // setMessage("An unexpected error occured.");
       toast.error("An unexpected error occured.");
       console.log("Payment failed");
     }
@@ -74,16 +74,12 @@ export default function CheckoutForm() {
           className="checkoutBtn mt-3"
           id="submit"
         >
-          <span id="button-text">
-            {isProcess ? "Processing ..." : "Pay now"}
-          </span>
+          <span id="button-text">{isProcess ? "Laoding.." : "Pay now"}</span>
         </button>
       ) : (
         <>
           <div className="btnDisable mt-2" id="submit">
-            <span id="button-text">
-              {isProcess ? "Processing ..." : "Pay now"}
-            </span>
+            <span id="button-text">{isProcess ? "Laoding.." : "Pay now"}</span>
           </div>
           <div className="text-center mt-2">
             <span className="billingDetails">
