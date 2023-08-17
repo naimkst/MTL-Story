@@ -11,6 +11,7 @@ export default class MyDocument extends Document {
             href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap"
             rel="stylesheet"
           />
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD8rABHUTrfNmv_H8tq2Cm5eupUv5_DvYg&libraries=places"></script>
         </Head>
         <body>
           <Main />

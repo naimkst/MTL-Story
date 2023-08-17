@@ -1,4 +1,4 @@
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useState } from "react";
 import Image from "next/image";
 import { styled } from "@mui/material/styles";
 import MuiAccordion from "@mui/material/Accordion";
@@ -6,6 +6,10 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { useStore } from "../../store/store";
+import PlacesAutocomplete, {
+  geocodeByAddress,
+  getLatLng,
+} from "react-places-autocomplete";
 import {
   CoCart,
   checkIfAllNotNull,
@@ -110,6 +114,18 @@ export const Checkout = ({
     state: "",
     postcode: "",
     country: "",
+  });
+
+  const [address, setAddress] = useState({
+    street_number: "",
+    route: "",
+    sublocality_level_1: "",
+    locality: "",
+    administrative_area_level_3: "",
+    administrative_area_level_2: "",
+    administrative_area_level_1: "",
+    country: "",
+    postal_code: "",
   });
 
   const isEmail = isValidEmail(billing?.email);
@@ -686,6 +702,51 @@ export const Checkout = ({
       });
   };
 
+  const handleSelect = async (selectedAddress) => {
+    const results = await geocodeByAddress(selectedAddress);
+    const selectedPlace = results[0];
+
+    setAddress({
+      street_number: "",
+      route: "",
+      sublocality_level_1: "",
+      locality: "",
+      administrative_area_level_3: "",
+      administrative_area_level_2: "",
+      administrative_area_level_1: "",
+      country: "",
+      postal_code: "",
+      ...Object.fromEntries(
+        selectedPlace.address_components.map((component) => [
+          component.types[0],
+          component.long_name,
+        ])
+      ),
+    });
+  };
+
+  useEffect(() => {
+    setBilling((prev: any) => ({
+      ...prev,
+      address_1: address?.route,
+    }));
+    setBilling((prev: any) => ({
+      ...prev,
+      city: address?.locality,
+    }));
+    setBilling((prev: any) => ({
+      ...prev,
+      postcode: address?.postal_code,
+    }));
+    setBilling((prev: any) => ({
+      ...prev,
+      country: address?.country,
+    }));
+    setBilling((prev: any) => ({
+      ...prev,
+      state: address?.administrative_area_level_1,
+    }));
+  }, [address]);
   return (
     <div className="calendar-box">
       <div
@@ -923,6 +984,28 @@ export const Checkout = ({
           <AccordionDetails>
             {/* <h3>Edit Shopping Cart</h3> */}
             <Typography>
+              {/* <div className="inputField">
+                {Object.keys(address).length > 0 && (
+                  <div>
+                    <h2>Address Details</h2>
+                    <p>Street Number: {address.street_number}</p>
+                    <p>Route: {address.route}</p>
+                    <p>Province: {address.sublocality_level_1}</p>
+                    <p>City: {address.locality}</p>
+                    <p>
+                      Admin Area Level 3: {address.administrative_area_level_3}
+                    </p>
+                    <p>
+                      Admin Area Level 2: {address.administrative_area_level_2}
+                    </p>
+                    <p>
+                      Admin Area Level 1: {address.administrative_area_level_1}
+                    </p>
+                    <p>Country: {address.country}</p>
+                    <p>Postal Code: {address.postal_code}</p>
+                  </div>
+                )}
+              </div> */}
               <div className="inputField">
                 <div className="">
                   <h3>First Name</h3>
@@ -966,7 +1049,7 @@ export const Checkout = ({
               </div>
               <div className="inputField">
                 <div>
-                  <h3>Company name (optional)</h3>
+                  <h3>Company name</h3>
                   <input
                     onChange={(e) =>
                       setBilling((prev: any) => ({
@@ -985,6 +1068,67 @@ export const Checkout = ({
                   )}
                 </div>
 
+                <div className="">
+                  <h3>Street address</h3>
+                  {/* <input
+                    onChange={(e) =>
+                      setBilling((prev: any) => ({
+                        ...prev,
+                        address_1: e.target.value,
+                      }))
+                    }
+                    type="text"
+                    placeholder="Street address"
+                    value={billing?.address_1}
+                  /> */}
+
+                  <PlacesAutocomplete
+                    value={address.route}
+                    onChange={(newValue) =>
+                      setAddress({ ...address, route: newValue })
+                    }
+                    onSelect={handleSelect}
+                  >
+                    {({
+                      getInputProps,
+                      suggestions,
+                      getSuggestionItemProps,
+                      loading,
+                    }) => (
+                      <div className="addressAuto">
+                        <input
+                          {...getInputProps({ placeholder: "Search Places" })}
+                        />
+                        {suggestions?.length !== 0 && (
+                          <div className="addressList">
+                            {loading && <div>Loading...</div>}
+                            {suggestions.map((suggestion) => {
+                              const className = suggestion.active
+                                ? "suggestion-item--active"
+                                : "suggestion-item";
+                              return (
+                                <div
+                                  {...getSuggestionItemProps(suggestion, {
+                                    className,
+                                  })}
+                                >
+                                  {suggestion.description}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </PlacesAutocomplete>
+                  {billing?.address_1 === "" && (
+                    <span className="requiredFiled">
+                      This field is required
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="inputField">
                 <div>
                   <h3>Country / Region</h3>
                   <select
@@ -999,33 +1143,16 @@ export const Checkout = ({
                   >
                     <option value="">Country / Region</option>
                     {countryList?.map((item: any, index: number) => (
-                      <option key={`country-${index}`} value={item?.code}>
+                      <option
+                        key={`country-${index}`}
+                        value={item?.code}
+                        selected={item?.name == billing.country ? true : false}
+                      >
                         {item?.name}
                       </option>
                     ))}
                   </select>
                   {billing?.country === "" && (
-                    <span className="requiredFiled">
-                      This field is required
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="inputField">
-                <div>
-                  <h3>Street address</h3>
-                  <input
-                    onChange={(e) =>
-                      setBilling((prev: any) => ({
-                        ...prev,
-                        address_1: e.target.value,
-                      }))
-                    }
-                    type="text"
-                    placeholder="Street address"
-                    value={billing?.address_1}
-                  />
-                  {billing?.address_1 === "" && (
                     <span className="requiredFiled">
                       This field is required
                     </span>
@@ -1053,7 +1180,7 @@ export const Checkout = ({
               </div>
               <div className="inputField">
                 <div>
-                  <h3>District</h3>
+                  <h3>Province</h3>
                   <input
                     onChange={(e) =>
                       setBilling((prev: any) => ({
@@ -1062,7 +1189,7 @@ export const Checkout = ({
                       }))
                     }
                     type="text"
-                    placeholder="District"
+                    placeholder="Province"
                     value={billing?.state}
                   />
                   {billing?.state === "" && (
@@ -1135,8 +1262,7 @@ export const Checkout = ({
                   )}
                 </div>
               </div>
-
-              {/* ship to a different address? */}
+              ;{/* ship to a different address? */}
               <div className="inputField">
                 <div className="different_address">
                   <input
@@ -1148,7 +1274,6 @@ export const Checkout = ({
                   <label htmlFor="">Ship to a different address?</label>
                 </div>
               </div>
-
               {differentAddress && (
                 <>
                   <div className="inputField">
@@ -1241,7 +1366,7 @@ export const Checkout = ({
                         }))
                       }
                       type="text"
-                      placeholder="District"
+                      placeholder="Province"
                       value={shipping?.state}
                     />
 
@@ -1259,7 +1384,6 @@ export const Checkout = ({
                   </div>
                 </>
               )}
-
               {/* Order notes */}
               {/* <div className="coupon">
                 <input
