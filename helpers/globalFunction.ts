@@ -95,7 +95,7 @@ export const addToCart = async (
     const cart: any = await cartAdd;
     if (cart?.status === 200) {
       if (type === "buy") {
-      isCartActive(true);
+        isCartActive(true);
       }
       toast.success("Item added to cart");
       console.log("cartAdd@@@@@@@", cart?.data);
@@ -108,9 +108,15 @@ export const addToCart = async (
 };
 
 export const priceConvert = (price: any) => {
-  return Number(price) / 100;
+  const res = Number(price) / 100;
+  return res.toFixed(2);
 };
-
+export const saveToLocalStorage = (a: any, b: any) => {
+  const key = Number(a) - Number(b);
+  const value = key.toFixed(2);
+  const res = Number(priceConvert(value));
+  return res.toFixed(2);
+};
 export const checkIfAllNotNull = (obj: any) => {
   for (const key in obj) {
     if (obj.hasOwnProperty(key) && (obj[key] === null || obj[key] === "")) {
@@ -124,6 +130,7 @@ export const isValidEmail = (email: any) => {
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   return emailRegex.test(email);
 };
+
 export const countryList = [
   { name: "Afghanistan", code: "AF" },
   { name: "Åland Islands", code: "AX" },

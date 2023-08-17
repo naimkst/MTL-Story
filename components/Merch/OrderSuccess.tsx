@@ -2,9 +2,51 @@ import React, { use, useEffect } from "react";
 import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
 import { useStore } from "../../store/store";
+import { toast } from "react-toastify";
 
 export const OrderSuccess = ({ setUnsubscribe }: any) => {
-  const [setOrderSuccess] = useStore((state: any) => [state.setOrderSuccess]);
+  const [setOrderSuccess, orderCreate] = useStore((state: any) => [
+    state.setOrderSuccess,
+    state.orderCreate,
+  ]);
+
+  console.log("orderCreate", orderCreate);
+
+  const subscribe = (e: any) => {
+    const isCheck = e.target.checked;
+    if (isCheck) {
+      const user_data = {
+        username: orderCreate?.billing?.email,
+        password: "1234567890",
+        email: orderCreate?.billing?.email,
+        first_name: orderCreate?.billing?.first_name,
+        last_name: orderCreate?.billing?.last_name,
+        role: "subscriber",
+      };
+      fetch(
+        `${process.env.NEXT_PUBLIC_STORE_URL}/wp-json/custom/v1/register?consumer_key=${process.env.NEXT_PUBLIC_CUNSUMER_KEY}&consumer_secret=${process.env.NEXT_PUBLIC_CUNSUMER_SECRET}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user_data),
+        }
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          if (data?.error) {
+            toast.error(String(data?.error));
+          } else {
+            toast.success(String(data?.message));
+          }
+        })
+        .catch((error) => {
+          console.error("Error creating user:", error);
+          toast.error("Error creating user");
+        });
+    }
+  };
   return (
     <div className="calendar-box">
       <div
@@ -38,7 +80,7 @@ export const OrderSuccess = ({ setUnsubscribe }: any) => {
         </div>
 
         <div className="subccessSubscription">
-          <input id="subscription" type="checkbox" />
+          <input onChange={subscribe} id="subscription" type="checkbox" />
           <label htmlFor="subscription">
             {" "}
             Stay in the loop! Subscribe to receive our latest news, offers, and

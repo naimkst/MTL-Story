@@ -24,6 +24,8 @@ export const useStore = create(
       setOrderSuccess: (data: any) => set({ orderSuccess: data }),
       userItem: {},
       setUserItem: (data: any) => set({ userItem: data }),
+      isProcess: false,
+      setIsprocess: (data: any) => set({ isProcess: data }),
     }),
     {
       name: "mtlStorage", // name of the item in the storage (must be unique)

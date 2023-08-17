@@ -11,14 +11,23 @@ export default function CheckoutForm() {
   const [message, setMessage] = useState(null);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [isCart, isCartActive, isPaymnet, isShipping, isPaymnetSuccess] =
-    useStore((state: any) => [
-      state.isCart,
-      state.isCartActive,
-      state.isPaymnet,
-      state.isShipping,
-      state.isPaymnetSuccess,
-    ]);
+  const [
+    isCart,
+    isCartActive,
+    isPaymnet,
+    isShipping,
+    isPaymnetSuccess,
+    setIsprocess,
+    isProcess,
+  ] = useStore((state: any) => [
+    state.isCart,
+    state.isCartActive,
+    state.isPaymnet,
+    state.isShipping,
+    state.isPaymnetSuccess,
+    state.setIsprocess,
+    state.isProcess,
+  ]);
 
   console.log("isShipping", isShipping);
 
@@ -29,7 +38,7 @@ export default function CheckoutForm() {
       // Make sure to disable form submission until Stripe.js has loaded.
       return;
     }
-    setIsProcessing(true);
+    setIsprocess(true);
     const { error, paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
@@ -47,14 +56,13 @@ export default function CheckoutForm() {
       setMessage(error.message);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       setMessage("Payment successful!");
-      toast.success("Payment successful!");
+      // toast.success("Payment successful!");
       console.log("Payment successful");
     } else {
       setMessage("An unexpected error occured.");
       toast.error("An unexpected error occured.");
       console.log("Payment failed");
     }
-    setIsProcessing(false);
   };
 
   return (
@@ -62,19 +70,19 @@ export default function CheckoutForm() {
       <PaymentElement id="payment-element" />
       {isShipping ? (
         <button
-          disabled={isProcessing || !stripe || !elements}
+          disabled={isProcess || !stripe || !elements}
           className="checkoutBtn mt-3"
           id="submit"
         >
           <span id="button-text">
-            {isProcessing ? "Processing ... " : "Pay now"}
+            {isProcess ? "Processing ..." : "Pay now"}
           </span>
         </button>
       ) : (
         <>
           <div className="btnDisable mt-2" id="submit">
             <span id="button-text">
-              {isProcessing ? "Processing ... " : "Pay now"}
+              {isProcess ? "Processing ..." : "Pay now"}
             </span>
           </div>
           <div className="text-center mt-2">

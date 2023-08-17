@@ -16,6 +16,7 @@ import {
   countryList,
   isValidEmail,
   priceConvert,
+  saveToLocalStorage,
   shopAPi,
 } from "../../helpers/globalFunction";
 import Payment from "./Payment";
@@ -73,6 +74,7 @@ export const Checkout = ({
     setIsUpdate,
     userItem,
     setUserItem,
+    setIsprocess,
   ] = useStore((state: any) => [
     state.isCart,
     state.isCartActive,
@@ -89,6 +91,7 @@ export const Checkout = ({
     state.setIsUpdate,
     state.userItem,
     state.setUserItem,
+    state.setIsprocess,
   ]);
 
   const [billing, setBilling] = React.useState<any>({
@@ -156,7 +159,7 @@ export const Checkout = ({
     setExpanded(newExpanded ? panel : false);
   };
 
-  const clearCartData = () => {
+  const clearCartData = async () => {
     try {
       CoCart.post("cart/clear", {}, {})
         .then((response) => {
@@ -294,18 +297,20 @@ export const Checkout = ({
                     postcode: "",
                     country: "",
                   });
-                  clearCartData();
                   toast.success("Order placed successfully!");
+                  clearCartData();
+                  setIsprocess(false);
                 })
                 .catch((error) => {
                   console.log(error.response.data);
                   toast.error("Something went wrong!");
+                  setIsprocess(false);
                 });
-
               console.log("orderPlace", orderPlace);
             } catch (error) {
               console.log("error", error);
               toast.error("Something went wrong!");
+              setIsprocess(false);
             }
           }
           if (itemsResult) {
@@ -380,17 +385,21 @@ export const Checkout = ({
                     postcode: "",
                     country: "",
                   });
-                  clearCartData();
                   toast.success("Order placed successfully!");
+                  clearCartData();
+                  setIsprocess(false);
                 })
+
                 .catch((error) => {
                   console.log(error.response.data);
                   toast.error("Something went wrong!");
+                  setIsprocess(false);
                 });
               console.log("orderPlace", orderPlace);
             } catch (error) {
               console.log("error", error);
               toast.error("Something went wrong!");
+              setIsprocess(false);
             }
           }
         } else {
@@ -533,16 +542,19 @@ export const Checkout = ({
                       });
                       clearCartData();
                       toast.success("Order placed successfully!");
+                      setIsprocess(false);
                     })
                     .catch((error) => {
                       console.log(error.response.data);
                       toast.error("Something went wrong!");
+                      setIsprocess(false);
                     });
 
                   console.log("orderPlace", orderPlace);
                 } catch (error) {
                   console.log("error", error);
                   toast.error("Something went wrong!");
+                  setIsprocess(false);
                 }
               }
               if (itemsResult) {
@@ -619,17 +631,20 @@ export const Checkout = ({
                         postcode: "",
                         country: "",
                       });
-                      toast.success("Order placed successfully!");
                       clearCartData();
+                      toast.success("Order placed successfully!");
+                      setIsprocess(false);
                     })
                     .catch((error) => {
                       console.log(error.response.data);
                       toast.error("Something went wrong!");
+                      setIsprocess(false);
                     });
                   console.log("orderPlace", orderPlace);
                 } catch (error) {
                   console.log("error", error);
                   toast.error("Something went wrong!");
+                  setIsprocess(false);
                 }
               }
             })
@@ -702,7 +717,7 @@ export const Checkout = ({
       });
   };
 
-  const handleSelect = async (selectedAddress) => {
+  const handleSelect = async (selectedAddress: any) => {
     const results = await geocodeByAddress(selectedAddress);
     const selectedPlace = results[0];
 
@@ -747,6 +762,7 @@ export const Checkout = ({
       state: address?.administrative_area_level_1,
     }));
   }, [address]);
+
   return (
     <div className="calendar-box">
       <div
@@ -889,7 +905,7 @@ export const Checkout = ({
                       </div>
                     </li>
                   </ul>
-                  <h5>${item?.totals?.total}</h5>
+                  <h5>${priceConvert(item?.price)}</h5>
                 </div>
               </div>
             ))}
@@ -897,8 +913,8 @@ export const Checkout = ({
         </Accordion>
 
         <Accordion
-          expanded={expanded === "panel3"}
-          onChange={handleChange("panel3")}
+          expanded={expanded === "coponCode"}
+          onChange={handleChange("coponCode")}
         >
           <AccordionSummary
             expandIcon={""}
@@ -963,8 +979,10 @@ export const Checkout = ({
                 </ul>
                 <p>
                   YOU SAVED: $
-                  {priceConvert(subTotal?.[1]?.subtotal) -
-                    priceConvert(subTotal?.[1]?.total)}
+                  {saveToLocalStorage(
+                    subTotal?.[1]?.subtotal,
+                    subTotal?.[1]?.total
+                  )}
                 </p>
               </div>
             </Typography>
@@ -1058,7 +1076,7 @@ export const Checkout = ({
                       }))
                     }
                     type="text"
-                    placeholder="Company name (optional)"
+                    placeholder="Company name"
                     value={billing?.compnay}
                   />
                   {billing?.compnay === "" && (
