@@ -687,6 +687,7 @@ export const Checkout = ({
   }, [isPaymnet]);
 
   const removeCartItem = (id: any) => {
+    console.log("id", id);
     CoCart.delete(`cart/item/${id}`)
       .then((response) => {
         // Successful request
@@ -700,9 +701,9 @@ export const Checkout = ({
       })
       .catch((error) => {
         // Invalid request, for 4xx and 5xx statuses
-        console.log("Response Status:", error.response.status);
-        console.log("Response Headers:", error.response.headers);
-        console.log("Response Data:", error.response.data);
+        console.log("Response Status:", error?.response?.status);
+        console.log("Response Headers:", error?.response?.headers);
+        console.log("Response Data:", error?.response?.data);
         toast.error("Something went wrong!", { autoClose: toastTime });
       })
       .finally(() => {
@@ -998,7 +999,11 @@ export const Checkout = ({
                     <span>${priceConvert(subTotal?.[1]?.total)} USD</span>
                   </li>
                 </ul>
-                <p>YOU SAVED: ${priceConvert(subTotal?.[1]?.discount_total)}</p>
+                {subTotal?.[1]?.discount_total !== "0" && (
+                  <p>
+                    YOU SAVED: ${priceConvert(subTotal?.[1]?.discount_total)}
+                  </p>
+                )}
               </div>
             </Typography>
           </AccordionDetails>
