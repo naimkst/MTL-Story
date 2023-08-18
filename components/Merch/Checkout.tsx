@@ -306,7 +306,9 @@ export const Checkout = ({
                 })
                 .catch((error) => {
                   console.log(error.response.data);
-                  toast.error("Something went wrong!", { autoClose: toastTime });
+                  toast.error("Something went wrong!", {
+                    autoClose: toastTime,
+                  });
                   setIsprocess(false);
                 });
               console.log("orderPlace", orderPlace);
@@ -996,13 +998,7 @@ export const Checkout = ({
                     <span>${priceConvert(subTotal?.[1]?.total)} USD</span>
                   </li>
                 </ul>
-                <p>
-                  YOU SAVED: $
-                  {saveToLocalStorage(
-                    subTotal?.[1]?.subtotal,
-                    subTotal?.[1]?.total
-                  )}
-                </p>
+                <p>YOU SAVED: ${priceConvert(subTotal?.[1]?.discount_total)}</p>
               </div>
             </Typography>
           </AccordionDetails>

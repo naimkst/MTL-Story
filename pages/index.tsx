@@ -138,6 +138,7 @@ const HomePage = () => {
           if (!response.ok) {
             throw new Error("Network response was not ok");
           }
+          toast.success("Coupon applied successfully", { autoClose: 800 });
           return response.json();
         })
         .catch((error) => {
