@@ -10,6 +10,7 @@ import {
   shopAPi,
 } from "../../helpers/globalFunction";
 import { toast } from "react-toastify";
+import { toastTime } from "../../helpers/variables";
 
 const Newslatter = ({ data }: any) => {
   const [email, setEmail] = React.useState<any>("");
@@ -40,17 +41,17 @@ const Newslatter = ({ data }: any) => {
         .then((response) => response.json())
         .then((data) => {
           if (data?.error) {
-            toast.error(String(data?.error));
+            toast.error(String(data?.error), { autoClose: toastTime });
             setLoading(false);
           } else {
-            toast.success(String(data?.message));
+            toast.success(String(data?.message), { autoClose: toastTime });
             setEmail("");
             setLoading(false);
           }
         })
         .catch((error) => {
           console.error("Error creating user:", error);
-          toast.error("Error creating user");
+          toast.error("Error creating user", { autoClose: toastTime });
           setLoading(false);
         });
     };
@@ -59,7 +60,7 @@ const Newslatter = ({ data }: any) => {
     if (validEmail && email !== "") {
       subscribeHandle();
     } else {
-      toast.error("Please enter valid email");
+      toast.error("Please enter valid email", { autoClose: toastTime });
       setLoading(false);
     }
   };

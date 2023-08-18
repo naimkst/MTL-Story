@@ -3,6 +3,7 @@ import eImg from "../../public/images/product.jpg";
 import Image from "next/image";
 import { useStore } from "../../store/store";
 import { toast } from "react-toastify";
+import { toastTime } from "../../helpers/variables";
 
 export const OrderSuccess = ({ setUnsubscribe }: any) => {
   const [setOrderSuccess, orderCreate] = useStore((state: any) => [
@@ -36,14 +37,14 @@ export const OrderSuccess = ({ setUnsubscribe }: any) => {
         .then((response) => response.json())
         .then((data) => {
           if (data?.error) {
-            toast.error(String(data?.error));
+            toast.error(String(data?.error), { autoClose: toastTime });
           } else {
-            toast.success(String(data?.message));
+            toast.success(String(data?.message), { autoClose: toastTime });
           }
         })
         .catch((error) => {
           console.error("Error creating user:", error);
-          toast.error("Error creating user");
+          toast.error("Error creating user", { autoClose: toastTime });
         });
     }
   };

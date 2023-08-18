@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useStripe, useElements } from "@stripe/react-stripe-js";
 import { useStore } from "../../store/store";
 import { toast } from "react-toastify";
+import { toastTime } from "../../helpers/variables";
 
 export default function CheckoutForm() {
   const stripe = useStripe();
@@ -60,7 +61,7 @@ export default function CheckoutForm() {
       console.log("Payment successful");
     } else {
       // setMessage("An unexpected error occured.");
-      toast.error("An unexpected error occured.");
+      toast.error("An unexpected error occured.", { autoClose: toastTime });
       console.log("Payment failed");
     }
   };

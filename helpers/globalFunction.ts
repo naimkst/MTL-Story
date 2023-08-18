@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CoCartAPI from "@cocart/cocart-rest-api";
 import { toast } from "react-toastify";
 import { useStore } from "../store/store";
+import { toastTime } from "./variables";
 
 export const CoCart = new CoCartAPI({
   url: "https://shop.mtlstories.com",
@@ -97,13 +98,13 @@ export const addToCart = async (
       if (type === "buy") {
         isCartActive(true);
       }
-      toast.success("Item added to cart");
+      toast.success("Item added to cart", { autoClose: toastTime });
       console.log("cartAdd@@@@@@@", cart?.data);
       setIsUpdate(Math.random());
     }
   } catch (error) {
     console.log(error);
-    toast.error("Something went wrong");
+    toast.error("Something went wrong", { autoClose: toastTime });
   }
 };
 

@@ -21,6 +21,7 @@ import {
 } from "../../helpers/globalFunction";
 import Payment from "./Payment";
 import { toast } from "react-toastify";
+import { toastTime } from "../../helpers/variables";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -297,19 +298,21 @@ export const Checkout = ({
                     postcode: "",
                     country: "",
                   });
-                  toast.success("Order placed successfully!");
+                  toast.success("Order placed successfully!", {
+                    autoClose: toastTime,
+                  });
                   clearCartData();
                   setIsprocess(false);
                 })
                 .catch((error) => {
                   console.log(error.response.data);
-                  toast.error("Something went wrong!");
+                  toast.error("Something went wrong!", { autoClose: toastTime });
                   setIsprocess(false);
                 });
               console.log("orderPlace", orderPlace);
             } catch (error) {
               console.log("error", error);
-              toast.error("Something went wrong!");
+              toast.error("Something went wrong!", { autoClose: toastTime });
               setIsprocess(false);
             }
           }
@@ -385,20 +388,24 @@ export const Checkout = ({
                     postcode: "",
                     country: "",
                   });
-                  toast.success("Order placed successfully!");
+                  toast.success("Order placed successfully!", {
+                    autoClose: toastTime,
+                  });
                   clearCartData();
                   setIsprocess(false);
                 })
 
                 .catch((error) => {
                   console.log(error.response.data);
-                  toast.error("Something went wrong!");
+                  toast.error("Something went wrong!", {
+                    autoClose: toastTime,
+                  });
                   setIsprocess(false);
                 });
               console.log("orderPlace", orderPlace);
             } catch (error) {
               console.log("error", error);
-              toast.error("Something went wrong!");
+              toast.error("Something went wrong!", { autoClose: toastTime });
               setIsprocess(false);
             }
           }
@@ -541,19 +548,25 @@ export const Checkout = ({
                         country: "",
                       });
                       clearCartData();
-                      toast.success("Order placed successfully!");
+                      toast.success("Order placed successfully!", {
+                        autoClose: toastTime,
+                      });
                       setIsprocess(false);
                     })
                     .catch((error) => {
                       console.log(error.response.data);
-                      toast.error("Something went wrong!");
+                      toast.error("Something went wrong!", {
+                        autoClose: toastTime,
+                      });
                       setIsprocess(false);
                     });
 
                   console.log("orderPlace", orderPlace);
                 } catch (error) {
                   console.log("error", error);
-                  toast.error("Something went wrong!");
+                  toast.error("Something went wrong!", {
+                    autoClose: toastTime,
+                  });
                   setIsprocess(false);
                 }
               }
@@ -632,18 +645,24 @@ export const Checkout = ({
                         country: "",
                       });
                       clearCartData();
-                      toast.success("Order placed successfully!");
+                      toast.success("Order placed successfully!", {
+                        autoClose: toastTime,
+                      });
                       setIsprocess(false);
                     })
                     .catch((error) => {
                       console.log(error.response.data);
-                      toast.error("Something went wrong!");
+                      toast.error("Something went wrong!", {
+                        autoClose: toastTime,
+                      });
                       setIsprocess(false);
                     });
                   console.log("orderPlace", orderPlace);
                 } catch (error) {
                   console.log("error", error);
-                  toast.error("Something went wrong!");
+                  toast.error("Something went wrong!", {
+                    autoClose: toastTime,
+                  });
                   setIsprocess(false);
                 }
               }
@@ -674,7 +693,7 @@ export const Checkout = ({
         console.log("Response Data:", response.data);
         if (response.status === 200) {
           setCartItemRemove(id);
-          toast.success("Remove successfully!");
+          toast.success("Remove successfully!", { autoClose: toastTime });
         }
       })
       .catch((error) => {
@@ -682,7 +701,7 @@ export const Checkout = ({
         console.log("Response Status:", error.response.status);
         console.log("Response Headers:", error.response.headers);
         console.log("Response Data:", error.response.data);
-        toast.error("Something went wrong!");
+        toast.error("Something went wrong!", { autoClose: toastTime });
       })
       .finally(() => {
         // Always executed.
@@ -702,7 +721,7 @@ export const Checkout = ({
         console.log("Response Data:", response.data);
         if (response.status === 200) {
           setCartItemRemove(qty);
-          toast.success("Successfully updated!");
+          toast.success("Successfully updated!", { autoClose: toastTime });
         }
       })
       .catch((error) => {
@@ -710,7 +729,7 @@ export const Checkout = ({
         console.log("Response Status:", error.response.status);
         console.log("Response Headers:", error.response.headers);
         console.log("Response Data:", error.response.data);
-        toast.error("Something went wrong!");
+        toast.error("Something went wrong!", { autoClose: toastTime });
       })
       .finally(() => {
         // Always executed.
