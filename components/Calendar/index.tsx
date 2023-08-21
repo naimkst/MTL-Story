@@ -1,6 +1,7 @@
 import React, { use, useEffect } from "react";
 import dateFormat, { masks } from "dateformat";
 import { CalendarDate } from "./CalendarDate";
+import { Loader } from "../Loader";
 
 export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
@@ -272,6 +273,6 @@ export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
       </>
     );
   } else {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 };

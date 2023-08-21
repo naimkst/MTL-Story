@@ -10,7 +10,11 @@ export const CalendarDate = ({ setCalendarDate, eventId, eventLists }: any) => {
   const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
   const [eventIds, setEeventId] = React.useState<any>("");
 
-  console.log(eventIds, "eventIds====");
+  console.log(eventLists[0]?.attributes?.StartDate, "eventIds====");
+  console.log(
+    dateFormat(eventLists[0]?.attributes?.StartDate, "dddd, mmmm dS, yyyy"),
+    "eventIds===="
+  );
   return (
     <>
       <div className="calendar-box">
@@ -34,10 +38,13 @@ export const CalendarDate = ({ setCalendarDate, eventId, eventLists }: any) => {
           </svg>
         </div>
         <div className="wrapper-calendar weeklyCalendar calenderDate">
-          <div className="cl-top">
-            <i className="fa fa-angle-left" aria-hidden="true"></i>
-            <h4 className="tp-title">tuesday 14/09/2023</h4>
-            <i className="fa fa-angle-right" aria-hidden="true"></i>
+          <div className="cl-top date-center">
+            {/* <i className="fa fa-angle-left" aria-hidden="true"></i> */}
+            <h4 className="tp-title">
+              {dateFormat(eventLists[0]?.attributes?.StartDate, "dddd")}{" "}
+              {dateFormat(eventLists[0]?.attributes?.StartDate, "d/mm/yyyy")}
+            </h4>
+            {/* <i className="fa fa-angle-right" aria-hidden="true"></i> */}
           </div>
           <div className="row">
             <div className="event-wrap">
