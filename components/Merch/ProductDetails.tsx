@@ -4,6 +4,8 @@ import Image from "next/image";
 import { addToCart, useApi } from "../../helpers/globalFunction";
 import { cartItems } from "../../hooks/cart";
 import { useStore } from "../../store/store";
+import { Loader } from "../Loader";
+import { CalendarLoading } from "../Loader/ClendarLoading";
 
 export const ProductDetails = ({ setProductDetails, productItem }: any) => {
   const [verient, setVariation] = useState<any>([]);
@@ -17,16 +19,9 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
     ]
   );
 
-  const getVeriation = (id: any) => {
-    const { data: variations } = useApi(
-      `products/${productItem?.id}/variations/${id}`
-    );
-  };
-
   // Function to separate attributes and their options
   function separateAttributesWithArray(variations: any) {
     const attributesMap = {};
-
     variations.forEach((variation: any) => {
       variation.attributes.forEach((attribute: any) => {
         const { name, option } = attribute;
@@ -44,15 +39,6 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
 
   const attributeOptionsMap = separateAttributesWithArray(data);
 
-  const filterDuplicateKeys = (variationData: any) => {
-    const uniqueVariation: any = {};
-    for (const key in variationData) {
-      if (!uniqueVariation.hasOwnProperty(key)) {
-        uniqueVariation[key] = variationData[key];
-      }
-    }
-    return uniqueVariation;
-  };
   const addVerient = (item: any) => {
     const key = Object.keys(item)[0];
     const existingIndex = verient.findIndex(
