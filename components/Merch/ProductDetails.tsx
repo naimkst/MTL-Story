@@ -9,6 +9,7 @@ import { CalendarLoading } from "../Loader/ClendarLoading";
 
 export const ProductDetails = ({ setProductDetails, productItem }: any) => {
   const [verient, setVariation] = useState<any>([]);
+  const [prdImage, setPrdImage] = useState<any>(0);
   const { data } = useApi(`products/${productItem?.id}/variations`);
   const [isCart, isCartActive, setIsUpdate, setSingleProduct] = useStore(
     (state: any) => [
@@ -58,6 +59,17 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
     }
   };
 
+  console.log("productItem", prdImage);
+
+  const imageChanges = (type: string) => {
+    console.log("type", type);
+    if (type == "next") {
+      setPrdImage(prdImage + 1);
+    } else {
+      setPrdImage(prdImage == 0 ? 0 : prdImage - 1);
+    }
+  };
+
   return (
     <div className="calendar-box">
       <div
@@ -82,12 +94,51 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
       <div className="wrapper-calendar weeklyCalendar productDetails">
         <h2>{productItem?.name}</h2>
         <div className="details-img">
+          {prdImage !== 0 && (
+            <div className="arrowLetf" onClick={() => imageChanges("prv")}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M15.75 19.5L8.25 12l7.5-7.5"
+                />
+              </svg>
+            </div>
+          )}
           <Image
-            src={productItem?.images[0]?.src}
+            src={productItem?.images[prdImage]?.src}
             height={443}
             alt=""
             width={978}
           />
+          {prdImage !== productItem?.images?.length - 1 &&
+          productItem?.images?.length > 0 ? (
+            <div className="arrowRight" onClick={() => imageChanges("next")}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8.25 4.5l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className="details-wrap">
           {Object.keys(attributeOptionsMap)?.map((item: any, index: number) => (

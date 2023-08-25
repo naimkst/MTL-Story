@@ -428,6 +428,26 @@ ul.singlePrdQty li {
   text-align: center;
   margin: 0 auto;
 }
+.details-img {
+  position: relative;
+}
+.arrowLetf {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  cursor: pointer;
+  z-index: 99999;
+  width: 50px;
+}
+.arrowRight {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  z-index: 99999;
+  width: 50px;
+  cursor: pointer;
+}
+
 @media only screen and (max-width: 769px) {
   .monthlyCalendar {
     width: 98%;
