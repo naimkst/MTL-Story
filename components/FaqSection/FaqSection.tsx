@@ -27,7 +27,12 @@ const FaqSection = ({ data }: any) => {
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce="false" duration="500">
+                <Slide
+                  cascade
+                  direction="up"
+                  triggerOnce="false"
+                  duration="300"
+                >
                   {data?.FAQOne?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqOne-${index}`}
@@ -58,7 +63,12 @@ const FaqSection = ({ data }: any) => {
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce="false" duration="500">
+                <Slide
+                  cascade
+                  direction="up"
+                  triggerOnce="false"
+                  duration="300"
+                >
                   {data?.FAQTwo?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqTwo-${index}`}
@@ -89,7 +99,12 @@ const FaqSection = ({ data }: any) => {
           <div className="row">
             <div className="col-lg-12 col-12">
               <div className="benefits-item">
-                <Slide cascade direction="up" triggerOnce="false" duration="500">
+                <Slide
+                  cascade
+                  direction="up"
+                  triggerOnce="false"
+                  duration="300"
+                >
                   {data?.FAQThree?.map((item: any, index: number) => (
                     <Accordion
                       key={`faqThree-${index}`}

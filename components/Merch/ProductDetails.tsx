@@ -72,26 +72,26 @@ export const ProductDetails = ({ setProductDetails, productItem }: any) => {
 
   return (
     <div className="calendar-box">
-      <div
-        className="calendarClose"
-        onClick={() => {
-          setSingleProduct(false);
-        }}
-      >
-        <svg
-          width="33"
-          height="32"
-          viewBox="0 0 33 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
-            stroke="white"
-          />
-        </svg>
-      </div>
       <div className="wrapper-calendar weeklyCalendar productDetails">
+        <div
+          className="calendarClose"
+          onClick={() => {
+            setSingleProduct(false);
+          }}
+        >
+          <svg
+            width="33"
+            height="32"
+            viewBox="0 0 33 32"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
+              stroke="white"
+            />
+          </svg>
+        </div>
         <h2>{productItem?.name}</h2>
         <div className="details-img">
           {prdImage !== 0 && (

@@ -42,6 +42,7 @@ const Merch = ({
   };
 
   console.log("products", products);
+
   return (
     <>
       <section className="merch-section section-padding" id="merch">
@@ -52,7 +53,7 @@ const Merch = ({
             </div>
           </Slide>
           <div className="merch-wrap">
-            {categories?.map(
+            {categories?.slice(0, 1).map(
               (item: any, index: number) =>
                 item?.count > 0 && (
                   <div key={`merch-${index}`} className="merch-item">
@@ -67,10 +68,15 @@ const Merch = ({
                       </div>
                       <div className="col-lg-9">
                         <div className="merch-img-wrap">
-                          <Fade cascade direction="up" triggerOnce="false">
-                            {products?.map((img: any, index: number) => (
-                              <>
-                                {findCategory(item, img) == true && (
+                          {products?.map((img: any, index: number) => (
+                            <>
+                              {findCategory(item, img) == true && (
+                                <Fade
+                                  cascade
+                                  direction="up"
+                                  triggerOnce="false"
+                                  className={`prdItems ${item?.count}`}
+                                >
                                   <div
                                     key={`imgMerch-${index}`}
                                     className="merch-img-item"
@@ -87,31 +93,17 @@ const Merch = ({
                                       className="merchImage"
                                       alt=""
                                     />
-                                    <span className="catName">
-                                      {img?.tags[0]?.name}
-                                    </span>
+                                    {img?.tags.length > 0 && (
+                                      <span className="catName">
+                                        {img?.tags[0]?.name}
+                                      </span>
+                                    )}
                                   </div>
-                                )}
-                              </>
-                            ))}
-                          </Fade>
+                                </Fade>
+                              )}
+                            </>
+                          ))}
                         </div>
-                        {/* <div
-                          className="checkout theme-btn"
-                          onClick={() => {
-                            setCheckout(true);
-                          }}
-                        >
-                          checkout
-                        </div> */}
-                        {/* <div
-                          className="checkout theme-btn"
-                          onClick={() => {
-                            setUnsubscribe(true);
-                          }}
-                        >
-                          Unsubscribe
-                        </div> */}
                       </div>
                     </div>
                   </div>

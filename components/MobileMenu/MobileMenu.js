@@ -52,7 +52,7 @@ const MobileMenu = () => {
                         return (
                             <ListItem key={mn}>
                             <Link
-                                to={item.link} spy={true} smooth={true}  duration={500} onClick={ClickHandler}>{item.title}</Link>
+                                to={item.link} spy={true} smooth={true}  duration={300} onClick={ClickHandler}>{item.title}</Link>
                             </ListItem>
                         )
                     })}

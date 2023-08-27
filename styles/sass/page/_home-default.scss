@@ -967,6 +967,8 @@
 
     .merch-img-wrap {
       display: flex;
+      flex-wrap: wrap;
+
       // justify-content: center;
 
       @media (max-width: 767px) {
@@ -1368,6 +1370,7 @@
   height: auto;
   max-height: 900px;
   width: 673px;
+  position: relative;
 
   @media (max-width: 1199px) {
     max-width: 900px;

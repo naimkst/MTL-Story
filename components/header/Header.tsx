@@ -75,7 +75,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         to="about"
                         spy={true}
                         smooth={true}
-                        duration={500}
+                        duration={300}
                         offset={-100}
                       >
                         {global?.Menu?.AboutUs}
@@ -87,7 +87,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         to="calender"
                         spy={true}
                         smooth={true}
-                        duration={500}
+                        duration={300}
                         offset={-95}
                       >
                         {global?.Menu?.Calendar}
@@ -99,7 +99,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         to="service"
                         spy={true}
                         smooth={true}
-                        duration={500}
+                        duration={300}
                         offset={-95}
                       >
                         {global?.Menu?.Services}
@@ -111,7 +111,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         to="merch"
                         spy={true}
                         smooth={true}
-                        duration={500}
+                        duration={300}
                         offset={-95}
                       >
                         {global?.Menu?.Merch}
@@ -123,7 +123,7 @@ const Header = ({ topbarNone, hclass, global, setLanguage, language }: any) => {
                         to="contact"
                         spy={true}
                         smooth={true}
-                        duration={500}
+                        duration={300}
                         offset={-95}
                       >
                         {global?.Menu?.ContactUs}

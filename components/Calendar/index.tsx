@@ -190,26 +190,26 @@ export const EventCalendar = ({ setMonthlyCalendar, eventData }: any) => {
     return (
       <>
         <div className="calendar-box">
-          <div
-            className="calendarClose"
-            onClick={() => {
-              setMonthlyCalendar(false);
-            }}
-          >
-            <svg
-              width="33"
-              height="32"
-              viewBox="0 0 33 32"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
-                stroke="white"
-              />
-            </svg>
-          </div>
           <div className="wrapper-calendar monthlyCalendar">
+            <div
+              className="calendarClose"
+              onClick={() => {
+                setMonthlyCalendar(false);
+              }}
+            >
+              <svg
+                width="33"
+                height="32"
+                viewBox="0 0 33 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
+                  stroke="white"
+                />
+              </svg>
+            </div>
             <header>
               <div className="icons eventIcons">
                 <span id="prev" className="material-symbols-rounded">

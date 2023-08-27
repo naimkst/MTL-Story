@@ -42,26 +42,26 @@ export const CalendarDetails = ({ setDetailsCalendar, eventId }: any) => {
   if (event) {
     return (
       <div className="calendar-box">
-        <div
-          className="calendarClose"
-          onClick={() => {
-            setDetailsCalendar(false);
-          }}
-        >
-          <svg
-            width="33"
-            height="32"
-            viewBox="0 0 33 32"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
-              stroke="white"
-            />
-          </svg>
-        </div>
         <div className="wrapper-calendar weeklyCalendar calenderDetails">
+          <div
+            className="calendarClose"
+            onClick={() => {
+              setDetailsCalendar(false);
+            }}
+          >
+            <svg
+              width="33"
+              height="32"
+              viewBox="0 0 33 32"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M32.1851 0.395264L1.27441 31.3062M1.27441 0.395264L32.1851 31.3059"
+                stroke="white"
+              />
+            </svg>
+          </div>
           <h4 className="tp-title">
             {/* <i className="fa fa-arrow-left" aria-hidden="true"></i> */}
             {event?.Title}

@@ -17,7 +17,7 @@ const Vision = ({ data }: any) => {
           </div>
         </Slide>
         <div className="vision-wrap">
-          <Slide cascade direction="up" triggerOnce="false" duration="1000">
+          <Slide cascade direction="up" triggerOnce="false" duration="500">
             {data?.Description}
 
             <div>

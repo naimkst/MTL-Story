@@ -99,7 +99,12 @@ const CalenderSection = ({ data, eventData }: any) => {
               <div className="row">
                 <div className="col-lg-6 col-12">
                   <div className="calender-text">
-                    <Slide cascade direction="up" triggerOnce="false">
+                    <Slide
+                      cascade
+                      direction="up"
+                      triggerOnce="false"
+                      duration="300"
+                    >
                       <div className="section-title">
                         <h2>{data?.SectionTitle}</h2>
                       </div>
@@ -114,8 +119,8 @@ const CalenderSection = ({ data, eventData }: any) => {
                           // to="contact"
                           spy={true}
                           smooth={true}
-                          duration={500}
-                          offset={-95}
+                          // duration={100}
+                          // offset={-95}
                         >
                           {data?.WeeklyText}
                         </Link>
@@ -127,8 +132,8 @@ const CalenderSection = ({ data, eventData }: any) => {
                           // to="contact"
                           spy={true}
                           smooth={true}
-                          duration={500}
-                          offset={-95}
+                          // duration={100}
+                          offset={10}
                         >
                           {data?.MonthlyText}
                         </Link>
@@ -152,7 +157,7 @@ const CalenderSection = ({ data, eventData }: any) => {
                             cascade
                             direction="up"
                             triggerOnce="false"
-                            duration="500"
+                            duration="300"
                           >
                             {event[1]?.map((item: any, index: any) => (
                               <div

@@ -12,7 +12,7 @@ const CtaSection = ({ data }: any) => {
           to="contact"
           spy={true}
           smooth={true}
-          duration={500}
+          duration={300}
           offset={-100}
           className="theme-btn" 
           >

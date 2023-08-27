@@ -14,12 +14,18 @@ import Merch from "../components/Merch/Merch";
 import BackToTop from "../components/backToTop/backToTop";
 import Footer from "../components/footer/Footer";
 import useFetch from "../hooks/useFetch";
-import { CoCart, getLocalStorageData, useApi } from "../helpers/globalFunction";
+import {
+  CoCart,
+  getImage,
+  getLocalStorageData,
+  useApi,
+} from "../helpers/globalFunction";
 import { useRouter } from "next/router";
 import Stripe from "stripe";
 import { useStore } from "../store/store";
 import { toast } from "react-toastify";
 import { Loader } from "../components/Loader";
+import Head from "next/head";
 
 const HomePage = () => {
   const router = useRouter();
@@ -84,6 +90,7 @@ const HomePage = () => {
 
   const data = getData?.data?.attributes;
   const global = globalData?.data?.attributes?.Global;
+  const seo = globalData?.data?.attributes?.SEO;
 
   const handleChange = (event: any) => {
     setLanguage(event);
@@ -181,28 +188,63 @@ const HomePage = () => {
   if (loading || data === undefined || globalLoading) {
     return <Loader />;
   }
+
+  console.log("data?.HeroSection", getImage(seo?.SeoImage));
   return (
     <Fragment>
+      <Head>
+        <title>{seo?.SiteName}</title>
+        <meta name="description" content={seo?.Description} key="desc" />
+        <meta property="og:title" content={seo?.Title} />
+        <meta property="og:description" content={seo?.Description} />
+        <meta property="og:image" content={getImage(seo?.SeoImage)} />
+      </Head>
       <Navbar global={global} setLanguage={handleChange} language={language} />
-      <Hero data={data?.HeroSection} />
-      <Marquee data={data?.TextSlider} />
-      <Newslatter data={data?.Newslatter} />
-      <Vision data={data?.OurVision} />
-      <CalenderSection data={data?.Calendar} eventData={envetData} />
-      <ServiceSection data={data?.ServiceSection} />
-      <CtaSection data={data?.CTASection} />
-      <FaqSection data={data?.FAQSection} />
-      <PartnerSlider data={data?.BrandSection} />
-      <Merch
-        data={data?.MerchSection}
-        products={products}
-        categories={categories}
-        setCoupon={setCoupon}
-        couponApply={couponApply}
-        setCartItemRemove={setCartItemRemove}
-      />
-      <ContactArea data={data?.ContactUs} />
-      <Marquee data={data?.TextSlider} />
+      {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
+
+      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
+
+      {data?.Newslatter?.isHide !== true && (
+        <Newslatter data={data?.Newslatter} />
+      )}
+      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
+
+      {data?.Calendar?.isHide !== true && (
+        <CalenderSection data={data?.Calendar} eventData={envetData} />
+      )}
+
+      {data?.ServiceSection?.isHide !== true && (
+        <ServiceSection data={data?.ServiceSection} />
+      )}
+
+      {data?.CTASection?.isHide !== true && (
+        <CtaSection data={data?.CTASection} />
+      )}
+
+      {data?.FAQSection?.isHide !== true && (
+        <FaqSection data={data?.FAQSection} />
+      )}
+
+      {data?.BrandSection?.isHide !== true && (
+        <PartnerSlider data={data?.BrandSection} />
+      )}
+
+      {data?.MerchSection?.isHide !== true && (
+        <Merch
+          data={data?.MerchSection}
+          products={products}
+          categories={categories}
+          setCoupon={setCoupon}
+          couponApply={couponApply}
+          setCartItemRemove={setCartItemRemove}
+        />
+      )}
+
+      {data?.ContactUs?.isHide !== true && (
+        <ContactArea data={data?.ContactUs} />
+      )}
+
+      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
       <Footer global={global} />
       <BackToTop />
     </Fragment>

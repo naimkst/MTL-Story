@@ -25,7 +25,7 @@ const Hero = ({ data }: any) => {
                     to="contact"
                     spy={true}
                     smooth={true}
-                    duration={500}
+                    duration={300}
                     offset={-95}
                     className="theme-btn"
                   >

@@ -134,13 +134,23 @@ header .current-date {
 }
 .calendarClose {
   position: absolute;
-  top: 10px;
-  right: 15px;
+  top: -17px;
+  right: -17px;
   margin: 20px;
   cursor: pointer;
-  color: #fff;
+  color: #000;
   font-size: 2rem;
-  z-index: 99999;
+  z-index: 9999999;
+  height: 40px;
+  width: 40px;
+  background: black;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.calendarClose svg {
+  width: 18px;
 }
 .event-img {
   padding: 20px 10px;
@@ -447,6 +457,10 @@ ul.singlePrdQty li {
   width: 50px;
   cursor: pointer;
 }
+.prdItems {
+  width: 25%;
+  margin-bottom: 15px;
+}
 
 @media only screen and (max-width: 769px) {
   .monthlyCalendar {
@@ -457,6 +471,13 @@ ul.singlePrdQty li {
   }
   header .current-date {
     font-size: 30px;
+  }
+  .prdItems {
+    width: 100%;
+  }
+  .merchImage {
+    width: 100%;
+    height: 250px;
   }
 }
 
