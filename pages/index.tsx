@@ -187,9 +187,9 @@ const HomePage = () => {
 
   console.log("Llllllllllll");
 
-  // if (loading || data === undefined || globalLoading) {
-  //   return <Loader />;
-  // }
+  if (loading || data === undefined || globalLoading) {
+    return <Loader />;
+  }
 
   console.log("data?.HeroSection", getImage(seo?.SeoImage));
   return (
