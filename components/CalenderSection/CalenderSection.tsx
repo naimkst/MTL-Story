@@ -14,6 +14,7 @@ import { CalendarDetails } from "../Calendar/CalendarDetails";
 import { CalendarDate } from "../Calendar/CalendarDate";
 import dateFormat, { masks } from "dateformat";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 var settings = {
   dots: false,
@@ -109,7 +110,8 @@ const CalenderSection = ({ data, eventData }: any) => {
                         <h2>{data?.SectionTitle}</h2>
                       </div>
                       <h4>{data?.EventTitle}</h4>
-                      <p>{data?.EventDescription}</p>
+                      <ReactMarkdown>{`${data?.EventDescription}`}</ReactMarkdown>
+                      {/* <p>{data?.EventDescription}</p> */}
                       <div className="access-btn">
                         <Link
                           onClick={() => {

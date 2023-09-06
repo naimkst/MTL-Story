@@ -461,6 +461,9 @@ ul.singlePrdQty li {
   width: 25%;
   margin-bottom: 15px;
 }
+.contactBtn {
+  width: auto !important;
+}
 
 @media only screen and (max-width: 769px) {
   .monthlyCalendar {

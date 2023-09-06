@@ -5,6 +5,7 @@ import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { Slide } from "react-awesome-reveal";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const Accordion: any = styled((props) => (
   <MuiAccordion children disableGutters elevation={0} square {...props} />
@@ -49,7 +50,12 @@ const ServiceSection = ({ data }: any) => {
           <div className="service-wrap">
             <div className="row align-items-center">
               <div className="service-item">
-                <Slide cascade direction="up" triggerOnce="false" duration="500">
+                <Slide
+                  cascade
+                  direction="up"
+                  triggerOnce="false"
+                  duration="500"
+                >
                   {data?.Services?.map((item: any, index: any) => (
                     <Accordion
                       key={`service-${index}`}
@@ -64,7 +70,9 @@ const ServiceSection = ({ data }: any) => {
                         <Typography>{item?.Title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography>{item?.Description}</Typography>
+                        <Typography>
+                          <ReactMarkdown>{`${item?.Description}`}</ReactMarkdown>
+                        </Typography>
                       </AccordionDetails>
                     </Accordion>
                   ))}

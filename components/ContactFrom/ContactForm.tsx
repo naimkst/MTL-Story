@@ -180,9 +180,9 @@ const ContactForm = ({ data }: any) => {
               {validator.message("message", forms.message, "required")}
             </div>
           </div>
-          <div className="col-lg-5 col-md-12 col-12">
+          <div className="col-lg-12 col-md-12 col-12">
             <div className="submit-area">
-              <button type="submit" className="theme-btn">
+              <button type="submit" className="theme-btn contactBtn">
                 {data?.ButtonText}
               </button>
             </div>

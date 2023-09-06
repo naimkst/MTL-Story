@@ -4,8 +4,8 @@
   background: $black;
   padding: 15px 0;
   position: relative;
-  z-index: -1;
-  overflow: hidden;
+  // z-index: -1;
+  // overflow: hidden;
 
   @media (max-width: 991px) {
     padding: 20px 0;
@@ -13,31 +13,31 @@
 
   .digital-marque {
     position: relative;
-    left: -10%;
-    width: 120%;
-    z-index: -1;
-    overflow: hidden;
+    // left: -10%;
+    // width: 120%;
+    // z-index: -1;
+    // overflow: hidden;
 
-    .track {
-      animation: marquee 200s linear infinite;
-    }
+    // .track {
+    //   animation: marquee 200s linear infinite;
+    // }
 
-    @keyframes marquee {
-      from {
-        transform: translateX(0);
-      }
+    // @keyframes marquee {
+    //   from {
+    //     transform: translateX(0);
+    //   }
 
-      to {
-        transform: translateX(-50%);
-      }
-    }
+    //   to {
+    //     transform: translateX(-50%);
+    //   }
+    // }
 
     h1 {
       font-size: 48px;
       line-height: 102%;
       white-space: nowrap;
-      will-change: transform;
-      animation: marquee 20s linear infinite;
+      // will-change: transform;
+      // animation: marquee 20s linear infinite;
       margin-bottom: 0;
       color: $white;
       font-family: $heading-font2;
@@ -48,7 +48,7 @@
 
       @media (max-width: 575px) {
         font-size: 20px;
-        animation: marquee 10s linear infinite;
+        // animation: marquee 10s linear infinite;
       }
 
       span {

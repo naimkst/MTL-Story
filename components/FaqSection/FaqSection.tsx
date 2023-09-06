@@ -4,6 +4,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import AccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
 import { Slide } from "react-awesome-reveal";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 
 const FaqSection = ({ data }: any) => {
   const [expanded, setExpanded] = React.useState<any>(false);
@@ -47,7 +48,9 @@ const FaqSection = ({ data }: any) => {
                         <Typography>{item?.Title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography>{item?.Description}</Typography>
+                        <Typography>
+                          <ReactMarkdown>{`${item?.Description}`}</ReactMarkdown>
+                        </Typography>
                       </AccordionDetails>
                     </Accordion>
                   ))}
@@ -83,7 +86,9 @@ const FaqSection = ({ data }: any) => {
                         <Typography>{item?.Title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography>{item?.Description}</Typography>
+                        <Typography>
+                          <ReactMarkdown>{`${item?.Description}`}</ReactMarkdown>
+                        </Typography>
                       </AccordionDetails>
                     </Accordion>
                   ))}
@@ -119,7 +124,9 @@ const FaqSection = ({ data }: any) => {
                         <Typography>{item?.Title}</Typography>
                       </AccordionSummary>
                       <AccordionDetails>
-                        <Typography>{item?.Description}</Typography>
+                        <Typography>
+                          <ReactMarkdown>{`${item?.Description}`}</ReactMarkdown>
+                        </Typography>
                       </AccordionDetails>
                     </Accordion>
                   ))}
