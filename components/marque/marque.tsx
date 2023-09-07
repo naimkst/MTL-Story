@@ -9,7 +9,7 @@ const Marquee = ({ data }: any) => {
           <div className="">
             <div className="content">
               <h1>
-                <Marque gradient={false} speed={90} loop={0}>
+                <Marque gradient={false} speed={200} loop={0}>
                   {data?.map((item: any, index: number) => (
                     <span key={`texSlider-${index}`}>{item?.Title}</span>
                   ))}
