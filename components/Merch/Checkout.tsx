@@ -824,7 +824,7 @@ export const Checkout = ({
           </AccordionSummary>
           <AccordionDetails>
             <h3>Shopping Cart</h3>
-            {items?.[1].length === 0 && <h2>No cart item found!</h2>}
+            {items?.[1].length === 0 && <h2>Nothing in your cart yet 😉!</h2>}
             {items?.[1]?.map((item: any, index: number) => (
               <div key={`cartItem-${index}`} className="shoping-wrap">
                 <span

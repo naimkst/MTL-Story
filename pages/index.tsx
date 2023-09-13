@@ -26,6 +26,7 @@ import { useStore } from "../store/store";
 import { toast } from "react-toastify";
 import { Loader } from "../components/Loader";
 import Head from "next/head";
+import EventPopup from "../components/EventPoup";
 
 const HomePage = () => {
   const router = useRouter();
@@ -90,6 +91,7 @@ const HomePage = () => {
 
   const data = getData?.data?.attributes;
   const global = globalData?.data?.attributes?.Global;
+  const EventPopup = globalData?.data?.attributes?.EventPopup;
   const seo = globalData?.data?.attributes?.SEO;
 
   const handleChange = (event: any) => {
@@ -212,7 +214,12 @@ const HomePage = () => {
       {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
 
       {data?.Calendar?.isHide !== true && (
-        <CalenderSection data={data?.Calendar} eventData={envetData} />
+        <CalenderSection
+          data={data?.Calendar}
+          eventData={envetData}
+          EventPopupData={EventPopup}
+          global={global}
+        />
       )}
 
       {data?.ServiceSection?.isHide !== true && (
@@ -247,6 +254,9 @@ const HomePage = () => {
       )}
 
       {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
+
+      {/* <EventPopup /> */}
+
       <Footer global={global} />
       <BackToTop />
     </Fragment>

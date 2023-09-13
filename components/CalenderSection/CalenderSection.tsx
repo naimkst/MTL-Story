@@ -15,6 +15,7 @@ import { CalendarDate } from "../Calendar/CalendarDate";
 import dateFormat, { masks } from "dateformat";
 import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import EventPopup from "../EventPoup";
 
 var settings = {
   dots: false,
@@ -26,11 +27,12 @@ var settings = {
   loop: false,
 };
 
-const CalenderSection = ({ data, eventData }: any) => {
+const CalenderSection = ({ data, eventData, EventPopupData, global }: any) => {
   const [open, setOpen] = React.useState<any>(false);
   const [monthlyCalendar, setMonthlyCalendar] = React.useState<any>(false);
   const [weeklyCalendar, setWeeklyCalendar] = React.useState<any>(false);
   const [calendarDetails, setDetailsCalendar] = React.useState<any>(false);
+  const [eventSignup, setEventSignUp] = React.useState<any>(false);
   const [calendarDate, setCalendarDate] = React.useState<any>(false);
   const [eventId, setEeventId] = React.useState<any>("");
   const [events, setEvents] = React.useState<any>([]);
@@ -90,6 +92,8 @@ const CalenderSection = ({ data, eventData }: any) => {
     // console.log("aaaaa", dateFormat(today, "dddd, mmmm dS, yyyy"));
     // console.log("bbbb", dateFormat(eventDate, "dddd, mmmm dS, yyyy"));
   };
+
+  console.log("global", EventPopupData);
 
   if (eventsByDate) {
     return (
@@ -167,6 +171,7 @@ const CalenderSection = ({ data, eventData }: any) => {
                                 className="event-item"
                                 onClick={() => {
                                   setDetailsCalendar(true);
+                                  setEventSignUp(true);
                                   setEeventId(item?.id);
                                 }}
                               >
@@ -239,6 +244,13 @@ const CalenderSection = ({ data, eventData }: any) => {
         )}
         {calendarDate && (
           <CalendarDate setCalendarDate={setCalendarDate} eventId={eventId} />
+        )}
+        {eventSignup && (
+          <EventPopup
+            setEventSignUp={setEventSignUp}
+            EventPopupData={EventPopupData}
+            global={global}
+          />
         )}
       </>
     );
