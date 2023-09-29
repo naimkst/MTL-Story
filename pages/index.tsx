@@ -204,15 +204,22 @@ const HomePage = () => {
         <meta property="og:image" content={getImage(seo?.SeoImage)} />
       </Head>
       <Navbar global={global} setLanguage={handleChange} language={language} />
+
+      {/* Hero Section */}
       {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
 
+      {/* Text Slider Section */}
       {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
 
+      {/* Newslatter Section */}
       {data?.Newslatter?.isHide !== true && (
         <Newslatter data={data?.Newslatter} />
       )}
+
+      {/* Our Vision Section */}
       {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
 
+      {/* Calender Section */}
       {data?.Calendar?.isHide !== true && (
         <CalenderSection
           data={data?.Calendar}
@@ -222,22 +229,17 @@ const HomePage = () => {
         />
       )}
 
+      {/* Service Section */}
       {data?.ServiceSection?.isHide !== true && (
         <ServiceSection data={data?.ServiceSection} />
       )}
 
+      {/* Call To Action Section */}
       {data?.CTASection?.isHide !== true && (
         <CtaSection data={data?.CTASection} />
       )}
 
-      {data?.FAQSection?.isHide !== true && (
-        <FaqSection data={data?.FAQSection} />
-      )}
-
-      {data?.BrandSection?.isHide !== true && (
-        <PartnerSlider data={data?.BrandSection} />
-      )}
-
+      {/* Merch Section */}
       {data?.MerchSection?.isHide !== true && (
         <Merch
           data={data?.MerchSection}
@@ -249,10 +251,22 @@ const HomePage = () => {
         />
       )}
 
+      {/* Brand Section */}
+      {data?.BrandSection?.isHide !== true && (
+        <PartnerSlider data={data?.BrandSection} />
+      )}
+
+      {/* FAQ Section */}
+      {data?.FAQSection?.isHide !== true && (
+        <FaqSection data={data?.FAQSection} />
+      )}
+
+      {/* Contact Section */}
       {data?.ContactUs?.isHide !== true && (
         <ContactArea data={data?.ContactUs} />
       )}
 
+      {/* Text Slider Section */}
       {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
 
       {/* <EventPopup /> */}
