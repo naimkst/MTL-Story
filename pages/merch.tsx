@@ -1,34 +1,20 @@
-import React, { Fragment, use, useEffect } from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Navbar/Navbar";
-import ContactArea from "../components/ContactArea";
-import Hero from "../components/hero/hero";
-import Marquee from "../components/marque/marque";
-import Newslatter from "../components/Newslatter/Newslatter";
-import Vision from "../components/Vision/Vision";
-import CalenderSection from "../components/CalenderSection/CalenderSection";
-import ServiceSection from "../components/ServiceSection/ServiceSection";
-import CtaSection from "../components/CtaSection/CtaSection";
-import FaqSection from "../components/FaqSection/FaqSection";
-import PartnerSlider from "../components/partner";
-import Merch from "../components/Merch/Merch";
-import BackToTop from "../components/backToTop/backToTop";
-import Footer from "../components/footer/Footer";
-import useFetch from "../hooks/useFetch";
-import {
-  CoCart,
-  getImage,
-  getLocalStorageData,
-  useApi,
-} from "../helpers/globalFunction";
 import { useRouter } from "next/router";
-import Stripe from "stripe";
 import { useStore } from "../store/store";
+import Stripe from "stripe";
+import { CoCart, getLocalStorageData, useApi } from "../helpers/globalFunction";
+import useFetch from "../hooks/useFetch";
 import { toast } from "react-toastify";
 import { Loader } from "../components/Loader";
-import Head from "next/head";
-import EventPopup from "../components/EventPoup";
+import Hero from "../components/hero/hero";
+import Merch from "../components/Merch/Merch";
+import Footer from "../components/footer/Footer";
+import BackToTop from "../components/backToTop/backToTop";
+import Vision from "../components/Vision/Vision";
+import CtaSection from "../components/CtaSection/CtaSection";
 
-const HomePage = () => {
+const MerchPage = () => {
   const router = useRouter();
   const [language, setLanguage] = React.useState<any>("en");
   const [updateCupon, setUpdateCupon] = React.useState<any>(false);
@@ -191,51 +177,11 @@ const HomePage = () => {
     return <Loader />;
   }
 
-  console.log("data?.HeroSection", getImage(seo?.SeoImage));
   return (
-    <Fragment>
-      <Head>
-        <title>{seo?.SiteName}</title>
-        <meta name="description" content={seo?.Description} key="desc" />
-        <meta property="og:title" content={seo?.Title} />
-        <meta property="og:description" content={seo?.Description} />
-        <meta property="og:image" content={getImage(seo?.SeoImage)} />
-      </Head>
+    <>
       <Navbar global={global} setLanguage={handleChange} language={language} />
-
       {/* Hero Section */}
       {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
-
-      {/* Text Slider Section */}
-      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
-
-      {/* Newslatter Section */}
-      {data?.Newslatter?.isHide !== true && (
-        <Newslatter data={data?.Newslatter} />
-      )}
-
-      {/* Our Vision Section */}
-      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
-
-      {/* Calender Section */}
-      {data?.Calendar?.isHide !== true && (
-        <CalenderSection
-          data={data?.Calendar}
-          eventData={envetData}
-          EventPopupData={EventPopup}
-          global={global}
-        />
-      )}
-
-      {/* Service Section */}
-      {data?.ServiceSection?.isHide !== true && (
-        <ServiceSection data={data?.ServiceSection} />
-      )}
-
-      {/* Call To Action Section */}
-      {data?.CTASection?.isHide !== true && (
-        <CtaSection data={data?.CTASection} />
-      )}
 
       {/* Merch Section */}
       {data?.MerchSection?.isHide !== true && (
@@ -246,34 +192,20 @@ const HomePage = () => {
           setCoupon={setCoupon}
           couponApply={couponApply}
           setCartItemRemove={setCartItemRemove}
-          limit={1}
+          limit={10}
         />
       )}
 
-      {/* Brand Section */}
-      {data?.BrandSection?.isHide !== true && (
-        <PartnerSlider data={data?.BrandSection} />
+      {/* Call To Action Section */}
+      {data?.CTASection?.isHide !== true && (
+        <CtaSection data={data?.CTASection} />
       )}
 
-      {/* FAQ Section */}
-      {data?.FAQSection?.isHide !== true && (
-        <FaqSection data={data?.FAQSection} />
-      )}
-
-      {/* Contact Section */}
-      {data?.ContactUs?.isHide !== true && (
-        <ContactArea data={data?.ContactUs} />
-      )}
-
-      {/* Text Slider Section */}
-      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
-
-      {/* <EventPopup /> */}
-
+      {/* Our Vision Section */}
+      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
       <Footer global={global} />
       <BackToTop />
-    </Fragment>
+    </>
   );
 };
-
-export default HomePage;
+export default MerchPage;

@@ -15,6 +15,7 @@ const Merch = ({
   setCoupon,
   couponApply,
   setCartItemRemove,
+  limit,
 }: any) => {
   const [productDetails, setProductDetails] = React.useState<any>(false);
   const [checkout, setCheckout] = React.useState<any>(false);
@@ -41,8 +42,6 @@ const Merch = ({
     }
   };
 
-  console.log("products", products);
-
   return (
     <>
       <section className="merch-section section-padding" id="merch">
@@ -53,10 +52,15 @@ const Merch = ({
             </div>
           </Slide>
           <div className="merch-wrap">
-            {categories?.slice(0, 1).map(
+            {categories?.slice(0, limit).map(
               (item: any, index: number) =>
                 item?.count > 0 && (
-                  <div key={`merch-${index}`} className="merch-item">
+                  <div
+                    key={`merch-${index}`}
+                    className={`${
+                      limit > 1 ? "merch-item merch-item-img" : "merch-item"
+                    }`}
+                  >
                     <div className="row align-items-center">
                       <div className="col-lg-3">
                         <div className="merch-text">
