@@ -56,7 +56,7 @@ const MerchPage = () => {
     error,
     data: getData,
   } = useFetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/home-page?populate=deep&locale=${lngData}`
+    `${process.env.NEXT_PUBLIC_API_URL}/merch-page?populate=deep&locale=${lngData}`
   );
 
   const {
@@ -181,7 +181,9 @@ const MerchPage = () => {
     <>
       <Navbar global={global} setLanguage={handleChange} language={language} />
       {/* Hero Section */}
-      {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
+      {data?.HeroSection?.isHide !== true && (
+        <Hero data={data?.HeroSection} pageName="merch" />
+      )}
 
       {/* Merch Section */}
       {data?.MerchSection?.isHide !== true && (

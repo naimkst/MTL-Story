@@ -4,9 +4,9 @@ import himg from "/public/images/video-btn.svg";
 import { Link } from "react-scroll";
 import Image from "next/image";
 import { Slide } from "react-awesome-reveal";
+import { getHeight, getImage, getWidth } from "../../helpers/globalFunction";
 
-
-const Hero = ({ data }: any) => {
+const Hero = ({ data, pageName }: any) => {
   const [isOpen, setOpen] = useState(false);
 
   return (
@@ -37,17 +37,33 @@ const Hero = ({ data }: any) => {
           </div>
           <div className="col col-xs-6 col-lg-6 col-12">
             <Slide direction="right" triggerOnce="false">
-              <div className="hero-section-video">
-                <video autoPlay loop muted>
-                  <source src="http://techslides.com/demos/sample-videos/small.ogv" type="video/ogg" />
-                </video>
-                <div className="video-btn">
-                  <button className="btn-wrap" onClick={() => setOpen(true)}>
-                    {" "}
-                    <Image src={himg} alt="" />{" "}
-                  </button>
+              {pageName === "merch" ? (
+                <div className="hero-section-video">
+                  <div className="heroImage">
+                    <Image
+                      width={Number(getWidth(data?.HeroImage))}
+                      height={Number(getHeight(data?.HeroImage))}
+                      src={getImage(data?.HeroImage)}
+                      alt=""
+                    />
+                  </div>
                 </div>
-              </div>
+              ) : (
+                <div className="hero-section-video">
+                  <video autoPlay loop muted>
+                    <source
+                      src="http://techslides.com/demos/sample-videos/small.ogv"
+                      type="video/ogg"
+                    />
+                  </video>
+                  <div className="video-btn">
+                    <button className="btn-wrap" onClick={() => setOpen(true)}>
+                      {" "}
+                      <Image src={himg} alt="" />{" "}
+                    </button>
+                  </div>
+                </div>
+              )}
             </Slide>
           </div>
         </div>

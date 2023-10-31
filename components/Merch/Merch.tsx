@@ -49,6 +49,7 @@ const Merch = ({
           <Slide direction="up" triggerOnce="false">
             <div className="section-title text-center">
               <h2>{data?.SectionTitle}</h2>
+              {limit > 1 && <h4 className="subTitle">{data?.SubTitle}</h4>}
             </div>
           </Slide>
           <div className="merch-wrap">
@@ -71,7 +72,13 @@ const Merch = ({
                         </div>
                       </div>
                       <div className="col-lg-9">
-                        <div className="merch-img-wrap">
+                        <div
+                          className={
+                            limit > 1
+                              ? "merch-img-wrap prdItemGrid"
+                              : "merch-img-wrap"
+                          }
+                        >
                           {products?.map((img: any, index: number) => (
                             <>
                               {findCategory(item, img) == true && (

@@ -465,13 +465,14 @@ ul.singlePrdQty li {
   width: auto !important;
 }
 .merch-section .merch-wrap .merch-item-img {
-  padding-top: 160px;
+  padding-top: 210px;
   position: relative;
+  margin-bottom: 70px;
 }
 .merch-section .merch-wrap .merch-item-img:after {
   background-image: url("../public/images/train.png");
   background-repeat: no-repeat;
-  background-size: 100% 130px;
+  background-size: 100% 170px;
   background-position: top;
   padding-top: 160px;
   content: "";
@@ -516,8 +517,7 @@ ul.singlePrdQty li {
 .topEventSignup {
   text-align: center;
 }
-.signupBox {
-}
+
 .signupInput {
   width: 100%;
   height: 70px;
@@ -544,6 +544,45 @@ ul.singlePrdQty li {
   gap: 30px;
   margin-top: 20px;
 }
+
+.subTitle {
+  color: #000;
+  font-size: 35.076px;
+  font-family: Bebas Neue;
+  font-weight: 700;
+}
+.hero-section .hero-section-video {
+  overflow: hidden;
+}
+.heroImage img {
+  height: 450px !important;
+  width: 100% !important;
+  object-fit: cover;
+}
+
+@media only screen and (min-width: 1800px) {
+  .heroImage img {
+    height: 600px !important;
+  }
+}
+
+@media only screen and (max-width: 786px) {
+  .merch-section .merch-wrap .merch-img-wrap.prdItemGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
+  }
+  .prdItemGrid .prdItems {
+    margin-bottom: 0px;
+  }
+  .merch-section .merch-wrap .merch-img-wrap .merch-img-item {
+    padding: 0px;
+  }
+  .merchImage {
+    height: 350px;
+  }
+}
+
 @media only screen and (max-width: 600px) {
   .monthlyCalendar {
     width: 98%;
@@ -556,5 +595,14 @@ ul.singlePrdQty li {
   }
   .topEvent {
     overflow: scroll;
+  }
+  .merchImage {
+    height: 175px;
+  }
+  .merch-section .merch-wrap .merch-item-img:after {
+    background-size: 100% 80px;
+  }
+  .merch-section .merch-wrap .merch-item-img {
+    padding-top: 100px;
   }
 }
