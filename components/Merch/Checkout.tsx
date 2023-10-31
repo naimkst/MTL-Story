@@ -1300,7 +1300,7 @@ export const Checkout = ({
                   )}
                 </div>
               </div>
-              ;{/* ship to a different address? */}
+              {/* ship to a different address? */}
               <div className="inputField">
                 <div className="different_address">
                   <input
