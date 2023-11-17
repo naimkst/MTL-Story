@@ -13,6 +13,7 @@ import Footer from "../components/footer/Footer";
 import BackToTop from "../components/backToTop/backToTop";
 import Vision from "../components/Vision/Vision";
 import CtaSection from "../components/CtaSection/CtaSection";
+import { ComingSoon } from "../components/ComingSoonPage";
 
 const MerchPage = () => {
   const router = useRouter();
@@ -173,41 +174,43 @@ const MerchPage = () => {
     setSingleProduct(false);
   }, [orderSuccess]);
 
-  if (loading || data === undefined || globalLoading) {
-    return <Loader />;
-  }
+  return <ComingSoon />;
 
-  return (
-    <>
-      <Navbar global={global} setLanguage={handleChange} language={language} />
-      {/* Hero Section */}
-      {data?.HeroSection?.isHide !== true && (
-        <Hero data={data?.HeroSection} pageName="merch" />
-      )}
+  // if (loading || data === undefined || globalLoading) {
+  //   return <Loader />;
+  // }
 
-      {/* Merch Section */}
-      {data?.MerchSection?.isHide !== true && (
-        <Merch
-          data={data?.MerchSection}
-          products={products}
-          categories={categories}
-          setCoupon={setCoupon}
-          couponApply={couponApply}
-          setCartItemRemove={setCartItemRemove}
-          limit={10}
-        />
-      )}
+  // return (
+  //   <>
+  //     <Navbar global={global} setLanguage={handleChange} language={language} />
+  //     {/* Hero Section */}
+  //     {data?.HeroSection?.isHide !== true && (
+  //       <Hero data={data?.HeroSection} pageName="merch" />
+  //     )}
 
-      {/* Call To Action Section */}
-      {data?.CTASection?.isHide !== true && (
-        <CtaSection data={data?.CTASection} />
-      )}
+  //     {/* Merch Section */}
+  //     {data?.MerchSection?.isHide !== true && (
+  //       <Merch
+  //         data={data?.MerchSection}
+  //         products={products}
+  //         categories={categories}
+  //         setCoupon={setCoupon}
+  //         couponApply={couponApply}
+  //         setCartItemRemove={setCartItemRemove}
+  //         limit={10}
+  //       />
+  //     )}
 
-      {/* Our Vision Section */}
-      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
-      <Footer global={global} />
-      <BackToTop />
-    </>
-  );
+  //     {/* Call To Action Section */}
+  //     {data?.CTASection?.isHide !== true && (
+  //       <CtaSection data={data?.CTASection} />
+  //     )}
+
+  //     {/* Our Vision Section */}
+  //     {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
+  //     <Footer global={global} />
+  //     <BackToTop />
+  //   </>
+  // );
 };
 export default MerchPage;
