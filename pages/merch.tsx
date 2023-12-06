@@ -14,6 +14,7 @@ import BackToTop from "../components/backToTop/backToTop";
 import Vision from "../components/Vision/Vision";
 import CtaSection from "../components/CtaSection/CtaSection";
 import { ComingSoon } from "../components/ComingSoonPage";
+import nookies from "nookies";
 
 const MerchPage = () => {
   const router = useRouter();
@@ -174,43 +175,81 @@ const MerchPage = () => {
     setSingleProduct(false);
   }, [orderSuccess]);
 
-  return <ComingSoon />;
+  // return <ComingSoon />;
 
-  // if (loading || data === undefined || globalLoading) {
-  //   return <Loader />;
-  // }
+  if (loading || data === undefined || globalLoading) {
+    return <Loader />;
+  }
 
-  // return (
-  //   <>
-  //     <Navbar global={global} setLanguage={handleChange} language={language} />
-  //     {/* Hero Section */}
-  //     {data?.HeroSection?.isHide !== true && (
-  //       <Hero data={data?.HeroSection} pageName="merch" />
-  //     )}
+  return (
+    <>
+      <Navbar global={global} setLanguage={handleChange} language={language} />
+      {/* Hero Section */}
+      {data?.HeroSection?.isHide !== true && (
+        <Hero data={data?.HeroSection} pageName="merch" />
+      )}
 
-  //     {/* Merch Section */}
-  //     {data?.MerchSection?.isHide !== true && (
-  //       <Merch
-  //         data={data?.MerchSection}
-  //         products={products}
-  //         categories={categories}
-  //         setCoupon={setCoupon}
-  //         couponApply={couponApply}
-  //         setCartItemRemove={setCartItemRemove}
-  //         limit={10}
-  //       />
-  //     )}
+      {/* Merch Section */}
+      {data?.MerchSection?.isHide !== true && (
+        <Merch
+          data={data?.MerchSection}
+          products={products}
+          categories={categories}
+          setCoupon={setCoupon}
+          couponApply={couponApply}
+          setCartItemRemove={setCartItemRemove}
+          limit={10}
+        />
+      )}
 
-  //     {/* Call To Action Section */}
-  //     {data?.CTASection?.isHide !== true && (
-  //       <CtaSection data={data?.CTASection} />
-  //     )}
+      {/* Call To Action Section */}
+      {data?.CTASection?.isHide !== true && (
+        <CtaSection data={data?.CTASection} />
+      )}
 
-  //     {/* Our Vision Section */}
-  //     {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
-  //     <Footer global={global} />
-  //     <BackToTop />
-  //   </>
-  // );
+      {/* Our Vision Section */}
+      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
+      <Footer global={global} />
+      <BackToTop />
+    </>
+  );
 };
 export default MerchPage;
+
+export async function getServerSideProps(ctx: any) {
+  const cookies = nookies.get(ctx);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global-setting?populate=deep&locale=en`,
+    {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Origin: "*",
+      },
+    }
+  );
+  const data = await res.json();
+
+  const passwordData = data?.data?.attributes?.Password;
+
+  if (passwordData?.Password) {
+    if (
+      !cookies?.isPassword ||
+      cookies?.isPassword !== passwordData?.Password
+    ) {
+      return {
+        redirect: {
+          destination: "/password",
+          permanent: false,
+        },
+      };
+      console.log("cookies====", cookies);
+    }
+  }
+
+  return {
+    props: {},
+  };
+}

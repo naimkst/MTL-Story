@@ -28,6 +28,7 @@ import { Loader } from "../components/Loader";
 import Head from "next/head";
 import EventPopup from "../components/EventPoup";
 import { ComingSoon } from "../components/ComingSoonPage";
+import nookies from "nookies";
 
 const HomePage = () => {
   const router = useRouter();
@@ -188,94 +189,133 @@ const HomePage = () => {
     setSingleProduct(false);
   }, [orderSuccess]);
 
-  return <ComingSoon />;
+  // return <ComingSoon />;
 
-  // if (loading || data === undefined || globalLoading) {
-  //   return <Loader />;
-  // }
+  if (loading || data === undefined || globalLoading) {
+    return <Loader />;
+  }
 
-  // return (
-  //   <Fragment>
-  //     <Head>
-  //       <title>{seo?.SiteName}</title>
-  //       <meta name="description" content={seo?.Description} key="desc" />
-  //       <meta property="og:title" content={seo?.Title} />
-  //       <meta property="og:description" content={seo?.Description} />
-  //       <meta property="og:image" content={getImage(seo?.SeoImage)} />
-  //     </Head>
-  //     <Navbar global={global} setLanguage={handleChange} language={language} />
+  return (
+    <Fragment>
+      <Head>
+        <title>{seo?.SiteName}</title>
+        <meta name="description" content={seo?.Description} key="desc" />
+        <meta property="og:title" content={seo?.Title} />
+        <meta property="og:description" content={seo?.Description} />
+        <meta property="og:image" content={getImage(seo?.SeoImage)} />
+      </Head>
+      <Navbar global={global} setLanguage={handleChange} language={language} />
 
-  //     {/* Hero Section */}
-  //     {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
+      {/* Hero Section */}
+      {data?.HeroSection?.isHide !== true && <Hero data={data?.HeroSection} />}
 
-  //     {/* Text Slider Section */}
-  //     {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
+      {/* Text Slider Section */}
+      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
 
-  //     {/* Newslatter Section */}
-  //     {data?.Newslatter?.isHide !== true && (
-  //       <Newslatter data={data?.Newslatter} />
-  //     )}
+      {/* Newslatter Section */}
+      {data?.Newslatter?.isHide !== true && (
+        <Newslatter data={data?.Newslatter} />
+      )}
 
-  //     {/* Our Vision Section */}
-  //     {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
+      {/* Our Vision Section */}
+      {data?.OurVision?.isHide !== true && <Vision data={data?.OurVision} />}
 
-  //     {/* Calender Section */}
-  //     {data?.Calendar?.isHide !== true && (
-  //       <CalenderSection
-  //         data={data?.Calendar}
-  //         eventData={envetData}
-  //         EventPopupData={EventPopup}
-  //         global={global}
-  //       />
-  //     )}
+      {/* Calender Section */}
+      {data?.Calendar?.isHide !== true && (
+        <CalenderSection
+          data={data?.Calendar}
+          eventData={envetData}
+          EventPopupData={EventPopup}
+          global={global}
+        />
+      )}
 
-  //     {/* Service Section */}
-  //     {data?.ServiceSection?.isHide !== true && (
-  //       <ServiceSection data={data?.ServiceSection} />
-  //     )}
+      {/* Service Section */}
+      {data?.ServiceSection?.isHide !== true && (
+        <ServiceSection data={data?.ServiceSection} />
+      )}
 
-  //     {/* Call To Action Section */}
-  //     {data?.CTASection?.isHide !== true && (
-  //       <CtaSection data={data?.CTASection} />
-  //     )}
+      {/* Call To Action Section */}
+      {data?.CTASection?.isHide !== true && (
+        <CtaSection data={data?.CTASection} />
+      )}
 
-  //     {/* Merch Section */}
-  //     {data?.MerchSection?.isHide !== true && (
-  //       <Merch
-  //         data={data?.MerchSection}
-  //         products={products}
-  //         categories={categories}
-  //         setCoupon={setCoupon}
-  //         couponApply={couponApply}
-  //         setCartItemRemove={setCartItemRemove}
-  //         limit={1}
-  //       />
-  //     )}
+      {/* Merch Section */}
+      {data?.MerchSection?.isHide !== true && (
+        <Merch
+          data={data?.MerchSection}
+          products={products}
+          categories={categories}
+          setCoupon={setCoupon}
+          couponApply={couponApply}
+          setCartItemRemove={setCartItemRemove}
+          limit={1}
+        />
+      )}
 
-  //     {/* Brand Section */}
-  //     {data?.BrandSection?.isHide !== true && (
-  //       <PartnerSlider data={data?.BrandSection} />
-  //     )}
+      {/* Brand Section */}
+      {data?.BrandSection?.isHide !== true && (
+        <PartnerSlider data={data?.BrandSection} />
+      )}
 
-  //     {/* FAQ Section */}
-  //     {data?.FAQSection?.isHide !== true && (
-  //       <FaqSection data={data?.FAQSection} />
-  //     )}
+      {/* FAQ Section */}
+      {data?.FAQSection?.isHide !== true && (
+        <FaqSection data={data?.FAQSection} />
+      )}
 
-  //     {/* Contact Section */}
-  //     {data?.ContactUs?.isHide !== true && (
-  //       <ContactArea data={data?.ContactUs} />
-  //     )}
+      {/* Contact Section */}
+      {data?.ContactUs?.isHide !== true && (
+        <ContactArea data={data?.ContactUs} />
+      )}
 
-  //     {/* Text Slider Section */}
-  //     {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
+      {/* Text Slider Section */}
+      {data?.TextSlider?.isHide !== true && <Marquee data={data?.TextSlider} />}
 
-  //     {/* <EventPopup /> */}
+      {/* <EventPopup /> */}
 
-  //     <Footer global={global} />
-  //     <BackToTop />
-  //   </Fragment>
-  // );
+      <Footer global={global} />
+      <BackToTop />
+    </Fragment>
+  );
 };
 
 export default HomePage;
+
+// This gets called on every request
+export async function getServerSideProps(ctx: any) {
+  const cookies = nookies.get(ctx);
+
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/global-setting?populate=deep&locale=en`,
+    {
+      method: "get",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Origin: "*",
+      },
+    }
+  );
+  const data = await res.json();
+
+  const passwordData = data?.data?.attributes?.Password;
+
+  if (passwordData?.Password) {
+    if (
+      !cookies?.isPassword ||
+      cookies?.isPassword !== passwordData?.Password
+    ) {
+      return {
+        redirect: {
+          destination: "/password",
+          permanent: false,
+        },
+      };
+      console.log("cookies====", cookies);
+    }
+  }
+
+  return {
+    props: {},
+  };
+}
